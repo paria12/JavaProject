@@ -1,0 +1,217 @@
+package code;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+
+public class Equipe {
+    
+    private String nom;
+    private int nbPoints = -1;
+    private List<Joueur> joueur = new ArrayList<Joueur> ();
+    private int id_jeu = -1;
+    
+    /**constructeur d'équipe et nom
+     * @param nom
+     * @throws IllegalArgumentException
+     */
+    public Equipe(String nom)throws IllegalArgumentException{
+    	if(nom == null) {
+    		throw new IllegalArgumentException("nom ne peut pas être null");
+    	}
+    	this.nom = nom;
+    }
+
+     /**
+     * @param nom
+     * @param nbPoints
+     * @param id_jeu
+     * @throws IllegalArgumentException
+     */
+    public Equipe(String nom, int nbPoints, int id_jeu)throws IllegalArgumentException {
+    	if(nom == null) {
+    		throw new IllegalArgumentException("nom ne peut pas être null");
+    	}
+    	this.nom =nom;
+    	this.nbPoints = nbPoints;
+    	this.id_jeu = id_jeu;
+    }
+
+    /**renvoie le nom de l'équipe
+     * @return nom
+     */
+    public String getNom() {
+    	return this.nom;
+    }
+
+    /** renvoie le nombre de points de l'équipe
+     * @return nbPoints
+     * @throws ErreurBD 
+     */
+    public int getNbPoints() throws ErreurBD {
+    	if(this.nbPoints < 0) {
+    		this.select();
+    	}
+    	return this.nbPoints;
+    }
+
+    /** renvoie l'id d'un jeu à laquelle une équipe est associée
+     * @return id_jeu
+     * @throws ErreurBD 
+     */
+    public int getIdJeu() throws ErreurBD {
+    	if(this.id_jeu < 0) {
+    		this.select();
+    	}
+    	return this.id_jeu;
+    }
+    
+    public List<Joueur> getJoueur() throws ErreurBD {
+    	if (!this.joueur.isEmpty()) {
+    		return this.joueur;
+    	} else {
+    		return this.selectJoueur();
+    	}
+    }
+    
+    /** ajout de point à la fin de chaque tournoi aux point de l'équipe
+     * @param nouveauPoint
+     * @throws ErreurBD 
+     */
+    public void AjoutDePoints(int nouveauPoint) throws ErreurBD{
+    	this.nbPoints = this.getNbPoints() + nouveauPoint;
+    }
+    
+    public void addJoueur(Joueur j) {
+    	this.joueur.add(j);
+    }
+    
+    public void removeJoueur(Joueur j) {
+    	this.joueur.remove(j);
+    }
+    
+    
+    /** insère des joueurs dans une équipe
+     * @param id_equipe
+     * @return List de joueur
+     * @throws ErreurBD
+     * @exception erreur de connexion à la BD
+     */
+    public List<Joueur> selectJoueur()throws ErreurBD{
+    	String loginBD = "ndf4080a";
+		String mdpBD = "fatime31";
+		String connectString = "jdbc:oracle:thin:@telline.univ-tlse3.fr:1521:etupre";
+
+		try {
+			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+		} catch (SQLException e) {
+			throw new ErreurBD("Erreur de connexion a la bd");
+		}
+
+		try {
+			Connection connx = DriverManager.getConnection(connectString, loginBD, mdpBD);
+
+			Statement st = connx.createStatement();
+
+			ResultSet rs = st.executeQuery("select j.nom, j.prenom, j.date_naissance, j.sexe, j.numero_de_telephone, j.email from joueur j , equipe e where e.nom ='"+this.nom+"' and e.id_equipe = j.id_equipe");
+			while(rs.next()){
+				this.joueur.add(new Joueur(rs.getString(1),rs.getString(2),rs.getDate(3),rs.getString(4).charAt(0),rs.getString(5),rs.getString(6)));
+			}
+		} catch (SQLException e) {
+			throw new ErreurBD("Erreur de requette bd");
+		}
+		return joueur;
+		
+    }
+
+    /** importation des informations secondaires depuis la base de données
+     * @throws ErreurBD 
+	 * 
+	 */
+	public void select() throws ErreurBD {
+		String loginBD = "ndf4080a";
+		String mdpBD = "fatime31";
+		String connectString = "jdbc:oracle:thin:@telline.univ-tlse3.fr:1521:etupre";
+
+		try {
+			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+		} catch (SQLException e) {
+			throw new ErreurBD("Erreur de connexion a la bd");
+		}
+
+		try {
+			Connection connx = DriverManager.getConnection(connectString, loginBD, mdpBD);
+
+			Statement st = connx.createStatement();
+
+			ResultSet rese = st.executeQuery("select nb_points, id_jeu from equipe where nom='"+this.nom+"'");
+
+			rese.next();
+			if (this.nbPoints < 0) {
+				this.nbPoints = rese.getInt(1);
+			}
+			if(this.id_jeu < 0) {
+				this.id_jeu = rese.getInt(2);
+			}
+		} catch (SQLException e) {
+			throw new ErreurBD("Erreur de requette bd");
+		}
+
+	}
+	
+	/** insérer toutes les informations dans la base de données
+	 * @throws ErreurBD 
+	 * 
+	 */
+	public void insert(int ecurie) throws ErreurBD{
+		if (this.nbPoints >= 0 && this.id_jeu > 0) {
+			String loginBD = "ndf4080a";
+			String mdpBD = "fatime31";
+			String connectString = "jdbc:oracle:thin:@telline.univ-tlse3.fr:1521:etupre";
+
+			try {
+				DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+			} catch (SQLException e) {
+				throw new ErreurBD("Erreur de connexion a la bd");
+			}
+
+			try {
+				Connection connx = DriverManager.getConnection(connectString, loginBD, mdpBD);
+
+				Statement st = connx.createStatement();
+
+				st.executeQuery("INSERT INTO equipe values(seq_joueur.nextVal,'"+this.nom+"',"+this.nbPoints+","+this.id_jeu+","+ecurie+")");
+
+			} catch (SQLException e) {
+				throw new ErreurBD("Erreur de requette bd");
+			}
+		} else {
+			throw new IllegalArgumentException("Au moins un des paramètres n'est pas valide/definie");
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id_jeu, nbPoints, nom);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof Equipe)) {
+			return false;
+		}
+		Equipe other = (Equipe) obj;
+		return id_jeu == other.id_jeu && nbPoints == other.nbPoints
+				&& Objects.equals(nom, other.nom);
+	}
+	
+}
