@@ -47,15 +47,15 @@ public class testJeu {
 	}
 	
 	@Test
-	public void testGetDurée() throws ErreurBD {
-		Jeu t = new Jeu("Overwatch",1500);
-		assertEquals(1500,t.getDuree());
+	public void testGetDuree() throws ErreurBD {
+		Jeu t = new Jeu("Overwatch",25);
+		assertEquals(25,t.getDuree());
 	}
 
 	@Test
-	public void testGetDuréeFromBD() throws ErreurBD {
+	public void testGetDureeFromBD() throws ErreurBD {
 		Jeu t = new Jeu("Overwatch");
-		assertEquals(1500,t.getDuree());
+		assertEquals(25,t.getDuree());
 	}
 
 	@Test
@@ -84,5 +84,14 @@ public class testJeu {
 	public void testExceptionBDInsert() throws ErreurBD {
 		Jeu t = new Jeu("test2");
 		t.getDuree();
+	}
+	
+	@Test
+	public void testGetAll() {
+		try {
+			assertEquals(Jeu.getAll()[0],"Call of Duty");
+		} catch (ErreurBD e) {
+			fail("erreur bd"+e);
+		}
 	}
 }

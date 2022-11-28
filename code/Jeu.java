@@ -4,6 +4,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Jeu {
@@ -19,7 +21,7 @@ public class Jeu {
 		this.duree = -1;
 	}
 
-	/**constructueur de la classe Jeu et de nom et durée
+	/**constructueur de la classe Jeu et de nom et durï¿½e
 	 * @param nom
 	 * @param duree
 	 */
@@ -35,11 +37,11 @@ public class Jeu {
 		return this.nom;
 	}
 
-	/** retourne la durée de la partie du Jeu
-	 * @return durée
+	/** retourne la durï¿½e de la partie du Jeu
+	 * @return durï¿½e
 	 * @throws ErreurBD
-	 * @exception mauvaise connexion à la BD
-	 * @exception mauvaise requête
+	 * @exception mauvaise connexion ï¿½ la BD
+	 * @exception mauvaise requï¿½te
 	 */
 	public int getDuree() throws ErreurBD {
 		if (this.duree>0) {
@@ -66,22 +68,22 @@ public class Jeu {
 				this.duree = rese.getInt(1);
 
 			} catch (SQLException e) {
-				throw new ErreurBD("Erreur de requête a la bd");
+				throw new ErreurBD("Erreur de requï¿½te a la bd");
 			}
 			return this.duree;
 		}
 	}
 
-	/** insérer toutes les informations dans la base de données
+	/** insï¿½rer toutes les informations dans la base de donnï¿½es
 	 * @throws ErreurBD
-	 * @exception mauvaise connexion à la BD
-	 * @exception mauvaise requête
+	 * @exception mauvaise connexion ï¿½ la BD
+	 * @exception mauvaise requï¿½te
 	 * @throws IllegalArgumentException
-	 * @exception la durée est inférieure à 0
+	 * @exception la durï¿½e est infï¿½rieure ï¿½ 0
 	 */
 	public void insert() throws ErreurBD, IllegalArgumentException{
 		if (this.duree < 0) {
-			throw new IllegalArgumentException("La durée n'est pas valide");
+			throw new IllegalArgumentException("La durï¿½e n'est pas valide");
 		} else {
 			String loginBD = "ndf4080a";
 			String mdpBD = "fatime31";
@@ -101,9 +103,39 @@ public class Jeu {
 				st.executeQuery("INSERT INTO jeu values(seq_jeu.nextVal,'"+this.nom+"',"+this.duree+")");
 
 			} catch (SQLException e) {
-				throw new ErreurBD("Erreur de requête a la bd");
+				throw new ErreurBD("Erreur de requï¿½te a la bd");
 			}
 		}
+	}
+	
+	public static Object[] getAll() throws ErreurBD {
+		List<String> l = new ArrayList<String>();
+		
+		String loginBD = "ndf4080a";
+		String mdpBD = "fatime31";
+		String connectString = "jdbc:oracle:thin:@telline.univ-tlse3.fr:1521:etupre";
+
+		try {
+			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+		} catch (SQLException e) {
+			throw new ErreurBD("Erreur de connexion a la bd");
+		}
+
+		try {
+			Connection connx = DriverManager.getConnection(connectString, loginBD, mdpBD);
+
+			Statement st = connx.createStatement();
+
+			ResultSet rs = st.executeQuery("select nom from jeu order by 1");
+			
+			while(rs.next()) {
+				l.add(rs.getString(1));
+			}
+
+		} catch (SQLException e) {
+			throw new ErreurBD("Erreur de requÃ©te a la bd : "+e);
+		}
+		return l.toArray();
 	}
 
 }
