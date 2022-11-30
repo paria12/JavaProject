@@ -98,6 +98,25 @@ public class Equipe {
     	this.joueur.remove(j);
     }
     
+    public int getID() throws ErreurBD{
+    	int ID = -1;
+    	try {
+			DataSource bd = new ConnexionBD();
+			
+			Connection connx = bd.getConnection();
+
+			Statement st = connx.createStatement();
+
+			ResultSet rs = st.executeQuery("select id_equipe from equipe where e.nom ='"+this.nom+"')");
+			rs.next();
+			ID = rs.getInt(1);
+			
+		} catch (SQLException e) {
+			throw new ErreurBD("Erreur de requette bd");
+		}
+		return ID;
+    }
+    
     
     /** ins�re des joueurs dans une �quipe
      * @param id_equipe
@@ -106,18 +125,10 @@ public class Equipe {
      * @exception erreur de connexion � la BD
      */
     public List<Joueur> selectJoueur()throws ErreurBD{
-    	String loginBD = "ndf4080a";
-		String mdpBD = "fatime31";
-		String connectString = "jdbc:oracle:thin:@telline.univ-tlse3.fr:1521:etupre";
-
-		try {
-			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-		} catch (SQLException e) {
-			throw new ErreurBD("Erreur de connexion a la bd");
-		}
-
-		try {
-			Connection connx = DriverManager.getConnection(connectString, loginBD, mdpBD);
+    	try {
+			DataSource bd = new ConnexionBD();
+			
+			Connection connx = bd.getConnection();
 
 			Statement st = connx.createStatement();
 
