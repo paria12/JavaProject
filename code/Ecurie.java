@@ -1,13 +1,14 @@
 package code;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import javax.sql.DataSource;
 
 public class Ecurie {
     private String nom;
@@ -47,18 +48,10 @@ public class Ecurie {
     	if (this.type != null) {
     		return this.type;
     	} else {
-			String loginBD = "ndf4080a";
-			String mdpBD = "fatime31";
-			String connectString = "jdbc:oracle:thin:@telline.univ-tlse3.fr:1521:etupre";
-
-			try {
-				DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-			} catch (SQLException e) {
-				throw new ErreurBD("Erreur de connexion a la bd");
-			}
-
-			try {
-				Connection connx = DriverManager.getConnection(connectString, loginBD, mdpBD);
+    		try {
+    			DataSource bd = new ConnexionBD();
+    			
+    			Connection connx = bd.getConnection();
 
 				Statement st = connx.createStatement();
 
@@ -68,7 +61,7 @@ public class Ecurie {
 				this.type = rese.getString(1);
 
 			} catch (SQLException e) {
-				throw new ErreurBD("Erreur de requête a la bd");
+				throw new ErreurBD("Erreur de requï¿½te a la bd");
 			}
 			return this.type;
 		}
@@ -86,18 +79,10 @@ public class Ecurie {
     
 
     public void selectEquipe() throws ErreurBD {
-    	String loginBD = "ndf4080a";
-		String mdpBD = "fatime31";
-		String connectString = "jdbc:oracle:thin:@telline.univ-tlse3.fr:1521:etupre";
-
-		try {
-			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-		} catch (SQLException e) {
-			throw new ErreurBD("Erreur de connexion a la bd");
-		}
-
-		try {
-			Connection connx = DriverManager.getConnection(connectString, loginBD, mdpBD);
+    	try {
+			DataSource bd = new ConnexionBD();
+			
+			Connection connx = bd.getConnection();
 
 			Statement st = connx.createStatement();
 
@@ -112,18 +97,10 @@ public class Ecurie {
     
     public void insert(String pwd) throws ErreurBD {
     	if (this.type != null) {
-			String loginBD = "ndf4080a";
-			String mdpBD = "fatime31";
-			String connectString = "jdbc:oracle:thin:@telline.univ-tlse3.fr:1521:etupre";
-
-			try {
-				DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-			} catch (SQLException e) {
-				throw new ErreurBD("Erreur de connexion a la bd");
-			}
-
-			try {
-				Connection connx = DriverManager.getConnection(connectString, loginBD, mdpBD);
+    		try {
+    			DataSource bd = new ConnexionBD();
+    			
+    			Connection connx = bd.getConnection();
 
 				Statement st = connx.createStatement();
 
@@ -133,7 +110,7 @@ public class Ecurie {
 				throw new ErreurBD("Erreur de requette bd");
 			}
 		} else {
-			throw new IllegalArgumentException("Le type de l'ecurie doit etre renseigner pour cette opération");
+			throw new IllegalArgumentException("Le type de l'ecurie doit etre renseigner pour cette opï¿½ration");
 		}
     }
 

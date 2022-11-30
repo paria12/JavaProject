@@ -1,11 +1,12 @@
 package code;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.sql.DataSource;
 
 
 public class Jeu {
@@ -47,18 +48,10 @@ public class Jeu {
 		if (this.duree>0) {
 			return this.duree;
 		} else {
-			String loginBD = "ndf4080a";
-			String mdpBD = "fatime31";
-			String connectString = "jdbc:oracle:thin:@telline.univ-tlse3.fr:1521:etupre";
-
 			try {
-				DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-			} catch (SQLException e) {
-				throw new ErreurBD("Erreur de connexion a la bd");
-			}
-
-			try {
-				Connection connx = DriverManager.getConnection(connectString, loginBD, mdpBD);
+				DataSource bd = new ConnexionBD();
+				
+				Connection connx = bd.getConnection();
 
 				Statement st = connx.createStatement();
 
@@ -85,18 +78,10 @@ public class Jeu {
 		if (this.duree < 0) {
 			throw new IllegalArgumentException("La dur�e n'est pas valide");
 		} else {
-			String loginBD = "ndf4080a";
-			String mdpBD = "fatime31";
-			String connectString = "jdbc:oracle:thin:@telline.univ-tlse3.fr:1521:etupre";
-
 			try {
-				DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-			} catch (SQLException e) {
-				throw new ErreurBD("Erreur de connexion a la bd");
-			}
-
-			try {
-				Connection connx = DriverManager.getConnection(connectString, loginBD, mdpBD);
+				DataSource bd = new ConnexionBD();
+				
+				Connection connx = bd.getConnection();
 
 				Statement st = connx.createStatement();
 
@@ -110,19 +95,11 @@ public class Jeu {
 	
 	public static Object[] getAll() throws ErreurBD {
 		List<String> l = new ArrayList<String>();
-		
-		String loginBD = "ndf4080a";
-		String mdpBD = "fatime31";
-		String connectString = "jdbc:oracle:thin:@telline.univ-tlse3.fr:1521:etupre";
 
 		try {
-			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-		} catch (SQLException e) {
-			throw new ErreurBD("Erreur de connexion a la bd");
-		}
-
-		try {
-			Connection connx = DriverManager.getConnection(connectString, loginBD, mdpBD);
+			DataSource bd = new ConnexionBD();
+			
+			Connection connx = bd.getConnection();
 
 			Statement st = connx.createStatement();
 

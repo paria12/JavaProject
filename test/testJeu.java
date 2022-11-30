@@ -91,7 +91,7 @@ public class testJeu {
 		try {
 			assertEquals(Jeu.getAll()[0],"Call of Duty");
 		} catch (ErreurBD e) {
-			fail("erreur bd"+e);
+			fail("erreur bd");
 		}
 	}
 }

@@ -2,18 +2,19 @@ package code;
 
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Objects;
+
+import javax.sql.DataSource;
 
 
 
 public class Joueur {
 
 	
-//initialisation des différentes variables	
+//initialisation des diffï¿½rentes variables	
 	private String nom;
 	private String prenom;
 	private Date dateN;
@@ -22,15 +23,15 @@ public class Joueur {
 	private String email;
 
 
-	/** constructueur de la classe Joueur et de nom et prénom 
+	/** constructueur de la classe Joueur et de nom et prï¿½nom 
 	 * @param nom
 	 * @param prenom
 	 * @throws IllegalArgumentException
-	 * @exception nom et prénom non null
+	 * @exception nom et prï¿½nom non null
 	 */
 	public Joueur(String nom, String prenom) throws IllegalArgumentException{
 		if (nom == null || prenom == null) {
-			throw new IllegalArgumentException("nom et prénom ne peuvent pas être null");
+			throw new IllegalArgumentException("nom et prï¿½nom ne peuvent pas ï¿½tre null");
 		}
 		this.nom = nom;
 		this.prenom = prenom;
@@ -44,11 +45,11 @@ public class Joueur {
 	 * @param tel
 	 * @param email
 	 * @throws IllegalArgumentException
-	 * @exception nom et prénom non null
+	 * @exception nom et prï¿½nom non null
 	 */
 	public Joueur(String nom, String prenom, Date date, char sexe, String tel, String email) throws IllegalArgumentException{
 		if (nom == null || prenom == null) {
-			throw new IllegalArgumentException("nom et prénom ne peuvent pas être null");
+			throw new IllegalArgumentException("nom et prï¿½nom ne peuvent pas ï¿½tre null");
 		}
 		this.nom = nom;
 		this.prenom = prenom;
@@ -65,7 +66,7 @@ public class Joueur {
 		return this.nom;
 	}
 
-	/** renvoie le prénom du joueur
+	/** renvoie le prï¿½nom du joueur
 	 * @return prenom
 	 */
 	public String getPrenom() {
@@ -94,8 +95,8 @@ public class Joueur {
 		return this.sexe;
 	}
 
-	/**renvoie le numéro de téléphone d'un joueur
-	 * @return numéro de téléphone
+	/**renvoie le numï¿½ro de tï¿½lï¿½phone d'un joueur
+	 * @return numï¿½ro de tï¿½lï¿½phone
 	 * @throws ErreurBD 
 	 */
 	public String getTel() throws ErreurBD {
@@ -130,23 +131,15 @@ public class Joueur {
 				&& Objects.equals(prenom, other.prenom) && sexe == other.sexe;
 	}
 
-	/** importation des informations secondaires depuis la base de données
+	/** importation des informations secondaires depuis la base de donnï¿½es
 	 * @throws ErreurBD 
 	 * 
 	 */
 	public void select() throws ErreurBD {
-		String loginBD = "ndf4080a";
-		String mdpBD = "fatime31";
-		String connectString = "jdbc:oracle:thin:@telline.univ-tlse3.fr:1521:etupre";
-
 		try {
-			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-		} catch (SQLException e) {
-			throw new ErreurBD("Erreur de connexion a la bd");
-		}
-
-		try {
-			Connection connx = DriverManager.getConnection(connectString, loginBD, mdpBD);
+			DataSource bd = new ConnexionBD();
+			
+			Connection connx = bd.getConnection();
 
 			Statement st = connx.createStatement();
 
@@ -172,24 +165,16 @@ public class Joueur {
 
 	}
 
-	/** insérer toutes les informations dans la base de données
+	/** insï¿½rer toutes les informations dans la base de donnï¿½es
 	 * @throws ErreurBD 
 	 * 
 	 */
 	public void insert(int equipe) throws ErreurBD {
 		if (this.dateN != null && (this.sexe == 'H' || this.sexe == 'F') && this.numTel != null && this.email != null && equipe>=0) {
-			String loginBD = "ndf4080a";
-			String mdpBD = "fatime31";
-			String connectString = "jdbc:oracle:thin:@telline.univ-tlse3.fr:1521:etupre";
-
 			try {
-				DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-			} catch (SQLException e) {
-				throw new ErreurBD("Erreur de connexion a la bd");
-			}
-
-			try {
-				Connection connx = DriverManager.getConnection(connectString, loginBD, mdpBD);
+				DataSource bd = new ConnexionBD();
+				
+				Connection connx = bd.getConnection();
 
 				Statement st = connx.createStatement();
 
@@ -200,7 +185,7 @@ public class Joueur {
 				throw new ErreurBD("Erreur de reqette a la bd");
 			}
 		} else {
-			throw new IllegalArgumentException("Au moins un des paramètres n'est pas valide/definie");
+			throw new IllegalArgumentException("Au moins un des paramï¿½tres n'est pas valide/definie");
 		}
 	}
 }

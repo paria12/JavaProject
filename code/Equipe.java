@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.sql.DataSource;
+
 
 public class Equipe {
     
@@ -17,13 +19,13 @@ public class Equipe {
     private List<Joueur> joueur = new ArrayList<Joueur> ();
     private int id_jeu = -1;
     
-    /**constructeur d'équipe et nom
+    /**constructeur d'ï¿½quipe et nom
      * @param nom
      * @throws IllegalArgumentException
      */
     public Equipe(String nom)throws IllegalArgumentException{
     	if(nom == null) {
-    		throw new IllegalArgumentException("nom ne peut pas être null");
+    		throw new IllegalArgumentException("nom ne peut pas ï¿½tre null");
     	}
     	this.nom = nom;
     }
@@ -36,21 +38,21 @@ public class Equipe {
      */
     public Equipe(String nom, int nbPoints, int id_jeu)throws IllegalArgumentException {
     	if(nom == null) {
-    		throw new IllegalArgumentException("nom ne peut pas être null");
+    		throw new IllegalArgumentException("nom ne peut pas ï¿½tre null");
     	}
     	this.nom =nom;
     	this.nbPoints = nbPoints;
     	this.id_jeu = id_jeu;
     }
 
-    /**renvoie le nom de l'équipe
+    /**renvoie le nom de l'ï¿½quipe
      * @return nom
      */
     public String getNom() {
     	return this.nom;
     }
 
-    /** renvoie le nombre de points de l'équipe
+    /** renvoie le nombre de points de l'ï¿½quipe
      * @return nbPoints
      * @throws ErreurBD 
      */
@@ -61,7 +63,7 @@ public class Equipe {
     	return this.nbPoints;
     }
 
-    /** renvoie l'id d'un jeu à laquelle une équipe est associée
+    /** renvoie l'id d'un jeu ï¿½ laquelle une ï¿½quipe est associï¿½e
      * @return id_jeu
      * @throws ErreurBD 
      */
@@ -80,7 +82,7 @@ public class Equipe {
     	}
     }
     
-    /** ajout de point à la fin de chaque tournoi aux point de l'équipe
+    /** ajout de point ï¿½ la fin de chaque tournoi aux point de l'ï¿½quipe
      * @param nouveauPoint
      * @throws ErreurBD 
      */
@@ -97,11 +99,11 @@ public class Equipe {
     }
     
     
-    /** insère des joueurs dans une équipe
+    /** insï¿½re des joueurs dans une ï¿½quipe
      * @param id_equipe
      * @return List de joueur
      * @throws ErreurBD
-     * @exception erreur de connexion à la BD
+     * @exception erreur de connexion ï¿½ la BD
      */
     public List<Joueur> selectJoueur()throws ErreurBD{
     	String loginBD = "ndf4080a";
@@ -130,23 +132,15 @@ public class Equipe {
 		
     }
 
-    /** importation des informations secondaires depuis la base de données
+    /** importation des informations secondaires depuis la base de donnï¿½es
      * @throws ErreurBD 
 	 * 
 	 */
 	public void select() throws ErreurBD {
-		String loginBD = "ndf4080a";
-		String mdpBD = "fatime31";
-		String connectString = "jdbc:oracle:thin:@telline.univ-tlse3.fr:1521:etupre";
-
 		try {
-			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-		} catch (SQLException e) {
-			throw new ErreurBD("Erreur de connexion a la bd");
-		}
-
-		try {
-			Connection connx = DriverManager.getConnection(connectString, loginBD, mdpBD);
+			DataSource bd = new ConnexionBD();
+			
+			Connection connx = bd.getConnection();
 
 			Statement st = connx.createStatement();
 
@@ -165,24 +159,16 @@ public class Equipe {
 
 	}
 	
-	/** insérer toutes les informations dans la base de données
+	/** insï¿½rer toutes les informations dans la base de donnï¿½es
 	 * @throws ErreurBD 
 	 * 
 	 */
 	public void insert(int ecurie) throws ErreurBD{
 		if (this.nbPoints >= 0 && this.id_jeu > 0) {
-			String loginBD = "ndf4080a";
-			String mdpBD = "fatime31";
-			String connectString = "jdbc:oracle:thin:@telline.univ-tlse3.fr:1521:etupre";
-
 			try {
-				DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-			} catch (SQLException e) {
-				throw new ErreurBD("Erreur de connexion a la bd");
-			}
-
-			try {
-				Connection connx = DriverManager.getConnection(connectString, loginBD, mdpBD);
+				DataSource bd = new ConnexionBD();
+				
+				Connection connx = bd.getConnection();
 
 				Statement st = connx.createStatement();
 
@@ -192,7 +178,7 @@ public class Equipe {
 				throw new ErreurBD("Erreur de requette bd");
 			}
 		} else {
-			throw new IllegalArgumentException("Au moins un des paramètres n'est pas valide/definie");
+			throw new IllegalArgumentException("Au moins un des paramï¿½tres n'est pas valide/definie");
 		}
 	}
 
