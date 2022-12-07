@@ -1,0 +1,233 @@
+package Code;
+
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+
+import javax.sql.DataSource;
+
+
+public class Equipe {
+    
+    private String nom;
+    private int nbPoints = -1;
+    private List<Joueur> joueur = new ArrayList<Joueur> ();
+    private int id_jeu = -1;
+    
+    /**constructeur d'�quipe et nom
+     * @param nom
+     * @throws IllegalArgumentException
+     */
+    public Equipe(String nom)throws IllegalArgumentException{
+    	if(nom == null) {
+    		throw new IllegalArgumentException("nom ne peut pas �tre null");
+    	}
+    	this.nom = nom;
+    }
+
+     /**
+     * @param nom
+     * @param nbPoints
+     * @param id_jeu
+     * @throws IllegalArgumentException
+     */
+    public Equipe(String nom, int nbPoints, int id_jeu)throws IllegalArgumentException {
+    	if(nom == null) {
+    		throw new IllegalArgumentException("nom ne peut pas �tre null");
+    	}
+    	this.nom =nom;
+    	this.nbPoints = nbPoints;
+    	this.id_jeu = id_jeu;
+    }
+
+    /**renvoie le nom de l'�quipe
+     * @return nom
+     */
+    public String getNom() {
+    	return this.nom;
+    }
+
+    /** renvoie le nombre de points de l'�quipe
+     * @return nbPoints
+     * @throws ErreurBD 
+     */
+    public int getNbPoints() throws ErreurBD {
+    	if(this.nbPoints < 0) {
+    		this.select();
+    	}
+    	return this.nbPoints;
+    }
+
+    /** renvoie l'id d'un jeu � laquelle une �quipe est associ�e
+     * @return id_jeu
+     * @throws ErreurBD 
+     */
+    public int getIdJeu() throws ErreurBD {
+    	if(this.id_jeu < 0) {
+    		this.select();
+    	}
+    	return this.id_jeu;
+    }
+    
+    public List<Joueur> getJoueur() throws ErreurBD {
+    	if (!this.joueur.isEmpty()) {
+    		return this.joueur;
+    	} else {
+    		return this.selectJoueur();
+    	}
+    }
+    
+    /** ajout de point � la fin de chaque tournoi aux point de l'�quipe
+     * @param nouveauPoint
+     * @throws ErreurBD 
+     */
+    public void AjoutDePoints(int nouveauPoint) throws ErreurBD{
+    	this.nbPoints = this.getNbPoints() + nouveauPoint;
+    }
+    
+    public void addJoueur(Joueur j) {
+    	this.joueur.add(j);
+    }
+    
+    public void removeJoueur(Joueur j) {
+    	this.joueur.remove(j);
+    }
+    
+    public int getID() throws ErreurBD{
+    	int ID = -1;
+    	try {
+			DataSource bd = new ConnexionBD();
+			
+			Connection connx = bd.getConnection();
+
+			Statement st = connx.createStatement();
+
+			ResultSet rs = st.executeQuery("select id_equipe from equipe where e.nom ='"+this.nom+"')");
+			rs.next();
+			ID = rs.getInt(1);
+			
+		} catch (SQLException e) {
+			throw new ErreurBD("Erreur de requette bd");
+		}
+		return ID;
+    }
+    
+    
+    /** ins�re des joueurs dans une �quipe
+     * @param id_equipe
+     * @return List de joueur
+     * @throws ErreurBD
+     * @exception erreur de connexion � la BD
+     */
+    public List<Joueur> selectJoueur()throws ErreurBD{
+    	try {
+			DataSource bd = new ConnexionBD();
+			
+			Connection connx = bd.getConnection();
+
+			Statement st = connx.createStatement();
+
+			ResultSet rs = st.executeQuery("select j.nom, j.prenom, j.date_naissance, j.sexe, j.numero_de_telephone, j.email from joueur j , equipe e where e.nom ='"+this.nom+"' and e.id_equipe = j.id_equipe");
+			while(rs.next()){
+				this.joueur.add(new Joueur(rs.getString(1),rs.getString(2),rs.getDate(3),rs.getString(4).charAt(0),rs.getString(5),rs.getString(6)));
+			}
+		} catch (SQLException e) {
+			throw new ErreurBD("Erreur de requette bd");
+		}
+		return joueur;
+		
+    }
+
+    /** importation des informations secondaires depuis la base de donn�es
+     * @throws ErreurBD 
+	 * 
+	 */
+	public void select() throws ErreurBD {
+		try {
+			DataSource bd = new ConnexionBD();
+			
+			Connection connx = bd.getConnection();
+
+			Statement st = connx.createStatement();
+
+			ResultSet rese = st.executeQuery("select nb_points, id_jeu from equipe where nom='"+this.nom+"'");
+
+			rese.next();
+			if (this.nbPoints < 0) {
+				this.nbPoints = rese.getInt(1);
+			}
+			if(this.id_jeu < 0) {
+				this.id_jeu = rese.getInt(2);
+			}
+		} catch (SQLException e) {
+			throw new ErreurBD("Erreur de requette bd");
+		}
+
+	}
+	
+	/** ins�rer toutes les informations dans la base de donn�es
+	 * @throws ErreurBD 
+	 * 
+	 */
+	public void insert(int ecurie) throws ErreurBD{
+		if (this.nbPoints >= 0 && this.id_jeu > 0) {
+			try {
+				DataSource bd = new ConnexionBD();
+				
+				Connection connx = bd.getConnection();
+
+				Statement st = connx.createStatement();
+
+				st.executeQuery("INSERT INTO equipe values(seq_joueur.nextVal,'"+this.nom+"',"+this.nbPoints+","+this.id_jeu+","+ecurie+")");
+
+			} catch (SQLException e) {
+				throw new ErreurBD("Erreur de requette bd");
+			}
+		} else {
+			throw new IllegalArgumentException("Au moins un des param�tres n'est pas valide/definie");
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id_jeu, nbPoints, nom);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof Equipe)) {
+			return false;
+		}
+		Equipe other = (Equipe) obj;
+		return id_jeu == other.id_jeu && nbPoints == other.nbPoints
+				&& Objects.equals(nom, other.nom);
+	}
+	public static String[] getNomEquipe() throws ErreurBD {
+		try {
+			DataSource bd = new ConnexionBD();
+			Connection connx = bd.getConnection();
+
+			Statement st = connx.createStatement();
+
+			ResultSet rese = st.executeQuery("select nom from equipe order by nom");
+			List <String> nom = new ArrayList<String>();
+			while(rese.next()) {
+				nom.add(rese.getString(1));
+			}
+			String[] r = Arrays.copyOf(nom.toArray(), nom.toArray().length, String[].class);
+			return r;
+		} catch (SQLException e) {
+			throw new ErreurBD("Erreur de requette bd");
+		}
+	}
+}
