@@ -1,36 +1,33 @@
 package Commons;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
 import java.awt.BorderLayout;
 import java.awt.Color;
-
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import java.awt.GridLayout;
-import java.awt.Font;
-import javax.swing.JButton;
-import javax.swing.SwingConstants;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
-
+import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 
-import code.Connexion;
-import Gerant.AcceuilGerant;
-import Ecurie.AcceuilEcurie;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
+
 import Arbitre.AcceuilArbitre;
+import Ecurie.AcceuilEcurie;
+import Gerant.AcceuilGerant;
+import code.Connexion;
 
 public class ConnexionWindow{
 
 	private JFrame frmConnexion;
 	private JTextFieldDark inputUserName;
 	private JPasswordField inputPassword;
+	private JDialog erreur;
 
 	/**
 	 * Launch the application.
@@ -178,6 +175,7 @@ public class ConnexionWindow{
 							frmConnexion.dispose();
 							break;
 						case -1 : //Wrong Password;
+							JOptionPane.showMessageDialog(erreur, "Votre identifiant ou votre mot de passe est incorrect", "Erreur",JOptionPane.ERROR_MESSAGE);
 							System.out.println("Erreur : L'identifiant ou le Mot de passe est éronné, réessayez." + inputUserName.getText() + String.valueOf(inputPassword.getPassword()));
 					}
 				} catch (SQLException e1) {
