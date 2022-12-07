@@ -13,4 +13,3 @@ public class ConnexionBD extends OracleDataSource {
 		this.setPassword("fatime31");
 	}
 }
-

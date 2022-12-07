@@ -3,6 +3,8 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import java.awt.BorderLayout;
+import java.awt.Color;
+
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JLabel;
@@ -11,6 +13,9 @@ import java.awt.GridLayout;
 import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
+
 import java.awt.FlowLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -21,10 +26,10 @@ import Gerant.AcceuilGerant;
 import Ecurie.AcceuilEcurie;
 import Arbitre.AcceuilArbitre;
 
-public class ConnexionWindow {
+public class ConnexionWindow{
 
 	private JFrame frmConnexion;
-	private JTextField inputUserName;
+	private JTextFieldDark inputUserName;
 	private JPasswordField inputPassword;
 
 	/**
@@ -61,30 +66,31 @@ public class ConnexionWindow {
 		frmConnexion.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmConnexion.getContentPane().setLayout(new BorderLayout(0, 0));
 		
-		JPanel panelTitle = new JPanel();
+		JPanelBackground panelTitle = new JPanelBackground();
 		frmConnexion.getContentPane().add(panelTitle, BorderLayout.NORTH);
 		panelTitle.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		JPanel panelSpacing_TopTitle = new JPanel();
+		JPanelBackground panelSpacing_TopTitle = new JPanelBackground();
 		panelTitle.add(panelSpacing_TopTitle);
 		
 		JLabel labelTitle = new JLabel("Connexion");
 		labelTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		labelTitle.setFont(new Font("Tahoma", Font.PLAIN, 25));
+		labelTitle.setForeground(Colors.lightText);
 		panelTitle.add(labelTitle);
 		
-		JPanel panelSpacing_BottomTitle = new JPanel();
+		JPanelBackground panelSpacing_BottomTitle = new JPanelBackground();
 		panelTitle.add(panelSpacing_BottomTitle);
 		
-		JPanel panelForm = new JPanel();
+		JPanelBackground panelForm = new JPanelBackground();
 		frmConnexion.getContentPane().add(panelForm, BorderLayout.CENTER);
 		panelForm.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		JPanel panelUserNameForm = new JPanel();
+		JPanelBackground panelUserNameForm = new JPanelBackground();
 		panelForm.add(panelUserNameForm);
 		panelUserNameForm.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		JPanel panelUserNameLabel = new JPanel();
+		JPanelBackground panelUserNameLabel = new JPanelBackground();
 		FlowLayout flowLayout_3 = (FlowLayout) panelUserNameLabel.getLayout();
 		flowLayout_3.setHgap(25);
 		flowLayout_3.setAlignment(FlowLayout.LEFT);
@@ -94,23 +100,24 @@ public class ConnexionWindow {
 		JLabel labelUserNameInput = new JLabel("Nom d'utilisateur :");
 		labelUserNameInput.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		panelUserNameLabel.add(labelUserNameInput);
+		labelUserNameInput.setForeground(Colors.lightText);
 		
-		JPanel panelUserNameInput = new JPanel();
+		JPanelBackground panelUserNameInput = new JPanelBackground();
 		FlowLayout flowLayout_2 = (FlowLayout) panelUserNameInput.getLayout();
 		flowLayout_2.setHgap(25);
 		flowLayout_2.setAlignment(FlowLayout.RIGHT);
 		flowLayout_2.setVgap(2);
 		panelUserNameForm.add(panelUserNameInput);
 		
-		inputUserName = new JTextField();
+		inputUserName = new JTextFieldDark();
 		inputUserName.setColumns(FRAMESIZE/15);
 		panelUserNameInput.add(inputUserName);
 		
-		JPanel panelPasswordForm = new JPanel();
+		JPanelBackground panelPasswordForm = new JPanelBackground();
 		panelForm.add(panelPasswordForm);
 		panelPasswordForm.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		JPanel panelPasswordLabel = new JPanel();
+		JPanelBackground panelPasswordLabel = new JPanelBackground();
 		FlowLayout flowLayout_1 = (FlowLayout) panelPasswordLabel.getLayout();
 		flowLayout_1.setHgap(25);
 		flowLayout_1.setAlignment(FlowLayout.LEFT);
@@ -119,9 +126,10 @@ public class ConnexionWindow {
 		
 		JLabel labelPasswordInput = new JLabel("Mot de passe :");
 		labelPasswordInput.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		labelPasswordInput.setForeground(Colors.lightText);
 		panelPasswordLabel.add(labelPasswordInput);
 		
-		JPanel panelPasswordInput = new JPanel();
+		JPanelBackground panelPasswordInput = new JPanelBackground();
 		FlowLayout flowLayout = (FlowLayout) panelPasswordInput.getLayout();
 		flowLayout.setHgap(25);
 		flowLayout.setAlignment(FlowLayout.RIGHT);
@@ -130,24 +138,28 @@ public class ConnexionWindow {
 		
 		inputPassword = new JPasswordField();
 		inputPassword.setColumns(FRAMESIZE/15);
-		inputPassword.setEchoChar('*');
+		inputPassword.setForeground(Colors.lightText);
+		inputPassword.setBackground(Colors.darkestBlue);
+		inputPassword.setBorder(new LineBorder(Color.black));
+		inputPassword.setEchoChar('✦');
+		inputPassword.setCaretColor(Colors.lightText);
 		panelPasswordInput.add(inputPassword);
 		
-		JPanel panelValidationButton = new JPanel();
+		JPanelBackground panelValidationButton = new JPanelBackground();
 		frmConnexion.getContentPane().add(panelValidationButton, BorderLayout.SOUTH);
 		panelValidationButton.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		JPanel panelSpacing_2 = new JPanel();
+		JPanelBackground panelSpacing_2 = new JPanelBackground();
 		panelValidationButton.add(panelSpacing_2);
 		
-		JPanel panelButton = new JPanel();
+		JPanelBackground panelButton = new JPanelBackground();
 		FlowLayout fl_panelButton = (FlowLayout) panelButton.getLayout();
 		fl_panelButton.setHgap(12);
 		fl_panelButton.setAlignment(FlowLayout.RIGHT);
 		fl_panelButton.setVgap(10);
 		panelValidationButton.add(panelButton);
 		
-		JButton buttonValidation = new JButton("Se connecter");
+		JButtonYellow buttonValidation = new JButtonYellow("Se connecter");
 		buttonValidation.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -166,7 +178,7 @@ public class ConnexionWindow {
 							frmConnexion.dispose();
 							break;
 						case -1 : //Wrong Password;
-							System.out.printf("Erreur : L'identifiant ou le Mot de passe est éronné, réessayez.");
+							System.out.println("Erreur : L'identifiant ou le Mot de passe est éronné, réessayez." + inputUserName.getText() + String.valueOf(inputPassword.getPassword()));
 					}
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block

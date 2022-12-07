@@ -130,7 +130,4 @@ public class Ecurie {
 		Ecurie other = (Ecurie) obj;
 		return Objects.equals(nom, other.nom) && Objects.equals(type, other.type);
 	}
-    
-    
-
 }

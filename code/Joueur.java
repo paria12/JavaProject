@@ -162,7 +162,6 @@ public class Joueur {
 		} catch (SQLException e) {
 			throw new ErreurBD("Erreur de requette a la bd");
 		}
-
 	}
 
 	/** ins�rer toutes les informations dans la base de donn�es

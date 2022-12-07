@@ -3,35 +3,38 @@ package Ecurie;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
 import java.awt.Color;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
+import java.awt.GridLayout;
 import javax.swing.JButton;
-import java.awt.Font;
-import javax.swing.LayoutStyle.ComponentPlacement;
 
+import Commons.Colors;
 import Commons.Header;
+import Commons.JButtonYellow;
+import Commons.JPanelBackground;
 
 import javax.swing.JLabel;
 import java.awt.FlowLayout;
-import javax.swing.BoxLayout;
 import java.awt.Component;
 import javax.swing.JScrollPane;
+import javax.swing.border.LineBorder;
 import javax.swing.JList;
 import javax.swing.AbstractListModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.event.ListSelectionListener;
+
+import code.Equipe;
+import code.ErreurBD;
+
 import javax.swing.event.ListSelectionEvent;
 
 public class AcceuilEcurie {
 
 	private JFrame frame;
-	private JPanel panelRight;
-	private JButton buttonInscriptionTournois;
+	private JPanelBackground panelRight;
+	private JButtonYellow buttonInscriptionTournois;
+	private Equipe equipe;
 	
 	/**
 	 * Launch the application.
@@ -51,15 +54,17 @@ public class AcceuilEcurie {
 
 	/**
 	 * Create the application.
+	 * @throws ErreurBD 
 	 */
-	public AcceuilEcurie() {
+	public AcceuilEcurie() throws ErreurBD {
 		initialize();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
+	 * @throws ErreurBD 
 	 */
-	private void initialize() {
+	private void initialize() throws ErreurBD {
 		frame = new JFrame();
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -67,21 +72,21 @@ public class AcceuilEcurie {
 		
 		Header headerEcurie = new Header(frame);
 		
-		JPanel panelMenu = new JPanel();
+		JPanelBackground panelMenu = new JPanelBackground();
 		frame.getContentPane().add(panelMenu, BorderLayout.CENTER);
 		panelMenu.setLayout(new GridLayout(0, 2, 0, 0));
 		
-		JPanel panelMenuLeft = new JPanel();
+		JPanelBackground panelMenuLeft = new JPanelBackground();
 		panelMenu.add(panelMenuLeft);
 		panelMenuLeft.setLayout(new BorderLayout(0, 0));
 		
-		JPanel panelMenuLeftHeader = new JPanel();
+		JPanelBackground panelMenuLeftHeader = new JPanelBackground();
 		panelMenuLeftHeader.setAlignmentX(1.0f);
 		panelMenuLeftHeader.setAlignmentY(0.0f);
 		panelMenuLeft.add(panelMenuLeftHeader, BorderLayout.NORTH);
 		panelMenuLeftHeader.setLayout(new GridLayout(0, 2, 0, 0));
 		
-		JPanel panelLabelEquipes = new JPanel();
+		JPanelBackground panelLabelEquipes = new JPanelBackground();
 		FlowLayout fl_panelLabelEquipes = (FlowLayout) panelLabelEquipes.getLayout();
 		fl_panelLabelEquipes.setVgap(10);
 		fl_panelLabelEquipes.setHgap(25);
@@ -89,15 +94,16 @@ public class AcceuilEcurie {
 		panelMenuLeftHeader.add(panelLabelEquipes);
 		
 		JLabel labelEquipes = new JLabel("Equipes :");
+		labelEquipes.setForeground(Colors.lightText);
 		panelLabelEquipes.add(labelEquipes);
 		
-		JPanel panelButtonAddEquipe = new JPanel();
+		JPanelBackground panelButtonAddEquipe = new JPanelBackground();
 		FlowLayout fl_panelButtonAddEquipe = (FlowLayout) panelButtonAddEquipe.getLayout();
 		fl_panelButtonAddEquipe.setHgap(10);
 		fl_panelButtonAddEquipe.setAlignment(FlowLayout.RIGHT);
 		panelMenuLeftHeader.add(panelButtonAddEquipe);
 		
-		JButton buttonAddEquipe = new JButton("Nouvelle Equipe");
+		JButtonYellow buttonAddEquipe = new JButtonYellow("Nouvelle Equipe");
 		buttonAddEquipe.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -106,16 +112,19 @@ public class AcceuilEcurie {
 		});
 		panelButtonAddEquipe.add(buttonAddEquipe);
 		
-		JPanel panelScrollEquipe = new JPanel();
+		JPanelBackground panelScrollEquipe = new JPanelBackground();
 		panelScrollEquipe.setAlignmentX(0.0f);
 		panelScrollEquipe.setAlignmentY(Component.TOP_ALIGNMENT);
 		panelMenuLeft.add(panelScrollEquipe);
 		panelScrollEquipe.setLayout(new BorderLayout(0, 0));
 		
 		JScrollPane scrollEquipe = new JScrollPane();
+		scrollEquipe.setBorder(new LineBorder(Color.BLACK));
 		panelScrollEquipe.add(scrollEquipe);
 		
-		JList listEquipe = new JList();
+		JList<String> listEquipe = new JList<String>();
+		listEquipe.setBackground(Colors.darkestBlue);
+		listEquipe.setForeground(Colors.lightText);
 		listEquipe.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 				if (listEquipe.getSelectedValue() != null) {
@@ -126,7 +135,7 @@ public class AcceuilEcurie {
 			}
 		});
 		listEquipe.setModel(new AbstractListModel() {
-			String[] values = new String[] {"Equipe 1", "Equipe 2", "Equipe 3", "Equipe 4", "Equipe 5"};
+			String[] values = Equipe.getNomEquipe();
 			public int getSize() {
 				return values.length;
 			}
@@ -136,31 +145,31 @@ public class AcceuilEcurie {
 		});
 		scrollEquipe.setViewportView(listEquipe);
 		
-		JPanel panelSpacing_EquipeBottom = new JPanel();
+		JPanelBackground panelSpacing_EquipeBottom = new JPanelBackground();
 		FlowLayout fl_panelSpacing_EquipeBottom = (FlowLayout) panelSpacing_EquipeBottom.getLayout();
 		fl_panelSpacing_EquipeBottom.setVgap(52);
 		panelMenuLeft.add(panelSpacing_EquipeBottom, BorderLayout.SOUTH);
 		
-		JPanel panelSpacing_EquipeLeft = new JPanel();
+		JPanelBackground panelSpacing_EquipeLeft = new JPanelBackground();
 		FlowLayout fl_panelSpacing_EquipeLeft = (FlowLayout) panelSpacing_EquipeLeft.getLayout();
 		fl_panelSpacing_EquipeLeft.setHgap(12);
 		panelMenuLeft.add(panelSpacing_EquipeLeft, BorderLayout.WEST);
 		
-		JPanel panelSpacing_EquipeRight = new JPanel();
+		JPanelBackground panelSpacing_EquipeRight = new JPanelBackground();
 		panelMenuLeft.add(panelSpacing_EquipeRight, BorderLayout.EAST);
 		
-		panelRight = new JPanel();
+		panelRight = new JPanelBackground();
 		panelMenu.add(panelRight);
 		panelRight.setLayout(new BorderLayout(0, 0));
 		panelRight.setVisible(false);
 		
-		JPanel panelRightHeader = new JPanel();
+		JPanelBackground panelRightHeader = new JPanelBackground();
 		panelRightHeader.setAlignmentY(0.0f);
 		panelRightHeader.setAlignmentX(1.0f);
 		panelRight.add(panelRightHeader, BorderLayout.NORTH);
 		panelRightHeader.setLayout(new GridLayout(0, 2, 0, 0));
 		
-		JPanel panelLabelTournois = new JPanel();
+		JPanelBackground panelLabelTournois = new JPanelBackground();
 		FlowLayout fl_panelLabelTournois = (FlowLayout) panelLabelTournois.getLayout();
 		fl_panelLabelTournois.setVgap(10);
 		fl_panelLabelTournois.setAlignment(FlowLayout.LEFT);
@@ -168,15 +177,16 @@ public class AcceuilEcurie {
 		panelRightHeader.add(panelLabelTournois);
 		
 		JLabel labelTournois = new JLabel("Tournois disponibles :");
+		labelTournois.setForeground(Colors.lightText);
 		panelLabelTournois.add(labelTournois);
 		
-		JPanel panelButtonInscriptionTournois = new JPanel();
+		JPanelBackground panelButtonInscriptionTournois = new JPanelBackground();
 		FlowLayout fl_panelButtonInscriptionTournois = (FlowLayout) panelButtonInscriptionTournois.getLayout();
 		fl_panelButtonInscriptionTournois.setHgap(25);
 		fl_panelButtonInscriptionTournois.setAlignment(FlowLayout.RIGHT);
 		panelRightHeader.add(panelButtonInscriptionTournois);
 		
-		buttonInscriptionTournois = new JButton("Inscrire");
+		buttonInscriptionTournois = new JButtonYellow("Inscrire");
 		buttonInscriptionTournois.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -188,7 +198,7 @@ public class AcceuilEcurie {
 		buttonInscriptionTournois.setEnabled(false);
 		panelButtonInscriptionTournois.add(buttonInscriptionTournois);
 		
-		JPanel panelScrollTournois = new JPanel();
+		JPanelBackground panelScrollTournois = new JPanelBackground();
 		panelScrollTournois.setAlignmentY(0.0f);
 		panelScrollTournois.setAlignmentX(0.0f);
 		panelRight.add(panelScrollTournois);
@@ -197,7 +207,9 @@ public class AcceuilEcurie {
 		JScrollPane scrollTournois = new JScrollPane();
 		panelScrollTournois.add(scrollTournois);
 		
-		JList listTournois = new JList();
+		JList<String> listTournois = new JList<String>();
+		listTournois.setBackground(Colors.darkestBlue);
+		listTournois.setForeground(Colors.lightText);
 		listTournois.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 				if (listTournois.getSelectedValue() != null) {
@@ -207,6 +219,7 @@ public class AcceuilEcurie {
 				}
 			}
 		});
+		
 		listTournois.setModel(new AbstractListModel() {
 			String[] values = new String[] {"23/02/2023 - Toulouse", "14/11/2023 - Perpignan", "05/12/2023 - Toulouse"};
 			public int getSize() {
@@ -218,15 +231,15 @@ public class AcceuilEcurie {
 		});
 		scrollTournois.setViewportView(listTournois);
 		
-		JPanel panelSpacing_TournoisBottom = new JPanel();
+		JPanelBackground panelSpacing_TournoisBottom = new JPanelBackground();
 		FlowLayout fl_panelSpacing_TournoisBottom = (FlowLayout) panelSpacing_TournoisBottom.getLayout();
 		fl_panelSpacing_TournoisBottom.setVgap(52);
 		panelRight.add(panelSpacing_TournoisBottom, BorderLayout.SOUTH);
 		
-		JPanel panelSpacing_TournoisLeft = new JPanel();
+		JPanelBackground panelSpacing_TournoisLeft = new JPanelBackground();
 		panelRight.add(panelSpacing_TournoisLeft, BorderLayout.WEST);
 		
-		JPanel panelSpacing_TournoisRight = new JPanel();
+		JPanelBackground panelSpacing_TournoisRight = new JPanelBackground();
 		FlowLayout fl_panelSpacing_TournoisRight = (FlowLayout) panelSpacing_TournoisRight.getLayout();
 		fl_panelSpacing_TournoisRight.setHgap(12);
 		panelRight.add(panelSpacing_TournoisRight, BorderLayout.EAST);

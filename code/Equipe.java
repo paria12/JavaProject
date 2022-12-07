@@ -1,11 +1,11 @@
 package code;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -210,5 +210,24 @@ public class Equipe {
 		return id_jeu == other.id_jeu && nbPoints == other.nbPoints
 				&& Objects.equals(nom, other.nom);
 	}
+	
+	public static String[] getNomEquipe() throws ErreurBD {
+        try {
+            DataSource bd = new ConnexionBD();
+            Connection connx = bd.getConnection();
+
+            Statement st = connx.createStatement();
+
+            ResultSet rese = st.executeQuery("select nom from equipe order by nom");
+            List <String> nom = new ArrayList<String>();
+            while(rese.next()) {
+                nom.add(rese.getString(1));
+            }
+            String[] r = Arrays.copyOf(nom.toArray(), nom.toArray().length, String[].class);
+            return r;
+        } catch (SQLException e) {
+            throw new ErreurBD("Erreur de requette bd");
+        }
+    }
 	
 }

@@ -4,7 +4,10 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import java.awt.BorderLayout;
-import javax.swing.JPanel;
+
+import Commons.Colors;
+import Commons.JButtonYellow;
+import Commons.JPanelBackground;
 import javax.swing.JLabel;
 import java.awt.GridLayout;
 import javax.swing.JButton;
@@ -51,51 +54,55 @@ public class PopUp_ConfirmInscription {
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
-		JPanel panelHeader = new JPanel();
+		JPanelBackground panelHeader = new JPanelBackground();
 		frame.getContentPane().add(panelHeader, BorderLayout.NORTH);
 		panelHeader.setLayout(new GridLayout(0, 1, 0, 0));
 
-		JPanel panelSpacing_HeaderTop = new JPanel();
+		JPanelBackground panelSpacing_HeaderTop = new JPanelBackground();
 		panelHeader.add(panelSpacing_HeaderTop);
 		
-		JPanel panelLabelSouhaitez = new JPanel();
+		JPanelBackground panelLabelSouhaitez = new JPanelBackground();
 		panelHeader.add(panelLabelSouhaitez);
 		
 		JLabel labelSouhaitez = new JLabel("Souhaitez-vous inscrire");
+		labelSouhaitez.setForeground(Colors.lightText);
 		labelSouhaitez.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		panelLabelSouhaitez.add(labelSouhaitez);
 		
-		JPanel panelLabelEquipe = new JPanel();
+		JPanelBackground panelLabelEquipe = new JPanelBackground();
 		panelHeader.add(panelLabelEquipe);
 		
 		JLabel labelEquipe = new JLabel("l'[Equipe] au tournois ");
+		labelEquipe.setForeground(Colors.lightText);
 		labelEquipe.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		panelLabelEquipe.add(labelEquipe);
 		
-		JPanel panelLabelNom = new JPanel();
+		JPanelBackground panelLabelNom = new JPanelBackground();
 		panelHeader.add(panelLabelNom);
 		
 		JLabel labelNom = new JLabel("[nom]");
+		labelNom.setForeground(Colors.lightText);
 		labelNom.setFont(new Font("Tahoma", Font.BOLD, 15));
 		panelLabelNom.add(labelNom);
 		
-		JPanel panelLabelDate = new JPanel();
+		JPanelBackground panelLabelDate = new JPanelBackground();
 		panelHeader.add(panelLabelDate);
 		
 		JLabel labelDate = new JLabel("du [date] ?");
+		labelDate.setForeground(Colors.lightText);
 		labelDate.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		panelLabelDate.add(labelDate);
 		
-		JPanel panelMenu = new JPanel();
+		JPanelBackground panelMenu = new JPanelBackground();
 		frame.getContentPane().add(panelMenu, BorderLayout.CENTER);
 		panelMenu.setLayout(new GridLayout(0, 2, 0, 0));
 		
-		JPanel panelButtonNo = new JPanel();
+		JPanelBackground panelButtonNo = new JPanelBackground();
 		FlowLayout fl_panelButtonNo = (FlowLayout) panelButtonNo.getLayout();
 		fl_panelButtonNo.setVgap(20);
 		panelMenu.add(panelButtonNo);
 		
-		JButton buttonNo = new JButton("Non");
+		JButtonYellow buttonNo = new JButtonYellow("Non");
 		buttonNo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -108,12 +115,12 @@ public class PopUp_ConfirmInscription {
 		});
 		panelButtonNo.add(buttonNo);
 		
-		JPanel panelButtonYes = new JPanel();
+		JPanelBackground panelButtonYes = new JPanelBackground();
 		FlowLayout fl_panelButtonYes = (FlowLayout) panelButtonYes.getLayout();
 		fl_panelButtonYes.setVgap(20);
 		panelMenu.add(panelButtonYes);
 		
-		JButton buttonYes = new JButton("Oui");
+		JButtonYellow buttonYes = new JButtonYellow("Oui");
 		buttonYes.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {

@@ -6,7 +6,9 @@ import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Image;
 
+import javax.imageio.ImageIO;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,6 +18,12 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.swing.JTextField;
+import javax.swing.ImageIcon;
 
 public class Header {
 
@@ -52,23 +60,22 @@ public class Header {
 		frame.getContentPane().add(panelHeader, BorderLayout.NORTH);
 		panelHeader.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		JPanel panelHeaderTop = new JPanel();
+		JPanelDarkest panelHeaderTop = new JPanelDarkest();
 		panelHeaderTop.setBorder(null);
-		panelHeaderTop.setBackground(Color.WHITE);
 		panelHeader.add(panelHeaderTop);
 		
 		JPanel panelLogo = new JPanel();
 		FlowLayout flowLayout_2 = (FlowLayout) panelLogo.getLayout();
-		flowLayout_2.setHgap(200);
-		panelLogo.setBackground(Color.LIGHT_GRAY);
+		flowLayout_2.setVgap(0);
+		flowLayout_2.setHgap(0);
+		panelLogo.setBackground(Color.yellow);
 		
-		JPanel panelButton = new JPanel();
-		panelButton.setBackground(Color.WHITE);
+		JPanelDarkest panelButton = new JPanelDarkest();
 		FlowLayout flowLayout = (FlowLayout) panelButton.getLayout();
 		flowLayout.setVgap(15);
 		flowLayout.setHgap(10);
 		
-		JButton DisconnectButton = new JButton("D\u00E9connexion");
+		JButtonYellow DisconnectButton = new JButtonYellow("D\u00E9connexion");
 		DisconnectButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -98,25 +105,36 @@ public class Header {
 						.addComponent(panelButton, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 					.addGap(14))
 		);
+		
+		BufferedImage img = null;
+		try {
+		    img = ImageIO.read(Header.class.getResource("/IMG/Logholder.png"));
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
+		Image logo = img.getScaledInstance(300, 65, Image.SCALE_SMOOTH);
+		JLabel labelLogo = new JLabel("");
+		labelLogo.setIcon(new ImageIcon(logo));
+		panelLogo.add(labelLogo);
 		panelHeaderTop.setLayout(gl_panelHeaderTop);
 		
-		JPanel panelHeaderBottom = new JPanel();
+		JPanelBackground panelHeaderBottom = new JPanelBackground();
 		FlowLayout flowLayout_1 = (FlowLayout) panelHeaderBottom.getLayout();
 		flowLayout_1.setVgap(25);
 		flowLayout_1.setHgap(50);
 		flowLayout_1.setAlignment(FlowLayout.LEFT);
 		panelHeader.add(panelHeaderBottom);
 		
-		JPanel panelTitle = new JPanel();
+		JPanelBackground panelTitle = new JPanelBackground();
 		panelHeaderBottom.add(panelTitle);
 		
 		JLabel labelTitle = new JLabel("Bienvenue [Nom] [Pr\u00E9nom]");
 		labelTitle.setFont(new Font("Tahoma", Font.PLAIN, 25));
+		labelTitle.setForeground(Colors.lightText);
 		panelTitle.add(labelTitle);
 	}
 	
 	public JPanel getPanelHeader() {
 		return panelHeader;
 	}
-
 }

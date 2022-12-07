@@ -114,5 +114,4 @@ public class Jeu {
 		}
 		return l.toArray();
 	}
-
 }
