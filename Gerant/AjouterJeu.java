@@ -5,14 +5,21 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import java.awt.BorderLayout;
-import javax.swing.JPanel;
+import java.awt.Color;
+
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
+
+import Commons.Colors;
+import Commons.JButtonYellow;
+import Commons.JPanelBackground;
+import Commons.JSpinnerDark;
+import Commons.JTextFieldDark;
+
 import java.awt.GridLayout;
-import javax.swing.JButton;
 import java.awt.FlowLayout;
-import javax.swing.JTextField;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import java.awt.event.KeyAdapter;
@@ -26,9 +33,9 @@ import code.Jeu;
 public class AjouterJeu {
 
 	private JFrame frmAjouterUnJeu;
-	private JTextField inputGameName;
-	private JButton buttonValidation;
-	private JSpinner spinnerGamelength;
+	private JTextFieldDark inputGameName;
+	private JButtonYellow buttonValidation;
+	private JSpinnerDark spinnerGamelength;
 
 	/**
 	 * Launch the application.
@@ -64,30 +71,31 @@ public class AjouterJeu {
 		frmAjouterUnJeu.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmAjouterUnJeu.getContentPane().setLayout(new BorderLayout(0, 0));
 		
-		JPanel panelTitle = new JPanel();
+		JPanelBackground panelTitle = new JPanelBackground();
 		frmAjouterUnJeu.getContentPane().add(panelTitle, BorderLayout.NORTH);
 		panelTitle.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		JPanel panelSpacing_TopTitle = new JPanel();
+		JPanelBackground panelSpacing_TopTitle = new JPanelBackground();
 		panelTitle.add(panelSpacing_TopTitle);
 		
 		JLabel lblAjouterUnJeu = new JLabel("Ajouter un jeu");
+		lblAjouterUnJeu.setForeground(Colors.lightText);
 		lblAjouterUnJeu.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAjouterUnJeu.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		panelTitle.add(lblAjouterUnJeu);
 		
-		JPanel panelForm = new JPanel();
+		JPanelBackground panelForm = new JPanelBackground();
 		frmAjouterUnJeu.getContentPane().add(panelForm, BorderLayout.CENTER);
 		panelForm.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		JPanel panelFormGameName = new JPanel();
+		JPanelBackground panelFormGameName = new JPanelBackground();
 		panelForm.add(panelFormGameName);
 		panelFormGameName.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		JPanel panel = new JPanel();
+		JPanelBackground panel = new JPanelBackground();
 		panelFormGameName.add(panel);
 		
-		JPanel panelLabelGameName = new JPanel();
+		JPanelBackground panelLabelGameName = new JPanelBackground();
 		FlowLayout fl_panelLabelGameName = (FlowLayout) panelLabelGameName.getLayout();
 		fl_panelLabelGameName.setVgap(10);
 		fl_panelLabelGameName.setAlignment(FlowLayout.LEFT);
@@ -95,16 +103,17 @@ public class AjouterJeu {
 		panelFormGameName.add(panelLabelGameName);
 		
 		JLabel labelGameName = new JLabel("Nom du jeu :");
+		labelGameName.setForeground(Colors.lightText);
 		labelGameName.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		panelLabelGameName.add(labelGameName);
 		
-		JPanel panelInputGameName = new JPanel();
+		JPanelBackground panelInputGameName = new JPanelBackground();
 		FlowLayout fl_panelInputGameName = (FlowLayout) panelInputGameName.getLayout();
 		fl_panelInputGameName.setAlignment(FlowLayout.LEFT);
 		fl_panelInputGameName.setHgap(50);
 		panelFormGameName.add(panelInputGameName);
 		
-		inputGameName = new JTextField();
+		inputGameName = new JTextFieldDark();
 		inputGameName.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -118,57 +127,60 @@ public class AjouterJeu {
 		panelInputGameName.add(inputGameName);
 		inputGameName.setColumns(20);
 		
-		JPanel panelFormGameLengh = new JPanel();
-		panelForm.add(panelFormGameLengh);
-		panelFormGameLengh.setLayout(new GridLayout(0, 1, 0, 0));
+		JPanelBackground panelFormGameLength = new JPanelBackground();
+		panelForm.add(panelFormGameLength);
+		panelFormGameLength.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		JPanel panelLabelGameLengh = new JPanel();
-		FlowLayout fl_panelLabelGameLengh = (FlowLayout) panelLabelGameLengh.getLayout();
-		fl_panelLabelGameLengh.setVgap(10);
-		fl_panelLabelGameLengh.setAlignment(FlowLayout.LEFT);
-		fl_panelLabelGameLengh.setHgap(25);
-		panelFormGameLengh.add(panelLabelGameLengh);
+		JPanelBackground panelLabelGameLength = new JPanelBackground();
+		FlowLayout fl_panelLabelGameLength = (FlowLayout) panelLabelGameLength.getLayout();
+		fl_panelLabelGameLength.setVgap(10);
+		fl_panelLabelGameLength.setAlignment(FlowLayout.LEFT);
+		fl_panelLabelGameLength.setHgap(25);
+		panelFormGameLength.add(panelLabelGameLength);
 		
-		JLabel labelGameLengh = new JLabel("Dur\u00E9e d'une partie :");
-		labelGameLengh.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		panelLabelGameLengh.add(labelGameLengh);
+		JLabel labelGameLength = new JLabel("Dur\u00E9e d'une partie :");
+		labelGameLength.setForeground(Colors.lightText);
+		labelGameLength.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		panelLabelGameLength.add(labelGameLength);
 		
-		JPanel panelInputGameLengh = new JPanel();
-		FlowLayout fl_panelInputGameLengh = (FlowLayout) panelInputGameLengh.getLayout();
-		fl_panelInputGameLengh.setAlignment(FlowLayout.LEFT);
-		fl_panelInputGameLengh.setHgap(50);
-		panelFormGameLengh.add(panelInputGameLengh);
+		JPanelBackground panelInputGameLength = new JPanelBackground();
+		FlowLayout fl_panelInputGameLength = (FlowLayout) panelInputGameLength.getLayout();
+		fl_panelInputGameLength.setAlignment(FlowLayout.LEFT);
+		fl_panelInputGameLength.setHgap(50);
+		panelFormGameLength.add(panelInputGameLength);
 		
-		JPanel panelSpinnerGameLengh = new JPanel();
-		FlowLayout flowLayout_1 = (FlowLayout) panelSpinnerGameLengh.getLayout();
+		JPanelBackground panelSpinnerGameLength = new JPanelBackground();
+		FlowLayout flowLayout_1 = (FlowLayout) panelSpinnerGameLength.getLayout();
 		flowLayout_1.setVgap(0);
-		panelInputGameLengh.add(panelSpinnerGameLengh);
+		panelInputGameLength.add(panelSpinnerGameLength);
 		
-		spinnerGamelength = new JSpinner();
-		panelSpinnerGameLengh.add(spinnerGamelength);
-		spinnerGamelength.setModel(new SpinnerNumberModel(0, 0, 300, 5));
+		spinnerGamelength = new JSpinnerDark(0,0,300,5);
+		panelSpinnerGameLength.add(spinnerGamelength);
 		
-		JLabel labelSpinnerGameLengh = new JLabel("Minutes");
-		panelSpinnerGameLengh.add(labelSpinnerGameLengh);
-		labelSpinnerGameLengh.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		
-		JPanel panel_1 = new JPanel();
-		panelFormGameLengh.add(panel_1);
 		
-		JPanel panelFormButtons = new JPanel();
+		JLabel labelSpinnerGameLength = new JLabel("Minutes");
+		labelSpinnerGameLength.setForeground(Colors.lightText);
+		panelSpinnerGameLength.add(labelSpinnerGameLength);
+		labelSpinnerGameLength.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		
+		JPanelBackground panel_1 = new JPanelBackground();
+		panelFormGameLength.add(panel_1);
+		
+		JPanelBackground panelFormButtons = new JPanelBackground();
 		FlowLayout fl_panelFormButtons = (FlowLayout) panelFormButtons.getLayout();
 		fl_panelFormButtons.setHgap(20);
 		fl_panelFormButtons.setAlignment(FlowLayout.RIGHT);
 		frmAjouterUnJeu.getContentPane().add(panelFormButtons, BorderLayout.SOUTH);
 		
-		JPanel panelFormButtonsInner = new JPanel();
+		JPanelBackground panelFormButtonsInner = new JPanelBackground();
 		FlowLayout flowLayout = (FlowLayout) panelFormButtonsInner.getLayout();
 		flowLayout.setAlignOnBaseline(true);
 		flowLayout.setVgap(0);
 		flowLayout.setAlignment(FlowLayout.RIGHT);
 		panelFormButtons.add(panelFormButtonsInner);
 		
-		JButton buttonCancel = new JButton("Annuler");
+		JButtonYellow buttonCancel = new JButtonYellow("Annuler");
 		buttonCancel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -177,7 +189,7 @@ public class AjouterJeu {
 		});
 		panelFormButtonsInner.add(buttonCancel);
 		
-		buttonValidation = new JButton("Cr\u00E9er");
+		buttonValidation = new JButtonYellow("Cr\u00E9er");
 		buttonValidation.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {

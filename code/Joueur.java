@@ -169,7 +169,7 @@ public class Joueur {
 	 * 
 	 */
 	public void insert(int equipe) throws ErreurBD {
-		if (this.dateN != null && (this.sexe == 'H' || this.sexe == 'F') && this.numTel != null && this.email != null && equipe>=0) {
+		if (this.dateN != null && (this.sexe == 'M' || this.sexe == 'F' || this.sexe == 'X') && this.numTel != null && this.email != null && equipe>=0) {
 			try {
 				DataSource bd = new ConnexionBD();
 				

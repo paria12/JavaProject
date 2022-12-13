@@ -107,7 +107,7 @@ public class Equipe {
 
 			Statement st = connx.createStatement();
 
-			ResultSet rs = st.executeQuery("select id_equipe from equipe where e.nom ='"+this.nom+"')");
+			ResultSet rs = st.executeQuery("select id_equipe from equipe where nom ='"+this.nom+"'");
 			rs.next();
 			ID = rs.getInt(1);
 			
@@ -211,7 +211,7 @@ public class Equipe {
 				&& Objects.equals(nom, other.nom);
 	}
 	
-	public static String[] getNomEquipe() throws ErreurBD {
+	public static String[] getNomEquipe( ) throws ErreurBD {
         try {
             DataSource bd = new ConnexionBD();
             Connection connx = bd.getConnection();

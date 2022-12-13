@@ -28,6 +28,7 @@ import javax.swing.ImageIcon;
 public class Header {
 
 	private static JFrame frame;
+	public static String header;
 
 	/**
 	 * Launch the application.
@@ -128,7 +129,7 @@ public class Header {
 		JPanelBackground panelTitle = new JPanelBackground();
 		panelHeaderBottom.add(panelTitle);
 		
-		JLabel labelTitle = new JLabel("Bienvenue [Nom] [Pr\u00E9nom]");
+		JLabel labelTitle = new JLabel("Bienvenue "+header);
 		labelTitle.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		labelTitle.setForeground(Colors.lightText);
 		panelTitle.add(labelTitle);

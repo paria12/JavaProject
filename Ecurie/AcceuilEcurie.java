@@ -1,33 +1,30 @@
 package Ecurie;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.EventQueue;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import javax.swing.JButton;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.AbstractListModel;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+import javax.swing.border.LineBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import Commons.Colors;
 import Commons.Header;
 import Commons.JButtonYellow;
 import Commons.JPanelBackground;
-
-import javax.swing.JLabel;
-import java.awt.FlowLayout;
-import java.awt.Component;
-import javax.swing.JScrollPane;
-import javax.swing.border.LineBorder;
-import javax.swing.JList;
-import javax.swing.AbstractListModel;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.event.ListSelectionListener;
-
+import code.Ecurie;
 import code.Equipe;
 import code.ErreurBD;
-
-import javax.swing.event.ListSelectionEvent;
 
 public class AcceuilEcurie {
 
@@ -107,7 +104,12 @@ public class AcceuilEcurie {
 		buttonAddEquipe.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				CreerEquipe.main(null);
+				try {
+					CreerEquipe.MainWithValue(Ecurie.getID(new Ecurie(Header.header)));
+				} catch (ErreurBD e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				};
 			}
 		});
 		panelButtonAddEquipe.add(buttonAddEquipe);

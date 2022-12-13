@@ -2,6 +2,7 @@ package Gerant;
 
 import java.awt.EventQueue;
 
+
 import javax.swing.JFrame;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
@@ -22,14 +23,18 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import Commons.Colors;
 import Commons.Header;
+import Commons.JButtonYellow;
+import Commons.JPanelBackground;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class AcceuilGerant {
 
 	private JFrame frame;
-	private JPanel panelMenuRight;
+	private JPanelBackground panelMenuRight;
 
 	/**
 	 * Launch the application.
@@ -63,21 +68,22 @@ public class AcceuilGerant {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
-		JPanel panelMenu = new JPanel();
+		JPanelBackground panelMenu = new JPanelBackground();
 		frame.getContentPane().add(panelMenu, BorderLayout.CENTER);
 		panelMenu.setLayout(new GridLayout(0, 2, 0, 0));
 		
-		JPanel panelMenuLeft = new JPanel();
+		JPanelBackground panelMenuLeft = new JPanelBackground();
 		panelMenu.add(panelMenuLeft);
 		
-		JLabel labelTournois = new JLabel("Tournois :");
+		JLabel labelTournoi = new JLabel("Tournoi :");
+		labelTournoi.setForeground(Colors.lightText);
 		
-		JPanel panelListTournois = new JPanel();
-		panelListTournois.setLayout(new BorderLayout(0, 0));
+		JPanelBackground panelListTournoi = new JPanelBackground();
+		panelListTournoi.setLayout(new BorderLayout(0, 0));
 		
-		JPanel panelButtonTournois = new JPanel();
+		JPanelBackground panelButtonTournoi = new JPanelBackground();
 		
-		JButton buttonAjouterJeu = new JButton("Ajouter jeu");
+		JButtonYellow buttonAjouterJeu = new JButtonYellow("Ajouter jeu");
 		buttonAjouterJeu.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -91,11 +97,11 @@ public class AcceuilGerant {
 				.addGroup(gl_panelMenuLeft.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_panelMenuLeft.createParallelGroup(Alignment.LEADING)
-						.addComponent(panelListTournois, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
+						.addComponent(panelListTournoi, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
 						.addGroup(Alignment.TRAILING, gl_panelMenuLeft.createSequentialGroup()
-							.addComponent(labelTournois)
+							.addComponent(labelTournoi)
 							.addPreferredGap(ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
-							.addComponent(panelButtonTournois, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addComponent(panelButtonTournoi, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 						.addComponent(buttonAjouterJeu))
 					.addContainerGap())
 		);
@@ -105,32 +111,35 @@ public class AcceuilGerant {
 					.addGroup(gl_panelMenuLeft.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_panelMenuLeft.createSequentialGroup()
 							.addGap(9)
-							.addComponent(panelButtonTournois, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addComponent(panelButtonTournoi, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_panelMenuLeft.createSequentialGroup()
 							.addGap(20)
-							.addComponent(labelTournois)))
+							.addComponent(labelTournoi)))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(panelListTournois, GroupLayout.PREFERRED_SIZE, 108, Short.MAX_VALUE)
+					.addComponent(panelListTournoi, GroupLayout.PREFERRED_SIZE, 108, Short.MAX_VALUE)
 					.addGap(18)
 					.addComponent(buttonAjouterJeu)
 					.addGap(58))
 		);
 		
-		JScrollPane scrollTournois = new JScrollPane();
-		panelListTournois.add(scrollTournois, BorderLayout.CENTER);
+		JScrollPane scrollTournoi = new JScrollPane();
+		scrollTournoi.setBorder(new LineBorder(Color.BLACK));
+		panelListTournoi.add(scrollTournoi, BorderLayout.CENTER);
 		
-		JList listTournois = new JList();
-		listTournois.addListSelectionListener(new ListSelectionListener() {
+		JList<String> listTournoi = new JList<String>();
+		listTournoi.setBackground(Colors.darkestBlue);
+		listTournoi.setForeground(Colors.lightText);
+		listTournoi.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
-				if (listTournois.getSelectedValue() != null) {
+				if (listTournoi.getSelectedValue() != null) {
 					panelMenuRight.setVisible(true);
 				} else {
 					panelMenuRight.setVisible(false);
 				}
 			}
 		});
-		scrollTournois.setViewportView(listTournois);
-		listTournois.setModel(new AbstractListModel() {
+		scrollTournoi.setViewportView(listTournoi);
+		listTournoi.setModel(new AbstractListModel() {
 			String[] values = new String[] {"18/28/24 Toulouse"};
 			public int getSize() {
 				return values.length;
@@ -140,22 +149,23 @@ public class AcceuilGerant {
 			}
 		});
 		
-		JButton buttonTournois = new JButton("Nouveau Tournois");
-		buttonTournois.addMouseListener(new MouseAdapter() {
+		JButtonYellow buttonTournoi = new JButtonYellow("Nouveau Tournoi");
+		buttonTournoi.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				CreerTournoi.main(null);
 			}
 		});
-		panelButtonTournois.add(buttonTournois);
+		panelButtonTournoi.add(buttonTournoi);
 		panelMenuLeft.setLayout(gl_panelMenuLeft);
 		
-		panelMenuRight = new JPanel();
+		panelMenuRight = new JPanelBackground();
 		panelMenu.add(panelMenuRight);
 		
 		JLabel labelClassement = new JLabel("Classement");
+		labelClassement.setForeground(Colors.lightText);
 		
-		JPanel panelListClassment = new JPanel();
+		JPanelBackground panelListClassment = new JPanelBackground();
 		GroupLayout gl_panelMenuRight = new GroupLayout(panelMenuRight);
 		gl_panelMenuRight.setHorizontalGroup(
 			gl_panelMenuRight.createParallelGroup(Alignment.LEADING)
@@ -178,9 +188,12 @@ public class AcceuilGerant {
 		panelListClassment.setLayout(new BorderLayout(0, 0));
 		
 		JScrollPane scrollClassement = new JScrollPane();
+		scrollClassement.setBorder(new LineBorder(Color.BLACK));
 		panelListClassment.add(scrollClassement, BorderLayout.CENTER);
 		
-		JList listClassement = new JList();
+		JList<String> listClassement = new JList<String>();
+		listClassement.setBackground(Colors.darkestBlue);
+		listClassement.setForeground(Colors.lightText);
 		listClassement.setEnabled(false);
 		scrollClassement.setViewportView(listClassement);
 		listClassement.setModel(new AbstractListModel() {

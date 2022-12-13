@@ -5,6 +5,8 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -16,8 +18,11 @@ public class Tournoi {
 	private String codePostal;
 	private Date date;
 	private String notoriete;
+	private int idjeu;
 	
-	public Tournoi(String nom, Date date) {
+	private List<Equipe> equipes;
+	
+	public Tournoi(String nom, Date date, int jeu) {
 		this.nom = nom;
 		this.adresse = null;
 		this.ville = null;
@@ -25,9 +30,11 @@ public class Tournoi {
 		this.codePostal = null;
 		this.date = date;
 		this.notoriete = null;
+		this.idjeu = jeu;
+		equipes = new ArrayList<Equipe>();
 	}
 	
-	public Tournoi(String nom, String adresse, String ville, String pays, String codePostal, Date date, String notoriete) {
+	public Tournoi(String nom, String adresse, String ville, String pays, String codePostal, Date date, String notoriete, int jeu) {
 		this.nom = nom;
 		this.adresse = adresse;
 		this.ville = ville;
@@ -35,6 +42,7 @@ public class Tournoi {
 		this.codePostal = codePostal;
 		this.date = date;
 		this.notoriete = notoriete;
+		this.idjeu = jeu;
 	}
 	
 	
@@ -81,6 +89,17 @@ public class Tournoi {
 		}
 		return notoriete;
 	}
+	
+	public int getJeu() {
+		return idjeu;
+	}
+	
+	public void addEquipe(Equipe e) {
+		if (this.equipes.size()>16) {
+			throw new IllegalArgumentException("Le tournoi est deja plein");
+		}
+		this.equipes.add(e);
+	}
 
 	public void select() throws ErreurBD {
 		try {
@@ -90,7 +109,7 @@ public class Tournoi {
 
 			Statement st = connx.createStatement();
 
-			ResultSet rese = st.executeQuery("select adresse, ville, pays, codepostal, notoriete from Tournoi where nom='"+this.nom+"' and datetournoi='"+this.date+"'");
+			ResultSet rese = st.executeQuery("select adresse, ville, pays, codepostal, notoriete from Tournoi where nomtournoi='"+this.nom+"' and datetournoi='"+this.date+"'");
 
 			rese.next();
 			if (this.adresse == null) {
@@ -111,6 +130,26 @@ public class Tournoi {
 
 		} catch (SQLException e) {
 			throw new ErreurBD("Erreur de requette a la bd");
+		}
+	}
+	
+	public void insert(int arbitre) throws ErreurBD, IllegalArgumentException{
+		if (this.adresse != null && this.codePostal != null && this.notoriete != null && this.pays != null && this.ville != null) {
+			throw new IllegalArgumentException("Un des argument n'est pas valide");
+		} else {
+			try {
+				DataSource bd = new ConnexionBD();
+				
+				Connection connx = bd.getConnection();
+
+				Statement st = connx.createStatement();
+
+				st.executeQuery("INSERT INTO tournoi values(seq_tournoi.nextVal,'"+this.ville+"','"+this.pays+"','"+this.codePostal+"',"+this.date+",'"+this.notoriete+"','"+this.nom+"','"+this.adresse+"',"+arbitre+","+
+						this.idjeu+")");
+
+			} catch (SQLException e) {
+				throw new ErreurBD("Erreur de requ�te a la bd");
+			}
 		}
 	}
 	

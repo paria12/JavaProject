@@ -115,7 +115,7 @@ public class Jeu {
 		return l.toArray();
 	}
 	
-	public static int getTimeFromID() throws ErreurBD {
+	public static int getID(Jeu j) throws ErreurBD {
 		int retour = 0;
 		try {
 			DataSource bd = new ConnexionBD();
@@ -124,7 +124,28 @@ public class Jeu {
 
 			Statement st = connx.createStatement();
 
-			ResultSet rs = st.executeQuery("select nom from jeu order by 1");
+			ResultSet rs = st.executeQuery("select id_jeu from jeu where nom="+j.getNom());
+			
+			while(rs.next()) {
+				retour=rs.getInt(1);
+			}
+
+		} catch (SQLException e) {
+			throw new ErreurBD("Erreur de requéte a la bd : "+e);
+		}
+		return retour;
+	}
+	
+	public static int getTimeFromID(int id) throws ErreurBD {
+		int retour = 0;
+		try {
+			DataSource bd = new ConnexionBD();
+			
+			Connection connx = bd.getConnection();
+
+			Statement st = connx.createStatement();
+
+			ResultSet rs = st.executeQuery("select duree from jeu where id_jeu="+id);
 			
 			while(rs.next()) {
 				retour=rs.getInt(1);

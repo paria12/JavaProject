@@ -130,4 +130,25 @@ public class Ecurie {
 		Ecurie other = (Ecurie) obj;
 		return Objects.equals(nom, other.nom) && Objects.equals(type, other.type);
 	}
+	
+	public static int getID(Ecurie ec) throws ErreurBD {
+		int retour = 0;
+		try {
+			DataSource bd = new ConnexionBD();
+			
+			Connection connx = bd.getConnection();
+
+			Statement st = connx.createStatement();
+
+			ResultSet rs = st.executeQuery("select id_Ecurie from jeu where nom="+ec.getNom());
+			
+			while(rs.next()) {
+				retour=rs.getInt(1);
+			}
+
+		} catch (SQLException e) {
+			throw new ErreurBD("Erreur de requéte a la bd : "+e);
+		}
+		return retour;
+	}
 }

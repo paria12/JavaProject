@@ -3,17 +3,17 @@ package code;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Time;
+import java.sql.Timestamp;
 
 import javax.sql.DataSource;
 
 public class Match {
-	private Time Hdebut;
-	private Time Hfin;
+	private Timestamp Hdebut;
+	private Timestamp Hfin;
 	private Equipe E1;
 	private Equipe E2;
 
-	public Match(Equipe e1, Equipe e2, Time hd, Time hf) {
+	public Match(Equipe e1, Equipe e2, Timestamp hd, Timestamp hf) {
 		if (e1 == null || e2 == null || hd == null || hf == null) {
 			throw new IllegalArgumentException("L'un des paramètres est null");
 		} else if (hd.compareTo(hf) <= 0) {
@@ -25,11 +25,11 @@ public class Match {
 		this.Hfin = hf;
 	}
 
-	public Time getHDebut() {
+	public Timestamp getHDebut() {
 		return Hdebut;
 	}
 
-	public Time getHFin() {
+	public Timestamp getHFin() {
 		return Hfin;
 	}
 

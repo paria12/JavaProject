@@ -3,37 +3,65 @@ package Ecurie;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
+
+import code.ErreurBD;
+import code.Joueur;
+import Commons.Colors;
+import Commons.JButtonDark;
+import Commons.JButtonYellow;
+import Commons.JPanelBackground;
+import Commons.JRadioDark;
+import Commons.JSpinnerDark;
+import Commons.JTextFieldDark;
+import Commons.StaticValues;
+
 import java.awt.GridLayout;
-import javax.swing.JTextField;
 import java.awt.FlowLayout;
 import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JButton;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.Calendar;
+import java.util.Enumeration;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 public class AjouterJoueur {
 
 	private JFrame frmAjouterUnJoueur;
-	private JTextField inputLastName;
-	private JTextField inputFirstName;
-	private JTextField inputMail;
-	private JTextField inputPhone;
+	private JTextFieldDark inputLastName;
+	private JTextFieldDark inputFirstName;
+	private JTextFieldDark inputMail;
+	private JTextFieldDark inputPhone;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
-	private JButton buttonValidation;
+	private JButtonYellow buttonValidation;
+	private Calendar cal;
+	private int day;
+	private Month month;
+	private int year;
+	private boolean leapYear;
+	private int maxDay;
+	private int maxMonth;
+	private int maxYear = LocalDate.now().getYear() - StaticValues.AGE_MIN;
+	private JSpinnerDark spinnerBirthDateDay;
+	private JSpinnerDark spinnerBirthDateMonth;
+	private AjouterJoueur currentInstance = this;
 
 	/**
 	 * Launch the application.
@@ -42,7 +70,20 @@ public class AjouterJoueur {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AjouterJoueur window = new AjouterJoueur();
+					AjouterJoueur window = new AjouterJoueur("", "", null, ' ', "", "", null, null, null);
+					window.frmAjouterUnJoueur.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	
+	public static void MainWithValues(String nom, String prenom, Date date, char sexe, String tel, String email, CreerEquipe equipe, String nbJ, JPanelBackground panelPlayerInner) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					AjouterJoueur window = new AjouterJoueur(nom, prenom, date, sexe, tel, email, equipe, nbJ, panelPlayerInner);
 					window.frmAjouterUnJoueur.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -54,54 +95,56 @@ public class AjouterJoueur {
 	/**
 	 * Create the application.
 	 */
-	public AjouterJoueur() {
-		initialize();
+	public AjouterJoueur(String nom, String prenom, Date date, char sexe, String tel, String email, CreerEquipe equipe, String nbJ, JPanelBackground panelPlayerInner) {
+		initialize(nom, prenom, date, sexe, tel, email, equipe, nbJ, panelPlayerInner);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize(String nom, String prenom, Date date, char sexe, String tel, String email, CreerEquipe equipe, String nbJ, JPanelBackground panelPlayerInner) {
 		frmAjouterUnJoueur = new JFrame();
 		frmAjouterUnJoueur.setTitle("Ajouter un joueur");
 		frmAjouterUnJoueur.setBounds(100, 100, 400, 400);
 		frmAjouterUnJoueur.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
-		JPanel panelTitle = new JPanel();
+		JPanelBackground panelTitle = new JPanelBackground();
 		frmAjouterUnJoueur.getContentPane().add(panelTitle, BorderLayout.NORTH);
 		panelTitle.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		JPanel panelSpacing_TopTitle = new JPanel();
+		JPanelBackground panelSpacing_TopTitle = new JPanelBackground();
 		panelTitle.add(panelSpacing_TopTitle);
 		
 		JLabel labelTitle = new JLabel("Ajouter un joueur");
+		labelTitle.setForeground(Colors.lightText);
 		labelTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		labelTitle.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		panelTitle.add(labelTitle);
 		
-		JPanel panelForm = new JPanel();
+		JPanelBackground panelForm = new JPanelBackground();
 		FlowLayout fl_panelForm = (FlowLayout) panelForm.getLayout();
 		fl_panelForm.setVgap(0);
 		frmAjouterUnJoueur.getContentPane().add(panelForm, BorderLayout.CENTER);
 		
-		JPanel panelFormInner = new JPanel();
+		JPanelBackground panelFormInner = new JPanelBackground();
 		panelForm.add(panelFormInner);
 		panelFormInner.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		JPanel panelSpacing_TopForm = new JPanel();
+		JPanelBackground panelSpacing_TopForm = new JPanelBackground();
 		panelFormInner.add(panelSpacing_TopForm);
 		
-		JPanel panelLastName = new JPanel();
+		JPanelBackground panelLastName = new JPanelBackground();
 		panelFormInner.add(panelLastName);
 		
-		JPanel panelLabelLastName = new JPanel();
+		JPanelBackground panelLabelLastName = new JPanelBackground();
 		
 		JLabel labelLastName = new JLabel("Nom du joueur :");
+		labelLastName.setForeground(Colors.lightText);
 		panelLabelLastName.add(labelLastName);
 		
-		JPanel panelInputLastName = new JPanel();
+		JPanelBackground panelInputLastName = new JPanelBackground();
 		
-		inputLastName = new JTextField();
+		inputLastName = new JTextFieldDark();
 		inputLastName.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -112,6 +155,7 @@ public class AjouterJoueur {
 				}
 			}
 		});
+		inputLastName.setText(nom);
 		panelInputLastName.add(inputLastName);
 		inputLastName.setColumns(15);
 		GroupLayout gl_panelLastName = new GroupLayout(panelLastName);
@@ -133,17 +177,18 @@ public class AjouterJoueur {
 		);
 		panelLastName.setLayout(gl_panelLastName);
 		
-		JPanel panelFirstName = new JPanel();
+		JPanelBackground panelFirstName = new JPanelBackground();
 		panelFormInner.add(panelFirstName);
 		
-		JPanel panelLabelFirstName = new JPanel();
+		JPanelBackground panelLabelFirstName = new JPanelBackground();
 		
 		JLabel labelFirstName = new JLabel("Pr\u00E9nom du joueur :");
+		labelFirstName.setForeground(Colors.lightText);
 		panelLabelFirstName.add(labelFirstName);
 		
-		JPanel panelInputFirstName = new JPanel();
+		JPanelBackground panelInputFirstName = new JPanelBackground();
 		
-		inputFirstName = new JTextField();
+		inputFirstName = new JTextFieldDark();
 		inputFirstName.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -154,6 +199,7 @@ public class AjouterJoueur {
 				}
 			}
 		});
+		inputFirstName.setText(prenom);
 		panelInputFirstName.add(inputFirstName);
 		inputFirstName.setColumns(15);
 		GroupLayout gl_panelFirstName = new GroupLayout(panelFirstName);
@@ -175,40 +221,81 @@ public class AjouterJoueur {
 		);
 		panelFirstName.setLayout(gl_panelFirstName);
 		
-		JPanel panelBirthDate = new JPanel();
+		JPanelBackground panelBirthDate = new JPanelBackground();
 		panelFormInner.add(panelBirthDate);
 		
-		JPanel panelLabelBirthDate = new JPanel();
+		JPanelBackground panelLabelBirthDate = new JPanelBackground();
 		
 		JLabel labelBirthDate = new JLabel("Date de naissance :");
+		labelBirthDate.setForeground(Colors.lightText);
 		panelLabelBirthDate.add(labelBirthDate);
 		
-		JPanel panelInputBirthDate = new JPanel();
+		JPanelBackground panelInputBirthDate = new JPanelBackground();
 		FlowLayout fl_panelInputBirthDate = (FlowLayout) panelInputBirthDate.getLayout();
 		fl_panelInputBirthDate.setHgap(12);
 		fl_panelInputBirthDate.setAlignment(FlowLayout.RIGHT);
 		
-		JPanel panelSpinnerBirthDate = new JPanel();
+		if (date != null) {
+			cal = Calendar.getInstance();
+			cal.setTime(date);
+			day = cal.get(Calendar.DAY_OF_MONTH);
+			month = Month.of(cal.get(Calendar.MONTH) + 1);
+			year = cal.get(Calendar.YEAR);
+			leapYear = (year % 4 == 0);
+			if (year >= maxYear) {
+				maxMonth = LocalDate.now().getMonthValue();
+			} else {
+				maxMonth = 12;
+			}
+			if ((year >= maxYear) && (month.getValue() >= maxMonth)) {
+				maxDay = LocalDate.now().getDayOfMonth();
+			} else {
+				maxDay = month.length(leapYear);
+			}
+		} else {
+			day = LocalDate.now().getDayOfMonth();
+			month = LocalDate.now().getMonth();
+			year = LocalDate.now().getYear() - StaticValues.AGE_MIN;
+			leapYear = (year % 4 == 0);
+			maxMonth = LocalDate.now().getMonthValue();
+			maxDay = LocalDate.now().getDayOfMonth();
+		}
+		
+		JPanelBackground panelSpinnerBirthDate = new JPanelBackground();
 		FlowLayout fl_panelSpinnerBirthDate = (FlowLayout) panelSpinnerBirthDate.getLayout();
 		fl_panelSpinnerBirthDate.setVgap(0);
 		panelInputBirthDate.add(panelSpinnerBirthDate);
 		
-		JSpinner spinnerBirthDateDay = new JSpinner();
-		spinnerBirthDateDay.setModel(new SpinnerNumberModel(1, 1, 32, 1));
+		spinnerBirthDateDay = new JSpinnerDark(day, 1, maxDay,1);
+		spinnerBirthDateDay.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				day = (int) spinnerBirthDateDay.getValue();
+			}
+		});
 		panelSpinnerBirthDate.add(spinnerBirthDateDay);
-		
 		JLabel labelSeparatorDateLeft = new JLabel("/");
+		labelSeparatorDateLeft.setForeground(Colors.lightText);
 		panelSpinnerBirthDate.add(labelSeparatorDateLeft);
 		
-		JSpinner spinnerBirthDateMonth = new JSpinner();
-		spinnerBirthDateMonth.setModel(new SpinnerNumberModel(1, 1, 12, 1));
+		spinnerBirthDateMonth = new JSpinnerDark(month.getValue(),1,maxMonth,1);
+		spinnerBirthDateMonth.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				month = Month.of((int) spinnerBirthDateMonth.getValue());
+				currentInstance.resetSpinnersModel();
+			}
+		});
 		panelSpinnerBirthDate.add(spinnerBirthDateMonth);
-		
 		JLabel labelSeparatorDateRight = new JLabel("/");
+		labelSeparatorDateRight.setForeground(Colors.lightText);
 		panelSpinnerBirthDate.add(labelSeparatorDateRight);
 		
-		JSpinner spinnerBirthDateYear = new JSpinner();
-		spinnerBirthDateYear.setModel(new SpinnerNumberModel(2004, null, 2004, 1));
+		JSpinnerDark spinnerBirthDateYear = new JSpinnerDark(year, 1856, maxYear, 1);
+		spinnerBirthDateYear.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				year = (int) spinnerBirthDateYear.getValue();
+				currentInstance.resetSpinnersModel();
+			}
+		});
 		panelSpinnerBirthDate.add(spinnerBirthDateYear);
 		GroupLayout gl_panelBirthDate = new GroupLayout(panelBirthDate);
 		gl_panelBirthDate.setHorizontalGroup(
@@ -228,17 +315,18 @@ public class AjouterJoueur {
 		);
 		panelBirthDate.setLayout(gl_panelBirthDate);
 		
-		JPanel panelSex = new JPanel();
+		JPanelBackground panelSex = new JPanelBackground();
 		panelFormInner.add(panelSex);
 		
-		JPanel panelLabelSex = new JPanel();
+		JPanelBackground panelLabelSex = new JPanelBackground();
 		
 		JLabel labelSex = new JLabel("Sexe du joueur :");
+		labelSex.setForeground(Colors.lightText);
 		panelLabelSex.add(labelSex);
 		
-		JPanel panelInputSex = new JPanel();
+		JPanelBackground panelInputSex = new JPanelBackground();
 		
-		JRadioButton radioSexF = new JRadioButton("F");
+		JRadioDark radioSexF = new JRadioDark("F");
 		radioSexF.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -249,10 +337,13 @@ public class AjouterJoueur {
 				}
 			}
 		});
+		if (sexe == 'F') {
+			radioSexF.setSelected(true);
+		}
 		buttonGroup.add(radioSexF);
 		panelInputSex.add(radioSexF);
 		
-		JRadioButton radioSexM = new JRadioButton("M");
+		JRadioDark radioSexM = new JRadioDark("M");
 		radioSexM.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -263,10 +354,13 @@ public class AjouterJoueur {
 				}
 			}
 		});
+		if (sexe == 'M') {
+			radioSexM.setSelected(true);
+		}
 		buttonGroup.add(radioSexM);
 		panelInputSex.add(radioSexM);
 		
-		JRadioButton radioSexX = new JRadioButton("X");
+		JRadioDark radioSexX = new JRadioDark("X");
 		radioSexF.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -277,6 +371,9 @@ public class AjouterJoueur {
 				}
 			}
 		});
+		if (sexe == 'X') {
+			radioSexX.setSelected(true);
+		}
 		buttonGroup.add(radioSexX);
 		panelInputSex.add(radioSexX);
 		GroupLayout gl_panelSex = new GroupLayout(panelSex);
@@ -298,21 +395,23 @@ public class AjouterJoueur {
 		);
 		panelSex.setLayout(gl_panelSex);
 		
-		JPanel panelLabelMailPhone = new JPanel();
+		JPanelBackground panelLabelMailPhone = new JPanelBackground();
 		panelFormInner.add(panelLabelMailPhone);
 		
-		JPanel panelMail = new JPanel();
+		JPanelBackground panelMail = new JPanelBackground();
 		FlowLayout fl_panelMail = (FlowLayout) panelMail.getLayout();
 		fl_panelMail.setVgap(10);
 		
 		JLabel labelMail = new JLabel("Adresse Mail :");
+		labelMail.setForeground(Colors.lightText);
 		panelMail.add(labelMail);
 		
-		JPanel panelPhone = new JPanel();
+		JPanelBackground panelPhone = new JPanelBackground();
 		FlowLayout flowLayout = (FlowLayout) panelPhone.getLayout();
 		flowLayout.setVgap(10);
 		
 		JLabel labelPhone = new JLabel("Num\u00E9ro de T\u00E9l\u00E9phone :");
+		labelPhone.setForeground(Colors.lightText);
 		panelPhone.add(labelPhone);
 		GroupLayout gl_panelLabelMailPhone = new GroupLayout(panelLabelMailPhone);
 		gl_panelLabelMailPhone.setHorizontalGroup(
@@ -335,14 +434,14 @@ public class AjouterJoueur {
 		);
 		panelLabelMailPhone.setLayout(gl_panelLabelMailPhone);
 		
-		JPanel panelInputMailPhone = new JPanel();
+		JPanelBackground panelInputMailPhone = new JPanelBackground();
 		panelFormInner.add(panelInputMailPhone);
 		
-		JPanel panelInputMail = new JPanel();
+		JPanelBackground panelInputMail = new JPanelBackground();
 		FlowLayout fl_panelInputMail = (FlowLayout) panelInputMail.getLayout();
 		fl_panelInputMail.setVgap(0);
 		
-		inputMail = new JTextField();
+		inputMail = new JTextFieldDark();
 		inputMail.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -353,16 +452,17 @@ public class AjouterJoueur {
 				}
 			}
 		});
+		inputMail.setText(email);
 		inputMail.setColumns(15);
 		panelInputMail.add(inputMail);
 		
-		JPanel panelInputPhone = new JPanel();
+		JPanelBackground panelInputPhone = new JPanelBackground();
 		FlowLayout fl_panelInputPhone = (FlowLayout) panelInputPhone.getLayout();
 		fl_panelInputPhone.setHgap(17);
 		fl_panelInputPhone.setAlignment(FlowLayout.RIGHT);
 		fl_panelInputPhone.setVgap(0);
 		
-		inputPhone = new JTextField();
+		inputPhone = new JTextFieldDark();
 		inputPhone.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -373,6 +473,7 @@ public class AjouterJoueur {
 				}
 			}
 		});
+		inputPhone.setText(tel);
 		inputPhone.setColumns(10);
 		panelInputPhone.add(inputPhone);
 		GroupLayout gl_panelInputMailPhone = new GroupLayout(panelInputMailPhone);
@@ -397,16 +498,16 @@ public class AjouterJoueur {
 		);
 		panelInputMailPhone.setLayout(gl_panelInputMailPhone);
 		
-		JPanel panelFormButtons = new JPanel();
+		JPanelBackground panelFormButtons = new JPanelBackground();
 		FlowLayout fl_panelFormButtons = (FlowLayout) panelFormButtons.getLayout();
 		fl_panelFormButtons.setHgap(20);
 		fl_panelFormButtons.setAlignment(FlowLayout.RIGHT);
 		frmAjouterUnJoueur.getContentPane().add(panelFormButtons, BorderLayout.SOUTH);
 		
-		JPanel panelFormButtonsInner = new JPanel();
+		JPanelBackground panelFormButtonsInner = new JPanelBackground();
 		panelFormButtons.add(panelFormButtonsInner);
 		
-		JButton buttonCancel = new JButton("Annuler");
+		JButtonDark buttonCancel = new JButtonDark("Annuler");
 		buttonCancel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -415,19 +516,47 @@ public class AjouterJoueur {
 		});
 		panelFormButtonsInner.add(buttonCancel);
 		
-		buttonValidation = new JButton("Ajouter");
+		buttonValidation = new JButtonYellow("Ajouter");
 		buttonValidation.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (buttonValidation.isEnabled()) {
+					//Create calandar from inputs
+					Calendar cal = Calendar.getInstance();
+					cal.set( Calendar.DAY_OF_MONTH, day);
+					cal.set( Calendar.MONTH, month.getValue() - 1);
+					cal.set( Calendar.YEAR, year);
+					//Create and return player from inputs
+					equipe.setJoueur(new Joueur(inputLastName.getText(), 
+									 inputFirstName.getText(), 
+									 new Date(cal.getTimeInMillis()), 
+									 getSelectedButtonText(buttonGroup),
+									 inputPhone.getText(), 
+									 inputMail.getText()), nbJ, panelPlayerInner);
 					frmAjouterUnJoueur.dispose();
 				}
 			}
 		});
 		buttonValidation.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		buttonValidation.setEnabled(false);
+		if (isFormFilled()) { 
+			buttonValidation.setEnabled(true);
+		} else {
+			buttonValidation.setEnabled(false);
+		}
 		panelFormButtonsInner.add(buttonValidation);
 	}
+	
+	public char getSelectedButtonText(ButtonGroup buttonGroup) {
+        for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
+            AbstractButton button = buttons.nextElement();
+
+            if (button.isSelected()) {
+                return button.getText().charAt(0);
+            }
+        }
+        
+        return ' ';
+    }
 	
 	private Boolean isFormFilled() {
 		if ((inputLastName.getText().length() != 0) 
@@ -439,6 +568,28 @@ public class AjouterJoueur {
 		} else {
 			return false;
 		}
+	}
+	
+	private void resetSpinnersModel() {
+		leapYear = (year % 4 == 0);
+		if (year >= maxYear) {
+			maxMonth = LocalDate.now().getMonthValue();
+		} else {
+			maxMonth = 12;
+		}
+		if (month.getValue() > maxMonth) {
+			month = Month.of(maxMonth);
+		}
+		if ((year >= maxYear) && (month.getValue() >= maxMonth)) {
+			maxDay = LocalDate.now().getDayOfMonth();
+		} else {
+			maxDay = month.length(leapYear);
+		}
+		if (day > maxDay) {
+			day = maxDay;
+		}
+		spinnerBirthDateDay.setModel(new SpinnerNumberModel(day, 1, maxDay, 1));
+		spinnerBirthDateMonth.setModel(new SpinnerNumberModel(month.getValue(), 1, maxMonth, 1));
 	}
 
 }

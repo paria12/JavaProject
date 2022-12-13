@@ -24,7 +24,7 @@ public class testJoueur {
 	@Before
 	public void setUp() throws Exception {
 		this.j = new Joueur("Dylan","Bob");
-		this.j2 = new Joueur("Muru","Jean-Batiste",new Date(1075503600000L), 'H', "0685588528", "jb.muru@gmail.com");
+		this.j2 = new Joueur("Muru","Jean-Batiste",new Date(1075503600000L), 'M', "0685588528", "jb.muru@gmail.com");
 	}
 
 	@After
@@ -65,7 +65,7 @@ public class testJoueur {
 
 	@Test
 	public void testJoueurStringStringDateCharIntString() {
-		Joueur t = new Joueur("Muru","Jean-Batiste",new Date(1075503600000L), 'H', "0685588528", "jb.muru@gmail.com");
+		Joueur t = new Joueur("Muru","Jean-Batiste",new Date(1075503600000L), 'M', "0685588528", "jb.muru@gmail.com");
 		assertEquals(this.j2,t);
 	}
 
@@ -89,8 +89,8 @@ public class testJoueur {
 
 	@Test
 	public void testGetSexe() throws ErreurBD {
-		assertEquals('H',this.j.getSexe());
-		assertEquals('H',this.j2.getSexe());
+		assertEquals('M',this.j.getSexe());
+		assertEquals('M',this.j2.getSexe());
 	}
 
 	@Test
@@ -107,7 +107,7 @@ public class testJoueur {
 
 	@Test
 	public void testInsert() {
-		Joueur t = new Joueur("test","test",new Date(1075503600000L), 'H', "0000000000", "test");
+		Joueur t = new Joueur("test","test",new Date(1075503600000L), 'M', "0000000000", "test");
 		try {
 			t.insert(3);
 		} catch (ErreurBD e) {
