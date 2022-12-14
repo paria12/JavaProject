@@ -53,7 +53,7 @@ public class CreerEquipe {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					CreerEquipe window = new CreerEquipe(1);
+					CreerEquipe window = new CreerEquipe(1, null);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -62,11 +62,11 @@ public class CreerEquipe {
 		});
 	}
 	
-	public static void MainWithValue(int IdEcurie) {
+	public static void MainWithValue(int IdEcurie, AcceuilEcurie acceuil) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					CreerEquipe window = new CreerEquipe(IdEcurie);
+					CreerEquipe window = new CreerEquipe(IdEcurie, acceuil);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -78,14 +78,14 @@ public class CreerEquipe {
 	/**
 	 * Create the application.
 	 */
-	public CreerEquipe(int Ecurie) {
-		initialize(Ecurie);
+	public CreerEquipe(int Ecurie, AcceuilEcurie acceuil) {
+		initialize(Ecurie, acceuil);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize(int Ecurie) {
+	private void initialize(int Ecurie, AcceuilEcurie acceuil) {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 400, 400);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -233,11 +233,13 @@ public class CreerEquipe {
 						equipe.addJoueur(J2);
 						equipe.addJoueur(J3);
 						equipe.addJoueur(J4);
+						System.out.println(Ecurie);
 						equipe.insert(Ecurie);
 						J1.insert(equipe.getID());
 						J2.insert(equipe.getID());
 						J3.insert(equipe.getID());
 						J4.insert(equipe.getID());
+						acceuil.refreshEquipe();
 						frame.dispose();
 					} catch (IllegalArgumentException e2) {
 						// TODO Auto-generated catch block

@@ -15,6 +15,9 @@ public class Ecurie {
     private String type = null;
     private List<Equipe> equipe = new ArrayList<Equipe> ();
     
+    /**Constructeur d'Écurie à partir de son nom
+     * @param nom
+     */
     public Ecurie(String nom) {
     	if (nom == null) {
     		throw new IllegalArgumentException("Le nom de l'ecurie ne doit pas etre null");
@@ -23,6 +26,10 @@ public class Ecurie {
     	this.equipe = new ArrayList<Equipe>();
     }
 
+    /**Constructeur d'Écurie à partir de son nom et de son type
+     * @param nom
+     * @param type
+     */
     public Ecurie(String nom, String type) {
     	if (nom == null) {
     		throw new IllegalArgumentException("Le nom de l'ecurie ne doit pas etre null");
@@ -32,18 +39,31 @@ public class Ecurie {
     	this.equipe = new ArrayList<Equipe>();
     }
     
+    /**Ajouter une équipe à une écurie
+     * @param e
+     */
     public void addEquipe(Equipe e) {
     	this.equipe.add(e);
     }
     
+    /**Supprimer une équipe d'une écurie 
+     * @param e
+     */
     public void removeEquipe(Equipe e) {
     	this.equipe.remove(e);
     }
 
+    /**Renvoie le nom d'une écurie 
+     * @return string : nom
+     */
     public String getNom() {
     	return this.nom;
     }
 
+    /** renvoie le type d'une écurie
+     * @return string : type
+     * @throws ErreurBD
+     */
     public String getType() throws ErreurBD {
     	if (this.type != null) {
     		return this.type;
@@ -68,6 +88,10 @@ public class Ecurie {
     	
     }
     
+    /** renvoie les équipes appartenant à l'écurie
+     * @return une liste d'équipe : equipe
+     * @throws ErreurBD
+     */
     public List<Equipe> getEquipe() throws ErreurBD{
     	if (!this.equipe.isEmpty()) {
     		return this.equipe;
@@ -78,6 +102,9 @@ public class Ecurie {
     }
     
 
+    /**récupère toutes les équipes appartenant à l'écurie en fonction de son nom
+     * @throws ErreurBD
+     */
     public void selectEquipe() throws ErreurBD {
     	try {
 			DataSource bd = new ConnexionBD();
@@ -95,6 +122,10 @@ public class Ecurie {
 		}
     }
     
+    /** insère une nouvelle écurie dans la base de donnée
+     * @param pwd
+     * @throws ErreurBD
+     */
     public void insert(String pwd) throws ErreurBD {
     	if (this.type != null) {
     		try {
@@ -107,18 +138,24 @@ public class Ecurie {
 				st.executeQuery("INSERT INTO ecurie values(seq_ecurie.nextVal,'"+this.nom+"','"+this.type+"','"+Connexion.sta256(pwd)+"')");
 
 			} catch (SQLException e) {
-				throw new ErreurBD("Erreur de requette bd");
+				throw new ErreurBD("Erreur de requête bd");
 			}
 		} else {
 			throw new IllegalArgumentException("Le type de l'ecurie doit etre renseigner pour cette op�ration");
 		}
     }
 
+	/** redéfinition de hashCode
+	 * @return int
+	 */
 	@Override
 	public int hashCode() {
 		return Objects.hash(nom, type);
 	}
 
+	/**redéfinition de la méthode equals
+	 *@return boolean
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -131,6 +168,11 @@ public class Ecurie {
 		return Objects.equals(nom, other.nom) && Objects.equals(type, other.type);
 	}
 	
+	/** renvoie l'id d'une écurie en fonction de son nom
+	 * @param ec
+	 * @return int : retour
+	 * @throws ErreurBD
+	 */
 	public static int getID(Ecurie ec) throws ErreurBD {
 		int retour = 0;
 		try {
@@ -140,7 +182,7 @@ public class Ecurie {
 
 			Statement st = connx.createStatement();
 
-			ResultSet rs = st.executeQuery("select id_Ecurie from jeu where nom="+ec.getNom());
+			ResultSet rs = st.executeQuery("select id_Ecurie from ecurie where nom='"+ec.getNom()+"'");
 			
 			while(rs.next()) {
 				retour=rs.getInt(1);

@@ -20,6 +20,7 @@ import javax.swing.event.ListSelectionListener;
 
 import Commons.Colors;
 import Commons.Header;
+import Commons.JButtonDark;
 import Commons.JButtonYellow;
 import Commons.JPanelBackground;
 import code.Ecurie;
@@ -31,7 +32,8 @@ public class AcceuilEcurie {
 	private JFrame frame;
 	private JPanelBackground panelRight;
 	private JButtonYellow buttonInscriptionTournois;
-	private Equipe equipe;
+	private JList<String> listEquipe;
+	private AcceuilEcurie thisInstance = this;
 	
 	/**
 	 * Launch the application.
@@ -100,12 +102,22 @@ public class AcceuilEcurie {
 		fl_panelButtonAddEquipe.setAlignment(FlowLayout.RIGHT);
 		panelMenuLeftHeader.add(panelButtonAddEquipe);
 		
+		JButtonDark buttonRefreshEquipe = new JButtonDark("refresh");
+		buttonRefreshEquipe.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				refreshEquipe();
+			}
+		});
+		panelButtonAddEquipe.add(buttonRefreshEquipe);
+		
 		JButtonYellow buttonAddEquipe = new JButtonYellow("Nouvelle Equipe");
 		buttonAddEquipe.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				try {
-					CreerEquipe.MainWithValue(Ecurie.getID(new Ecurie(Header.header)));
+					System.out.println(Header.header);
+					CreerEquipe.MainWithValue(Ecurie.getID(new Ecurie(Header.header)), thisInstance);
 				} catch (ErreurBD e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -124,7 +136,7 @@ public class AcceuilEcurie {
 		scrollEquipe.setBorder(new LineBorder(Color.BLACK));
 		panelScrollEquipe.add(scrollEquipe);
 		
-		JList<String> listEquipe = new JList<String>();
+		listEquipe = new JList<String>();
 		listEquipe.setBackground(Colors.darkestBlue);
 		listEquipe.setForeground(Colors.lightText);
 		listEquipe.addListSelectionListener(new ListSelectionListener() {
@@ -137,7 +149,7 @@ public class AcceuilEcurie {
 			}
 		});
 		listEquipe.setModel(new AbstractListModel() {
-			String[] values = Equipe.getNomEquipe();
+			String[] values = Equipe.getNomEquipe(Ecurie.getID(new Ecurie(Header.header)));
 			public int getSize() {
 				return values.length;
 			}
@@ -245,5 +257,22 @@ public class AcceuilEcurie {
 		FlowLayout fl_panelSpacing_TournoisRight = (FlowLayout) panelSpacing_TournoisRight.getLayout();
 		fl_panelSpacing_TournoisRight.setHgap(12);
 		panelRight.add(panelSpacing_TournoisRight, BorderLayout.EAST);
+	}
+	
+	public void refreshEquipe() {
+		try {
+			listEquipe.setModel(new AbstractListModel() {
+				String[] values = Equipe.getNomEquipe(Ecurie.getID(new Ecurie(Header.header)));
+				public int getSize() {
+					return values.length;
+				}
+				public Object getElementAt(int index) {
+					return values[index];
+				}
+			});
+		} catch (ErreurBD e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 }

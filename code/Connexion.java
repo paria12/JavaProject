@@ -8,8 +8,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * @author leobb
+ *
+ */
 public class Connexion {
 
+	/** Connexion à l'application par les différents utilisateurs
+	 * @param identifiant
+	 * @param mdp
+	 * @return int
+	 * @throws SQLException
+	 */
 	public static int connexion(String identifiant, String mdp) throws SQLException {
 		String loginBD = "ndf4080a";
 		String mdpBD = "fatime31";
@@ -51,6 +61,10 @@ public class Connexion {
 		return -1;
 	}
 	
+	/**Crypter un string en héxadécimal
+	 * @param str
+	 * @return string
+	 */
 	public static String sta256(String str) {
 		MessageDigest digest;
 		try {
@@ -62,6 +76,10 @@ public class Connexion {
 		return bytesToHex(hash);
 	}
 	
+	/**Transformer un tableau de bytes en string qui correspond à l'héxadécimal de ce tableau
+	 * @param hash
+	 * @return string 
+	 */
 	private static String bytesToHex(byte[] hash) {
 	    StringBuilder hexString = new StringBuilder(2 * hash.length);
 	    for (int i = 0; i < hash.length; i++) {

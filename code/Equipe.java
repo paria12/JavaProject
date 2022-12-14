@@ -30,7 +30,7 @@ public class Equipe {
     	this.nom = nom;
     }
 
-     /**
+     /** constructeur d'équipe en fonction de son nom, son nombre de points et l'id de son jeu
      * @param nom
      * @param nbPoints
      * @param id_jeu
@@ -46,14 +46,14 @@ public class Equipe {
     }
 
     /**renvoie le nom de l'�quipe
-     * @return nom
+     * @return string
      */
     public String getNom() {
     	return this.nom;
     }
 
     /** renvoie le nombre de points de l'�quipe
-     * @return nbPoints
+     * @return int : nbPoints
      * @throws ErreurBD 
      */
     public int getNbPoints() throws ErreurBD {
@@ -63,8 +63,8 @@ public class Equipe {
     	return this.nbPoints;
     }
 
-    /** renvoie l'id d'un jeu � laquelle une �quipe est associ�e
-     * @return id_jeu
+    /** renvoie l'id d'un jeu à laquelle une équipe est associée
+     * @return int : id_jeu
      * @throws ErreurBD 
      */
     public int getIdJeu() throws ErreurBD {
@@ -74,6 +74,10 @@ public class Equipe {
     	return this.id_jeu;
     }
     
+    /**Renvoie la liste de joueur appartenant à cette équipe
+     * @return une liste de joueur
+     * @throws ErreurBD
+     */
     public List<Joueur> getJoueur() throws ErreurBD {
     	if (!this.joueur.isEmpty()) {
     		return this.joueur;
@@ -90,14 +94,24 @@ public class Equipe {
     	this.nbPoints = this.getNbPoints() + nouveauPoint;
     }
     
+    /** ajoute un joueur à la liste
+     * @param j
+     */
     public void addJoueur(Joueur j) {
     	this.joueur.add(j);
     }
     
+    /** supprimer un joueur de la liste
+     * @param j
+     */
     public void removeJoueur(Joueur j) {
     	this.joueur.remove(j);
     }
     
+    /** renvoie l'id d'une équipe en fonction de son nom 
+     * @return int : ID
+     * @throws ErreurBD
+     */
     public int getID() throws ErreurBD{
     	int ID = -1;
     	try {
@@ -112,13 +126,13 @@ public class Equipe {
 			ID = rs.getInt(1);
 			
 		} catch (SQLException e) {
-			throw new ErreurBD("Erreur de requette bd");
+			throw new ErreurBD("Erreur de requête bd");
 		}
 		return ID;
     }
     
     
-    /** ins�re des joueurs dans une �quipe
+    /** insère des joueurs dans une équipe
      * @param id_equipe
      * @return List de joueur
      * @throws ErreurBD
@@ -193,11 +207,17 @@ public class Equipe {
 		}
 	}
 
+	/**redéfinition de hashCode
+	 *@return int
+	 */
 	@Override
 	public int hashCode() {
 		return Objects.hash(id_jeu, nbPoints, nom);
 	}
 
+	/**redéfinition de equals
+	 *@return boolean
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -211,14 +231,18 @@ public class Equipe {
 				&& Objects.equals(nom, other.nom);
 	}
 	
-	public static String[] getNomEquipe( ) throws ErreurBD {
+	/** Renvoie tous les noms d'équipes contenus dans la base de données
+	 * @return un tableau de string
+	 * @throws ErreurBD
+	 */
+	public static String[] getNomEquipe(int IdEcurie) throws ErreurBD {
         try {
             DataSource bd = new ConnexionBD();
             Connection connx = bd.getConnection();
 
             Statement st = connx.createStatement();
 
-            ResultSet rese = st.executeQuery("select nom from equipe order by nom");
+            ResultSet rese = st.executeQuery("select nom from equipe where id_ecurie = " + IdEcurie + " order by nom");
             List <String> nom = new ArrayList<String>();
             while(rese.next()) {
                 nom.add(rese.getString(1));

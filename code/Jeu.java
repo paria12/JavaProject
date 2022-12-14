@@ -14,7 +14,7 @@ public class Jeu {
 	private String nom;
 	private int duree;
 
-	/**constructeur de la classe Jeu et nom
+	/**constructeur de Jeu à partir de son nom
 	 * @param nom
 	 */
 	public Jeu(String nom) {
@@ -22,7 +22,7 @@ public class Jeu {
 		this.duree = -1;
 	}
 
-	/**constructueur de la classe Jeu et de nom et dur�e
+	/**constructueur de Jeu à partir de son nom et sa durée
 	 * @param nom
 	 * @param duree
 	 */
@@ -32,14 +32,14 @@ public class Jeu {
 	}
 
 	/** renvoie le nom du jeu
-	 * @return nom
+	 * @return string : nom
 	 */
 	public String getNom() {
 		return this.nom;
 	}
 
 	/** retourne la dur�e de la partie du Jeu
-	 * @return dur�e
+	 * @return int : durée
 	 * @throws ErreurBD
 	 * @exception mauvaise connexion � la BD
 	 * @exception mauvaise requ�te
@@ -61,13 +61,13 @@ public class Jeu {
 				this.duree = rese.getInt(1);
 
 			} catch (SQLException e) {
-				throw new ErreurBD("Erreur de requ�te a la bd");
+				throw new ErreurBD("Erreur de requête a la bd");
 			}
 			return this.duree;
 		}
 	}
 
-	/** ins�rer toutes les informations dans la base de donn�es
+	/** insérer toutes les informations dans la base de données
 	 * @throws ErreurBD
 	 * @exception mauvaise connexion � la BD
 	 * @exception mauvaise requ�te
@@ -93,6 +93,12 @@ public class Jeu {
 		}
 	}
 	
+	/**Renvoie tous les noms des jeux contenus dans la base de données
+	 * @return un tableau d'objet
+	 * @throws ErreurBD
+	 * @exception mauvaise connexion � la BD
+	 * @exception mauvaise requ�te
+	 */
 	public static Object[] getAll() throws ErreurBD {
 		List<String> l = new ArrayList<String>();
 
@@ -110,11 +116,18 @@ public class Jeu {
 			}
 
 		} catch (SQLException e) {
-			throw new ErreurBD("Erreur de requéte a la bd : "+e);
+			throw new ErreurBD("Erreur de requête a la bd : "+e);
 		}
 		return l.toArray();
 	}
 	
+	/**renvoie l'id d'un jeu en fonction de son nom
+	 * @param j
+	 * @return int
+	 * @throws ErreurBD
+	 * @exception mauvaise connexion � la BD
+	 * @exception mauvaise requ�te
+	 */
 	public static int getID(Jeu j) throws ErreurBD {
 		int retour = 0;
 		try {
@@ -124,18 +137,25 @@ public class Jeu {
 
 			Statement st = connx.createStatement();
 
-			ResultSet rs = st.executeQuery("select id_jeu from jeu where nom="+j.getNom());
+			ResultSet rs = st.executeQuery("select id_jeu from jeu where nom='"+j.getNom()+"'");
 			
 			while(rs.next()) {
 				retour=rs.getInt(1);
 			}
 
 		} catch (SQLException e) {
-			throw new ErreurBD("Erreur de requéte a la bd : "+e);
+			throw new ErreurBD("Erreur de requête à la bd : "+e);
 		}
 		return retour;
 	}
 	
+	/**renvoie la durée d'un jeu en fonction de son id
+	 * @param id
+	 * @return int
+	 * @throws ErreurBD
+	 * @exception mauvaise connexion � la BD
+	 * @exception mauvaise requ�te
+	 */
 	public static int getTimeFromID(int id) throws ErreurBD {
 		int retour = 0;
 		try {

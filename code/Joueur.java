@@ -23,7 +23,7 @@ public class Joueur {
 	private String email;
 
 
-	/** constructueur de la classe Joueur et de nom et pr�nom 
+	/** constructueur de la classe Joueur en fonction de son nom et de son prénom 
 	 * @param nom
 	 * @param prenom
 	 * @throws IllegalArgumentException
@@ -37,7 +37,7 @@ public class Joueur {
 		this.prenom = prenom;
 	}
 
-	/** constructueur de la classe Joueur et de toutes ces variables
+	/** constructueur de la classe Joueur en fonction de son nom, son prénom, sa date de naissance, sonn sexe, son numéro de téléphone et de son email
 	 * @param nom
 	 * @param prenom
 	 * @param date
@@ -60,21 +60,21 @@ public class Joueur {
 	}
 
 	/** renvoie le nom du joueur
-	 * @return nom
+	 * @return string : nom
 	 */
 	public String getNom() {
 		return this.nom;
 	}
 
 	/** renvoie le pr�nom du joueur
-	 * @return prenom
+	 * @return string : prenom
 	 */
 	public String getPrenom() {
 		return this.prenom;
 	}
 
 	/** renvoie le date de naissance du joueur
-	 * @return date de naissance
+	 * @return Date : date de naissance
 	 * @throws ErreurBD 
 	 */
 	public Date getDateNaissance() throws ErreurBD {
@@ -85,18 +85,18 @@ public class Joueur {
 	}
 
 	/** renvoie le sexe du joueur
-	 * @return sexe
+	 * @return char : sexe
 	 * @throws ErreurBD 
 	 */
 	public char getSexe() throws ErreurBD {
-		if (this.sexe != 'H' && this.sexe != 'F') {
+		if (this.sexe != 'M' && this.sexe != 'F' && this.sexe != 'X') {
 			this.select();
 		}
 		return this.sexe;
 	}
 
 	/**renvoie le num�ro de t�l�phone d'un joueur
-	 * @return num�ro de t�l�phone
+	 * @return string : num�ro de t�l�phone
 	 * @throws ErreurBD 
 	 */
 	public String getTel() throws ErreurBD {
@@ -107,7 +107,7 @@ public class Joueur {
 	}
 
 	/**renvoie l'email d'un Joueur
-	 * @return email
+	 * @return string : email
 	 * @throws ErreurBD 
 	 */
 	public String getEmail() throws ErreurBD {
@@ -117,6 +117,9 @@ public class Joueur {
 		return this.email;
 	}
 	
+	/**redéfinition de la méthode equals
+	 *
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -131,9 +134,10 @@ public class Joueur {
 				&& Objects.equals(prenom, other.prenom) && sexe == other.sexe;
 	}
 
-	/** importation des informations secondaires depuis la base de donn�es
+	/** importation des informations secondaires d'un joueur depuis la base de donn�es
 	 * @throws ErreurBD 
-	 * 
+	 * @exception mauvaise connexion � la BD
+	 * @exception mauvaise requ�te
 	 */
 	public void select() throws ErreurBD {
 		try {
@@ -166,7 +170,9 @@ public class Joueur {
 
 	/** ins�rer toutes les informations dans la base de donn�es
 	 * @throws ErreurBD 
-	 * 
+	 * @exception mauvaise connexion � la BD
+	 * @exception mauvaise requ�te
+	 * @exception un des paramètres n'est pas valide
 	 */
 	public void insert(int equipe) throws ErreurBD {
 		if (this.dateN != null && (this.sexe == 'M' || this.sexe == 'F' || this.sexe == 'X') && this.numTel != null && this.email != null && equipe>=0) {
