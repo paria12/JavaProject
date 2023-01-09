@@ -59,7 +59,7 @@ public class Match {
 		}
 	}
 
-	public void Insert(int poule) throws ErreurBD, IllegalArgumentException{
+	public void insert(int poule) throws ErreurBD, IllegalArgumentException{
 		try {
 			DataSource bd = new ConnexionBD();
 

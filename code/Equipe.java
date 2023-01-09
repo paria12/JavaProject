@@ -90,7 +90,7 @@ public class Equipe {
      * @param nouveauPoint
      * @throws ErreurBD 
      */
-    public void AjoutDePoints(int nouveauPoint) throws ErreurBD{
+    public void ajoutDePoints(int nouveauPoint) throws ErreurBD{
     	this.nbPoints = this.getNbPoints() + nouveauPoint;
     }
     

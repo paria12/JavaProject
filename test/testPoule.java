@@ -63,13 +63,13 @@ public class testPoule {
 			st.executeQuery("delete Joueur where nom = 'J'");
 			st.executeQuery("delete Joueur where nom = 'S'");
 			st.executeQuery("delete Joueur where nom = 'B'");
-			st.executeQuery("delete Participer where id_poule = 35");
+			st.executeQuery("delete Participer where id_poule = 54");
 			st.executeQuery("delete Poule where id_tournoi = 1");
 			st.executeQuery("delete Equipe where nom = 'Moi'");
 			st.executeQuery("delete Equipe where nom = 'M'");
 			st.executeQuery("delete Equipe where nom = 'N'");
 			st.executeQuery("delete Equipe where nom = 'P'");
-			
+			st.executeQuery("delete Matchs where id_poule = 54");
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -79,7 +79,7 @@ public class testPoule {
 	@Test
 	public void testInsererEquipe() {
 		Equipe e = new Equipe("Test", 10,1);
-		this.p.InsérerEquipe(e);
+		this.p.insérerEquipe(e);
 		assertEquals(e,this.p.getEquipe()[0]);
 	}
 
@@ -87,23 +87,23 @@ public class testPoule {
 	public void testGetEquipe() {
 		Equipe e = new Equipe("Test", 10,1);
 		Equipe e2 = new Equipe("Test2",10,1);
-		this.p.InsérerEquipe(e);
-		this.p.InsérerEquipe(e2); 
+		this.p.insérerEquipe(e);
+		this.p.insérerEquipe(e2); 
 		assertEquals(e,this.p.getEquipe()[0]);
 		assertEquals(e2,this.p.getEquipe()[1]);
 	}
 	
 	@Test
-	public void testInsert() {
+	public void testInsert() throws ErreurBD {
 		Poule p1 = new Poule();
 		Equipe e1 = new Equipe("Moi",60,1);
 		Equipe e2 = new Equipe("M", 40,1);
 		Equipe e3 = new Equipe("N", 20,1);
 		Equipe e4 = new Equipe("P",10,1);
-		p1.InsérerEquipe(e1);
-		p1.InsérerEquipe(e2);
-		p1.InsérerEquipe(e3);
-		p1.InsérerEquipe(e4);
+		p1.insérerEquipe(e1);
+		p1.insérerEquipe(e2);
+		p1.insérerEquipe(e3);
+		p1.insérerEquipe(e4);
 		Joueur je1 = new Joueur("O","T",new Date(1075503600000L),'M',"0797435176","ot@gmail.com");
 		Joueur je2 = new Joueur("P","I",new Date(1095503600000L),'M',"0787435976","pi@gmail.com");
 		Joueur je3 = new Joueur("Y","A",new Date(1075503700000L),'M',"0647435176","ya@gmail.com");
@@ -150,6 +150,7 @@ public class testPoule {
 			// TODO Auto-generated catch block
 			e5.printStackTrace();
 		}
+		p1.GenererMatch(Timestamp.valueOf("2023-01-22 10:00:00"));
 		try {
 			p1.insert(1);
 		} catch(ErreurBD e) {
@@ -164,11 +165,11 @@ public class testPoule {
 		Equipe e1 = new Equipe("M",11,1);
 		Equipe e2 = new Equipe("N",50,1);
 		Equipe e3 = new Equipe("G", 8,1);
-		this.p.InsérerEquipe(e);
-		this.p.InsérerEquipe(e1);
-		this.p.InsérerEquipe(e2);
-		this.p.InsérerEquipe(e3);
-		this.p.GenererMatch(Timestamp.valueOf("2022-11-23 10:00:00"));
+		this.p.insérerEquipe(e);
+		this.p.insérerEquipe(e1);
+		this.p.insérerEquipe(e2);
+		this.p.insérerEquipe(e3);
+		this.p.GenererMatch(Timestamp.valueOf("2023-01-22 10:00:00"));
 		assertEquals(e2,this.p.getMatch()[0].getEquipe1());
 		assertEquals(e3,this.p.getMatch()[0].getEquipe2());
 	}

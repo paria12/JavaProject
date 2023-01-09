@@ -97,8 +97,8 @@ public class testEquipe {
 
 	@Test
 	public void testAjoutDePoints() throws ErreurBD {
-		this.e.AjoutDePoints(2);
-		this.e2.AjoutDePoints(4);
+		this.e.ajoutDePoints(2);
+		this.e2.ajoutDePoints(4);
 		assertEquals(7,this.e.getNbPoints());
 		assertEquals(14,this.e2.getNbPoints());
 	}
