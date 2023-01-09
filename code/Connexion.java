@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.sql.DataSource;
+
 /**
  * @author leobb
  *
@@ -21,17 +23,9 @@ public class Connexion {
 	 * @throws SQLException
 	 */
 	public static int connexion(String identifiant, String mdp) throws SQLException {
-		String loginBD = "ndf4080a";
-		String mdpBD = "fatime31";
-		String connectString = "jdbc:oracle:thin:@telline.univ-tlse3.fr:1521:etupre";
-		
-		try {
-			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		Connection connx = DriverManager.getConnection(connectString, loginBD, mdpBD);
+		DataSource bd = new ConnexionBD();
+
+		Connection connx = bd.getConnection();
 			
 		Statement st = connx.createStatement();
 		

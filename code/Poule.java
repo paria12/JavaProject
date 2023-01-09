@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.util.HashMap;
 
 import javax.sql.DataSource;
 
@@ -65,6 +64,8 @@ public class Poule {
 			for (Match m : this.matchs) { 
 				m.insert(this.id);
 			}
+			
+			connx.close();
 		}catch (SQLException e){ 
 			throw new ErreurBD("Erreur de requete a la bd"+e);
 		}    
@@ -87,6 +88,9 @@ public class Poule {
 				classement[1][i] = rs.getString(2);
 				i++;
 			}
+			
+			connx.close();
+			
 			return classement;
 		} catch (SQLException e){ 
 			throw new ErreurBD("Erreur de requete a la bd"+e);

@@ -59,7 +59,8 @@ public class Jeu {
 
 				rese.next();
 				this.duree = rese.getInt(1);
-
+				
+				connx.close();
 			} catch (SQLException e) {
 				throw new ErreurBD("Erreur de requête a la bd");
 			}
@@ -87,6 +88,7 @@ public class Jeu {
 
 				st.executeQuery("INSERT INTO jeu values(seq_jeu.nextVal,'"+this.nom+"',"+this.duree+")");
 
+				connx.close();
 			} catch (SQLException e) {
 				throw new ErreurBD("Erreur de requ�te a la bd");
 			}
@@ -115,6 +117,7 @@ public class Jeu {
 				l.add(rs.getString(1));
 			}
 
+			connx.close();
 		} catch (SQLException e) {
 			throw new ErreurBD("Erreur de requête a la bd : "+e);
 		}
@@ -143,6 +146,7 @@ public class Jeu {
 				retour=rs.getInt(1);
 			}
 
+			connx.close();
 		} catch (SQLException e) {
 			throw new ErreurBD("Erreur de requête à la bd : "+e);
 		}
@@ -171,6 +175,7 @@ public class Jeu {
 				retour=rs.getInt(1);
 			}
 
+			connx.close();
 		} catch (SQLException e) {
 			throw new ErreurBD("Erreur de requéte a la bd : "+e);
 		}

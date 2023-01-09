@@ -179,6 +179,9 @@ public class Tournoi {
 					}
 				}
 			}
+			
+			connx.close();
+			
 			return classement;
 		} catch (SQLException e){ 
 			throw new ErreurBD("Erreur de requete a la bd"+e);
@@ -233,6 +236,7 @@ public class Tournoi {
 
 				st.executeUpdate("Update equipe set nb_points="+nbp+" where nom='"+this.poules[4].getClassement()[0][i]+"'");
 
+				connx.close();
 			} catch (SQLException e) {
 				throw new ErreurBD("Erreur de requette a la bd");
 			}
@@ -266,6 +270,7 @@ public class Tournoi {
 				this.notoriete = rese.getString(5);
 			}
 
+			connx.close();
 		} catch (SQLException e) {
 			throw new ErreurBD("Erreur de requette a la bd");
 		}
@@ -285,6 +290,7 @@ public class Tournoi {
 				st.executeQuery("INSERT INTO tournoi values(seq_tournoi.nextVal,'"+this.ville+"','"+this.pays+"','"+this.codePostal+"',"+this.date+",'"+this.notoriete+"','"+this.nom+"','"+this.adresse+"',"+arbitre+","+
 						this.idjeu+")");
 
+				connx.close();
 			} catch (SQLException e) {
 				throw new ErreurBD("Erreur de requ�te a la bd");
 			}
@@ -307,10 +313,13 @@ public class Tournoi {
 				l.add(new Tournoi(rs.getString(1),rs.getDate(2),rs.getInt(3)));
 			}
 
+			connx.close();
 		} catch (SQLException e) {
 			throw new ErreurBD("Erreur de requête a la bd : "+e);
 		}
-		return (Tournoi[]) l.toArray();
+		Tournoi[] t = new Tournoi[l.size()];
+		t = l.toArray(t);
+		return t;
 	}
 
 	public static Tournoi[] getAllFromJeu(int id_jeu) throws ErreurBD {
@@ -329,6 +338,7 @@ public class Tournoi {
 				l.add(new Tournoi(rs.getString(1),rs.getDate(2),id_jeu));
 			}
 
+			connx.close();
 		} catch (SQLException e) {
 			throw new ErreurBD("Erreur de requête a la bd : "+e);
 		}

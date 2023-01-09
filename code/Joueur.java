@@ -163,6 +163,7 @@ public class Joueur {
 				this.email = rese.getString(4);
 			}
 
+			connx.close();
 		} catch (SQLException e) {
 			throw new ErreurBD("Erreur de requette a la bd");
 		}
@@ -186,6 +187,7 @@ public class Joueur {
 				st.executeQuery("INSERT INTO joueur values(seq_joueur.nextVal,'"+this.nom+"','"+this.prenom+"',to_date('"+this.dateN.toString()+"','YYYY-MM-DD'),'"
 						+this.sexe+"','"+this.numTel+"','"+this.email+"',"+equipe+")");
 
+				connx.close();
 			} catch (SQLException e) {
 				throw new ErreurBD("Erreur de reqette a la bd");
 			}

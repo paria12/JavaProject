@@ -52,8 +52,9 @@ public class Match {
 
 			Statement st = connx.createStatement();
 
-			st.executeQuery("Update match set gagnant = "+e.getID()+" where ID_equipe ="+this.E1.getID()+" and ID_equipe1 ="+this.E2.getID()+"and heuredebut ="+this.Hdebut+")");
+			st.executeUpdate("Update match set gagnant = "+e.getID()+" where ID_equipe ="+this.E1.getID()+" and ID_equipe1 ="+this.E2.getID()+"and heuredebut ="+this.Hdebut+")");
 
+			connx.close();
 		} catch (SQLException exc) {
 			throw new ErreurBD("Erreur de requéte a la bd");
 		}
@@ -69,6 +70,7 @@ public class Match {
 
 			st.executeQuery("INSERT INTO match values("+this.E1.getID()+","+this.E2.getID()+","+poule+",null,"+this.Hdebut+","+this.Hfin+")");
 
+			connx.close();
 		} catch (SQLException e) {
 			throw new ErreurBD("Erreur de requéte a la bd");
 		}

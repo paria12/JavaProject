@@ -79,7 +79,8 @@ public class Ecurie {
 
 				rese.next();
 				this.type = rese.getString(1);
-
+				
+				connx.close();
 			} catch (SQLException e) {
 				throw new ErreurBD("Erreur de requ�te a la bd");
 			}
@@ -117,6 +118,8 @@ public class Ecurie {
 			while(rs.next()){
 				this.equipe.add(new Equipe(rs.getString(1),rs.getInt(2),rs.getInt(3)));
 			}
+			
+			connx.close();
 		} catch (SQLException e) {
 			throw new ErreurBD("Erreur de requette bd");
 		}
@@ -188,6 +191,7 @@ public class Ecurie {
 				retour=rs.getInt(1);
 			}
 
+			connx.close();
 		} catch (SQLException e) {
 			throw new ErreurBD("Erreur de requéte a la bd : "+e);
 		}

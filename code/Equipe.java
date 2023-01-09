@@ -125,6 +125,7 @@ public class Equipe {
 			rs.next();
 			ID = rs.getInt(1);
 			
+			connx.close();
 		} catch (SQLException e) {
 			throw new ErreurBD("Erreur de requête bd");
 		}
@@ -150,11 +151,37 @@ public class Equipe {
 			while(rs.next()){
 				this.joueur.add(new Joueur(rs.getString(1),rs.getString(2),rs.getDate(3),rs.getString(4).charAt(0),rs.getString(5),rs.getString(6)));
 			}
+			
+			connx.close();
 		} catch (SQLException e) {
 			throw new ErreurBD("Erreur de requette bd");
 		}
 		return joueur;
 		
+    }
+    
+    public static String[] getClassement() throws ErreurBD {
+        try {
+            DataSource bd = new ConnexionBD();
+            Connection connx = bd.getConnection();
+
+            Statement st = connx.createStatement();
+
+            ResultSet rs = st.executeQuery("select nom,nb_points from equipe order by nb_points desc");
+
+            List<String> equipe = new ArrayList<String>();
+
+            while(rs.next()) {
+                equipe.add(rs.getString(1));
+            }
+            String [] classement = Arrays.copyOf(equipe.toArray(), equipe.toArray().length,String[].class);
+            
+            connx.close();
+            
+            return classement;
+        } catch (SQLException e) {
+            throw new ErreurBD("Erreur de requette bd");
+        }
     }
 
     /** importation des informations secondaires depuis la base de donn�es
@@ -178,6 +205,8 @@ public class Equipe {
 			if(this.id_jeu < 0) {
 				this.id_jeu = rese.getInt(2);
 			}
+			
+			connx.close();
 		} catch (SQLException e) {
 			throw new ErreurBD("Erreur de requette bd");
 		}
@@ -199,6 +228,7 @@ public class Equipe {
 
 				st.executeQuery("INSERT INTO equipe values(seq_joueur.nextVal,'"+this.nom+"',"+this.nbPoints+","+this.id_jeu+","+ecurie+")");
 
+				connx.close();
 			} catch (SQLException e) {
 				throw new ErreurBD("Erreur de requette bd");
 			}
@@ -248,6 +278,9 @@ public class Equipe {
                 nom.add(rese.getString(1));
             }
             String[] r = Arrays.copyOf(nom.toArray(), nom.toArray().length, String[].class);
+            
+            connx.close();
+            
             return r;
         } catch (SQLException e) {
             throw new ErreurBD("Erreur de requette bd");
