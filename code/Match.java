@@ -16,7 +16,7 @@ public class Match {
 	public Match(Equipe e1, Equipe e2, Timestamp hd, Timestamp hf) {
 		if (e1 == null || e2 == null || hd == null || hf == null) {
 			throw new IllegalArgumentException("L'un des paramètres est null");
-		} else if (hd.compareTo(hf) <= 0) {
+		} else if (hd.compareTo(hf) >= 0) {
 			throw new IllegalArgumentException("L'heure de début est supérieur ou égal à l'heure de fin");
 		}
 		this.E1 = e1;

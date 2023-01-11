@@ -60,7 +60,10 @@ public class Poule {
 				st.executeQuery("Insert into Participer values ( "+e.getID()+ ", seq_poule.currval)");
 			}
 			ResultSet rs = st.executeQuery("select seq_poule.currval from poule");
-			this.id = rs.getInt(1);
+			if (rs.next()) {
+				this.id = rs.getInt(1);
+			}
+			
 			for (Match m : this.matchs) { 
 				m.insert(this.id);
 			}

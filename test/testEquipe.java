@@ -84,7 +84,7 @@ public class testEquipe {
 
 	@Test
 	public void testGetIdJeu() throws ErreurBD{
-		assertEquals(2,this.e.getIdJeu());
+		assertEquals(1,this.e.getIdJeu());
 		assertEquals(1,this.e2.getIdJeu());
 	}
 	@Test

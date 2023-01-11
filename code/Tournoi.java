@@ -332,7 +332,7 @@ public class Tournoi {
 
 			Statement st = connx.createStatement();
 
-			ResultSet rs = st.executeQuery("select t.nomtournoi, t.datetournoi from tournoi t where id_jeu="+id_jeu+" and (SELECT COUNT(*) FROM Participation p WHERE p.id_tournoi = t.id_tournoi)<16;");
+			ResultSet rs = st.executeQuery("select t.nomtournoi, t.datetournoi from tournoi t where id_jeu="+id_jeu+" and (SELECT COUNT(*) FROM Participation p WHERE p.id_tournoi = t.id_tournoi)<16");
 
 			while(rs.next()) {
 				l.add(new Tournoi(rs.getString(1),rs.getDate(2),id_jeu));

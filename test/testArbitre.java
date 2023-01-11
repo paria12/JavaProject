@@ -36,7 +36,12 @@ public class testArbitre {
 
 	@Test
 	public void testGetMatch() {
-		fail("Not yet implemented");
+		Arbitre a = new Arbitre("chien");
+		try {
+			assertEquals(a.getMatch()[0].getEquipe1().getNom(),"Best OF The Best");
+		} catch (ErreurBD e) {
+			fail(e.getMessage());
+		}
 	}
 
 	@Test

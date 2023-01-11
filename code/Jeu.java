@@ -169,7 +169,7 @@ public class Jeu {
 
 			Statement st = connx.createStatement();
 
-			ResultSet rs = st.executeQuery("select duree from jeu where id_jeu="+id);
+			ResultSet rs = st.executeQuery("select temps_partie from jeu where id_jeu="+id);
 			
 			while(rs.next()) {
 				retour=rs.getInt(1);
