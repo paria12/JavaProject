@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 import javax.sql.DataSource;
 
@@ -35,6 +36,7 @@ public class Tournoi {
 		this.notoriete = null;
 		this.idjeu = jeu;
 		this.equipes = new ArrayList<Equipe>();
+		this.poules = new Poule[5];
 	}
 
 	public Tournoi(String nom, String adresse, String ville, String pays, String codePostal, Date date, String notoriete, int jeu) {
@@ -46,6 +48,8 @@ public class Tournoi {
 		this.date = date;
 		this.notoriete = notoriete;
 		this.idjeu = jeu;
+		this.equipes = new ArrayList<Equipe>();
+		this.poules = new Poule[5];
 	}
 
 	public String getNom() {
@@ -250,8 +254,9 @@ public class Tournoi {
 			Connection connx = bd.getConnection();
 
 			Statement st = connx.createStatement();
-
-			ResultSet rese = st.executeQuery("select adresse, ville, pays, codepostal, notoriete from Tournoi where nomtournoi='"+this.nom+"' and datetournoi='"+this.date+"'");
+			
+			System.out.println("select adresse, ville, pays, codepostal, notoriete from Tournoi where nomtournoi='"+this.nom+"' and datetournoi='"+this.date.getDate()+"/"+this.date.getMonth()+1+"/"+this.date.getYear()+"'");
+			ResultSet rese = st.executeQuery("select adresse, ville, pays, codepostal, notoriete from Tournoi where nomtournoi='"+this.nom+"' and datetournoi='"+this.date.getDate()+"/"+this.date.getMonth()+1+"/"+(this.date.getYear()-100)+"'");
 
 			rese.next();
 			if (this.adresse == null) {
@@ -272,7 +277,7 @@ public class Tournoi {
 
 			connx.close();
 		} catch (SQLException e) {
-			throw new ErreurBD("Erreur de requette a la bd");
+			throw new ErreurBD("Erreur requette : "+e.getMessage());
 		}
 	}
 
@@ -322,26 +327,51 @@ public class Tournoi {
 		return t;
 	}
 
-	public static Tournoi[] getAllFromJeu(int id_jeu) throws ErreurBD {
+	public static Tournoi[] getAvailableEquipe(Equipe e) throws ErreurBD {
 		List<Tournoi> l = new ArrayList<Tournoi>();
 
 		try {
 			DataSource bd = new ConnexionBD();
-
+			
 			Connection connx = bd.getConnection();
 
 			Statement st = connx.createStatement();
 
-			ResultSet rs = st.executeQuery("select t.nomtournoi, t.datetournoi from tournoi t where id_jeu="+id_jeu+" and (SELECT COUNT(*) FROM Participation p WHERE p.id_tournoi = t.id_tournoi)<16");
+			int id_jeu = e.getIdJeu();
+			ResultSet rs = st.executeQuery("select t.nomtournoi, t.datetournoi from tournoi t where id_jeu="+id_jeu+" and "+e.getID()+"not in (select distinct id_equipe from participation) and (SELECT COUNT(*) FROM Participation p WHERE p.id_tournoi = t.id_tournoi)<16");
 
 			while(rs.next()) {
 				l.add(new Tournoi(rs.getString(1),rs.getDate(2),id_jeu));
 			}
 
 			connx.close();
-		} catch (SQLException e) {
-			throw new ErreurBD("Erreur de requête a la bd : "+e);
+		} catch (SQLException ex) {
+			throw new ErreurBD("Erreur de requête a la bd : "+ex.getMessage());
 		}
-		return (Tournoi[]) l.toArray();
+		Tournoi[] t = new Tournoi[l.size()];
+        t = l.toArray(t);
+        return t;
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(date, idjeu, nom);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof Tournoi)) {
+			return false;
+		}
+		Tournoi other = (Tournoi) obj;
+		return Objects.equals(date, other.date) && idjeu == other.idjeu && Objects.equals(nom, other.nom);
+	}
+	
+	@Override
+	public String toString() {
+		return this.date.toString()+" - "+this.nom;
+	}	
 }

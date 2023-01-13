@@ -4,15 +4,17 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import javax.sql.DataSource;
 
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
+import code.ConnexionBD;
 import code.Ecurie;
 import code.Equipe;
 import code.ErreurBD;
@@ -23,22 +25,17 @@ public class testEcurie {
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
-		String loginBD = "ndf4080a";
-		String mdpBD = "fatime31";
-		String connectString = "jdbc:oracle:thin:@telline.univ-tlse3.fr:1521:etupre";
 
 		try {
-			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		try {
-			Connection connx = DriverManager.getConnection(connectString, loginBD, mdpBD);
+			DataSource bd = new ConnexionBD();
+			
+			Connection connx = bd.getConnection();
 
 			Statement st = connx.createStatement();
 
-			st.executeQuery("delete Ecurie where nom = 'test'");
+			st.executeUpdate("delete equipe where nom = 'test'");
+			st.executeUpdate("delete Ecurie where nom = 'test'");
+			st.executeUpdate("delete Ecurie where nom = 'test2'");
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -111,27 +108,37 @@ public class testEcurie {
 
 	@Test
 	public void testGetEquipe() {
+		Ecurie t = new Ecurie("test","Professionnelle");
+		Equipe test = new Equipe("test",0,1);
 		try {
-			assertEquals(this.e.getEquipe().get(0).getNom(),"Best OF The Best");
+			t.insert("pwd");
+			test.insert(Ecurie.getID(t));
 		} catch (ErreurBD e) {
-			fail("ErreurBd");
+			fail("Erreur set up : "+e.getMessage());
+		}
+		
+		Ecurie t2 = new Ecurie("test");
+		try {
+			assertEquals(t2.getEquipe().get(0),test);
+		} catch (ErreurBD e) {
+			fail("Erreur Get : "+e.getMessage());
 		}
 	}
 
 	@Test
 	public void testInsert() {
-		Ecurie t = new Ecurie("test","Professionnelle");
+		Ecurie t = new Ecurie("test2","Professionnelle");
 		try {
 			t.insert("pwd");
 		} catch (ErreurBD e) {
-			fail("erreur bd put");
+			fail("Erreur put : "+e.getMessage());
 		}
 		
-		Ecurie t2 = new Ecurie("test");
+		Ecurie t2 = new Ecurie("test2");
 		try {
 			assertEquals(t2.getType(),"Professionnelle");
 		} catch (ErreurBD e) {
-			fail("erreur bd get");
+			fail("Erreur get : "+e.getMessage());
 		}
 	}
 

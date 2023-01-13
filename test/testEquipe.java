@@ -4,16 +4,18 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Date;
+
+import javax.sql.DataSource;
 
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
+import code.ConnexionBD;
 import code.Equipe;
 import code.ErreurBD;
 import code.Joueur;
@@ -35,22 +37,17 @@ public class testEquipe {
 	}
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
-		String loginBD = "ndf4080a";
-		String mdpBD = "fatime31";
-		String connectString = "jdbc:oracle:thin:@telline.univ-tlse3.fr:1521:etupre";
 
 		try {
-			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		try {
-			Connection connx = DriverManager.getConnection(connectString, loginBD, mdpBD);
+			DataSource bd = new ConnexionBD();
+			
+			Connection connx = bd.getConnection();
 
 			Statement st = connx.createStatement();
 
 			st.executeQuery("delete Equipe where nom = 'Jeanne'");
+			st.executeUpdate("delete Joueur where nom = 'test'and prenom = 'test'");
+			st.executeUpdate("delete equipe where nom = 'test'");
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -77,46 +74,88 @@ public class testEquipe {
 	}
 
 	@Test
-	public void testGetNbPoints() throws ErreurBD {
-		assertEquals(5,this.e.getNbPoints());
-		assertEquals(10,this.e2.getNbPoints());
+	public void testGetNbPoints() {
+		try {
+			assertEquals(5,this.e.getNbPoints());
+			assertEquals(10,this.e2.getNbPoints());
+		} catch (ErreurBD e) {
+			fail("Erreur bd : "+e.getMessage());
+		}
 	}
 
 	@Test
-	public void testGetIdJeu() throws ErreurBD{
-		assertEquals(1,this.e.getIdJeu());
-		assertEquals(1,this.e2.getIdJeu());
+	public void testGetIdJeu() {
+		try {
+			assertEquals(1,this.e.getIdJeu());
+			assertEquals(1,this.e2.getIdJeu());
+		} catch (ErreurBD e) {
+			fail("Erreur bd : "+e.getMessage());
+		}
 	}
+
 	@Test
-	public void testGetjoueur()throws ErreurBD{
+	public void testGetjoueur(){
 		Joueur j = new Joueur("test","test");
 		this.e2.addJoueur(j);
-		assertEquals(this.e.getJoueur().get(1),new Joueur("Muru","Jean-Batiste",new Date(1075503600000L), 'H', "0685588528", "jb.muru@gmail.com"));
-		assertEquals(this.e2.getJoueur().get(0),j);
+		try {
+			assertEquals(this.e2.getJoueur().get(0),j);
+		} catch (ErreurBD e) {
+			fail("Erreur local : "+e.getMessage());
+		}
+		
+		Equipe test = new Equipe("test",0,1);
+		Joueur t = new Joueur("test","test",new Date(1075503600000L), 'M', "0000000000", "test");
+		try {
+			test.insert(1);
+			t.insert(test.getID());
+		} catch (ErreurBD e) {
+			fail("erreur set up : "+e.getMessage());
+		}
+		
+		Equipe test2 = new Equipe("test",0,1);
+		try {
+			assertEquals(test2.getJoueur().get(0),t);
+		} catch (ErreurBD e) {
+			fail("Erreur distant : "+e.getMessage());
+		}
 	}
 
 	@Test
-	public void testAjoutDePoints() throws ErreurBD {
-		this.e.ajoutDePoints(2);
-		this.e2.ajoutDePoints(4);
-		assertEquals(7,this.e.getNbPoints());
-		assertEquals(14,this.e2.getNbPoints());
+	public void testAjoutDePoints() {
+		try {
+			this.e.ajoutDePoints(2);
+			this.e2.ajoutDePoints(4);
+			assertEquals(7,this.e.getNbPoints());
+			assertEquals(14,this.e2.getNbPoints());
+		} catch (ErreurBD e) {
+			fail("Erreur bd : "+e.getMessage());
+		}
 	}
+	
 	@Test
-	public void testAddJoueur() throws ErreurBD {
+	public void testAddJoueur() {
 		Joueur j = new Joueur("Muru","Jean-Batiste");
 		this.e2.addJoueur(j);
-		assertEquals(j,this.e2.getJoueur().get(0));
+		try {
+			assertEquals(j,this.e2.getJoueur().get(0));
+		} catch (ErreurBD e) {
+			fail("Erreur bd : "+e.getMessage());
+		}
 	}
+	
 	@Test
-	public void testremoveJoueur() throws ErreurBD{
+	public void testremoveJoueur() {
 		Joueur j = new Joueur("Muru","Jean-Batiste");
 		Joueur j2 = new Joueur("Leblanc","Hervé");
 		this.e2.addJoueur(j);
 		this.e2.addJoueur(j2);
 		this.e2.removeJoueur(j2);
-		assertEquals(1,this.e2.getJoueur().size());
-		assertEquals(j,this.e2.getJoueur().get(0));
+		try {
+			assertEquals(1,this.e2.getJoueur().size());
+			assertEquals(j,this.e2.getJoueur().get(0));
+		} catch (ErreurBD e) {
+			fail("Erreur bd : "+e.getMessage());
+		}
 	}
 	@Test
 	public void testInsert() {

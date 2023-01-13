@@ -127,7 +127,7 @@ public class Equipe {
 			
 			connx.close();
 		} catch (SQLException e) {
-			throw new ErreurBD("Erreur de requête bd");
+			throw new ErreurBD("Erreur getID : "+e.getMessage());
 		}
 		return ID;
     }

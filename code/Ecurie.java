@@ -141,7 +141,7 @@ public class Ecurie {
 				st.executeQuery("INSERT INTO ecurie values(seq_ecurie.nextVal,'"+this.nom+"','"+this.type+"','"+Connexion.sta256(pwd)+"')");
 
 			} catch (SQLException e) {
-				throw new ErreurBD("Erreur de requête bd");
+				throw new ErreurBD("Erreur requête : "+e.getMessage());
 			}
 		} else {
 			throw new IllegalArgumentException("Le type de l'ecurie doit etre renseigner pour cette op�ration");

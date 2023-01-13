@@ -5,15 +5,18 @@ import static org.junit.Assert.fail;
 
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import javax.sql.DataSource;
 
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
+import code.ConnexionBD;
+import code.Equipe;
 import code.ErreurBD;
 import code.Joueur;
 
@@ -35,22 +38,16 @@ public class testJoueur {
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
-		String loginBD = "ndf4080a";
-		String mdpBD = "fatime31";
-		String connectString = "jdbc:oracle:thin:@telline.univ-tlse3.fr:1521:etupre";
 
 		try {
-			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		try {
-			Connection connx = DriverManager.getConnection(connectString, loginBD, mdpBD);
+			DataSource bd = new ConnexionBD();
+			
+			Connection connx = bd.getConnection();
 
 			Statement st = connx.createStatement();
 
-			st.executeQuery("delete Joueur where nom = 'test'and prenom = 'test'");
+			st.executeUpdate("delete Joueur where nom = 'test'and prenom = 'test'");
+			st.executeUpdate("delete equipe where nom = 'test'");
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -107,11 +104,13 @@ public class testJoueur {
 
 	@Test
 	public void testInsert() {
+		Equipe test = new Equipe("test",0,1);
 		Joueur t = new Joueur("test","test",new Date(1075503600000L), 'M', "0000000000", "test");
 		try {
-			t.insert(3);
+			test.insert(1);
+			t.insert(test.getID());
 		} catch (ErreurBD e) {
-			fail("erreur bd put");
+			fail("erreur bd put : "+e.getMessage());
 		}
 		
 		Joueur t2 = new Joueur("test","test");
