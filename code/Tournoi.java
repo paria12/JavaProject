@@ -255,7 +255,6 @@ public class Tournoi {
 
 			Statement st = connx.createStatement();
 			
-			System.out.println("select adresse, ville, pays, codepostal, notoriete from Tournoi where nomtournoi='"+this.nom+"' and datetournoi='"+this.date.getDate()+"/"+this.date.getMonth()+1+"/"+this.date.getYear()+"'");
 			ResultSet rese = st.executeQuery("select adresse, ville, pays, codepostal, notoriete from Tournoi where nomtournoi='"+this.nom+"' and datetournoi='"+this.date.getDate()+"/"+this.date.getMonth()+1+"/"+(this.date.getYear()-100)+"'");
 
 			rese.next();
@@ -282,7 +281,7 @@ public class Tournoi {
 	}
 
 	public void insert(int arbitre) throws ErreurBD, IllegalArgumentException{
-		if (this.adresse != null && this.codePostal != null && this.notoriete != null && this.pays != null && this.ville != null) {
+		if (this.adresse == null || this.codePostal == null || this.notoriete == null || this.pays == null || this.ville == null) {
 			throw new IllegalArgumentException("Un des argument n'est pas valide");
 		} else {
 			try {
@@ -292,12 +291,12 @@ public class Tournoi {
 
 				Statement st = connx.createStatement();
 
-				st.executeQuery("INSERT INTO tournoi values(seq_tournoi.nextVal,'"+this.ville+"','"+this.pays+"','"+this.codePostal+"',"+this.date+",'"+this.notoriete+"','"+this.nom+"','"+this.adresse+"',"+arbitre+","+
+				st.executeQuery("INSERT INTO tournoi values(seq_tournoi.nextVal,'"+this.ville+"','"+this.pays+"','"+this.codePostal+"','"+this.date.getDate()+"/"+this.date.getMonth()+1+"/"+(this.date.getYear()-100)+"','"+this.notoriete+"','"+this.nom+"','"+this.adresse+"',"+arbitre+","+
 						this.idjeu+")");
 
 				connx.close();
 			} catch (SQLException e) {
-				throw new ErreurBD("Erreur de requ�te a la bd");
+				throw new ErreurBD("Erreur requéte : "+e.getMessage());
 			}
 		}
 	}
@@ -367,7 +366,7 @@ public class Tournoi {
 			return false;
 		}
 		Tournoi other = (Tournoi) obj;
-		return Objects.equals(date, other.date) && idjeu == other.idjeu && Objects.equals(nom, other.nom);
+		return date.compareTo(other.date)==0 && idjeu == other.idjeu && Objects.equals(nom, other.nom);
 	}
 	
 	@Override

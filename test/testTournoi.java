@@ -3,14 +3,21 @@ package test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Calendar;
+
+import javax.sql.DataSource;
 
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
+import code.ConnexionBD;
+import code.Ecurie;
 import code.Equipe;
 import code.ErreurBD;
 import code.Tournoi;
@@ -21,6 +28,20 @@ public class testTournoi {
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
+
+		try {
+			DataSource bd = new ConnexionBD();
+			
+			Connection connx = bd.getConnection();
+
+			Statement st = connx.createStatement();
+
+			st.executeUpdate("delete equipe where nom = 'test'");
+			st.executeUpdate("delete tournoi where nomtournoi like 'test%'");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Before
@@ -30,7 +51,7 @@ public class testTournoi {
 		cal.set( Calendar.MONTH, 0);
 		cal.set( Calendar.YEAR, 2023);
 		this.t1 = new Tournoi("Esport world convention",new Date(cal.getTimeInMillis()),1);
-		this.t2 = new Tournoi("test","test","test","test","test",new Date(1673775400000L),"test",3);
+		this.t2 = new Tournoi("test","test","test","test","test",new Date(1673775400000L),"INTERNATIONAL",3);
 	}
 
 	@After
@@ -48,7 +69,7 @@ public class testTournoi {
 
 	@Test
 	public void testTournoiStringStringStringStringStringDateStringInt() {
-		Tournoi test = new Tournoi("test","test","test","test","test",new Date(1673775400000L),"test",3);
+		Tournoi test = new Tournoi("test","test","test","test","test",new Date(1673775400000L),"INTERNATIONAL",3);
 		assertEquals(test,t2);
 	}
 
@@ -116,7 +137,7 @@ public class testTournoi {
 
 	@Test
 	public void testGetDate() {
-		assertEquals(t1.getDate(),new Date(1673737200000L));
+		assertEquals(0,t1.getDate().compareTo(new Date(1673737200000L)));
 		assertEquals(t2.getDate(),new Date(1673775400000L));
 	}
 
@@ -128,7 +149,7 @@ public class testTournoi {
 			fail("Ereur t1 : "+e.getMessage());
 		}
 		try {
-			assertEquals(t2.getNotoriete(),"test");
+			assertEquals(t2.getNotoriete(),"INTERNATIONAL");
 		} catch (ErreurBD e) {
 			fail("Ereur t2 : "+e.getMessage());
 		}
@@ -190,8 +211,22 @@ public class testTournoi {
 	}
 
 	@Test
-	public void testGetAllFromJeu() {
-		fail("unimplemented");
+	public void testGetAvailableEquipe() {
+		Tournoi test = new Tournoi("test2","test","test","test","test",new Date(1673775400000L),"INTERNATIONAL",4);
+		Equipe te = new Equipe("test",0,4);
+		try {
+			te.insert(1);
+			test.insert(1);
+		} catch (IllegalArgumentException e) {
+			fail("Ereur Arg setup : "+e.getMessage());
+		} catch (ErreurBD e) {
+			fail("Ereur BD setup : "+e.getMessage());
+		}
+		
+		try {
+			assertEquals(test,Tournoi.getAvailableEquipe(te)[0]);
+		} catch (ErreurBD e) {
+			fail("Ereur BD : "+e.getMessage());
+		}
 	}
-
 }
