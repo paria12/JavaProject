@@ -230,7 +230,7 @@ public class Equipe {
 
 				connx.close();
 			} catch (SQLException e) {
-				throw new ErreurBD("Erreur de requette bd");
+				throw new ErreurBD("Erreur requette : "+e.getMessage());
 			}
 		} else {
 			throw new IllegalArgumentException("Au moins un des param�tres n'est pas valide/definie");

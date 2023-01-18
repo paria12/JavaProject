@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -255,7 +256,11 @@ public class Tournoi {
 
 			Statement st = connx.createStatement();
 			
-			ResultSet rese = st.executeQuery("select adresse, ville, pays, codepostal, notoriete from Tournoi where nomtournoi='"+this.nom+"' and datetournoi='"+this.date.getDate()+"/"+this.date.getMonth()+1+"/"+(this.date.getYear()-100)+"'");
+			Calendar cal = Calendar.getInstance();
+	        cal.setTime(this.date);
+
+	        ResultSet rese = st.executeQuery("select adresse, ville, pays, codepostal, notoriete from Tournoi where nomtournoi='"
+	        +this.nom+"' and datetournoi='"+cal.get(Calendar.DAY_OF_MONTH)+"/"+(cal.get(Calendar.MONTH)+1)+"/"+(cal.get(Calendar.YEAR))+"'");
 
 			rese.next();
 			if (this.adresse == null) {
@@ -290,10 +295,13 @@ public class Tournoi {
 				Connection connx = bd.getConnection();
 
 				Statement st = connx.createStatement();
+				
+				Calendar cal = Calendar.getInstance();
+		        cal.setTime(this.date);
 
-				st.executeQuery("INSERT INTO tournoi values(seq_tournoi.nextVal,'"+this.ville+"','"+this.pays+"','"+this.codePostal+"','"+this.date.getDate()+"/"+this.date.getMonth()+1+"/"+(this.date.getYear()-100)+"','"+this.notoriete+"','"+this.nom+"','"+this.adresse+"',"+arbitre+","+
-						this.idjeu+")");
-
+		        st.executeQuery("INSERT INTO tournoi values(seq_tournoi.nextVal,'"+this.ville+"','"+this.pays+"','"+this.codePostal+"','"
+		        				+cal.get(Calendar.DAY_OF_MONTH)+"/"+(cal.get(Calendar.MONTH)+1)+"/"+(cal.get(Calendar.YEAR))+"','"+this.notoriete
+		        				+"','"+this.nom+"','"+this.adresse+"',"+arbitre+","+ this.idjeu+")");
 				connx.close();
 			} catch (SQLException e) {
 				throw new ErreurBD("Erreur requéte : "+e.getMessage());

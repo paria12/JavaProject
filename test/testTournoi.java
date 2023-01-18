@@ -17,7 +17,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import code.ConnexionBD;
-import code.Ecurie;
 import code.Equipe;
 import code.ErreurBD;
 import code.Tournoi;
@@ -36,7 +35,7 @@ public class testTournoi {
 
 			Statement st = connx.createStatement();
 
-			st.executeUpdate("delete equipe where nom = 'test'");
+			st.executeUpdate("delete equipe where nom like 'test%'");
 			st.executeUpdate("delete tournoi where nomtournoi like 'test%'");
 
 		} catch (SQLException e) {

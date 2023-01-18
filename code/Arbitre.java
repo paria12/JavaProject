@@ -16,6 +16,26 @@ public class Arbitre {
 		this.login = log;
 	}
 	
+	public int getID() throws ErreurBD {
+		int ID = -1;
+    	try {
+			DataSource bd = new ConnexionBD();
+			
+			Connection connx = bd.getConnection();
+
+			Statement st = connx.createStatement();
+
+			ResultSet rs = st.executeQuery("select id_arbitre from arbitre where login ='"+this.login+"'");
+			rs.next();
+			ID = rs.getInt(1);
+			
+			connx.close();
+		} catch (SQLException e) {
+			throw new ErreurBD("Erreur getID : "+e.getMessage());
+		}
+		return ID;
+    }
+	
 	public Match[] getMatch() throws ErreurBD {
 		ArrayList<Match> result = new ArrayList<Match>();
 		try {

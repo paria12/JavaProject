@@ -35,14 +35,14 @@ public class Poule {
 	}
 
 	public void GenererMatch(Timestamp hdebut) throws ErreurBD {
-		int temps = Jeu.getTimeFromID(this.equipes[0].getIdJeu());
-		this.matchs[0] = new Match(this.equipes[2],this.equipes[3],hdebut,new Timestamp(hdebut.getTime()+temps));
-		this.matchs[1] = new Match(this.equipes[0],this.equipes[1],hdebut,new Timestamp(hdebut.getTime()+temps));
-		this.matchs[2] = new Match(this.equipes[0], this.equipes[2],new Timestamp(hdebut.getTime()+temps), new Timestamp(hdebut.getTime()+2*temps));
-		this.matchs[3] = new Match(this.equipes[1], this.equipes[3], new Timestamp(hdebut.getTime()+temps), new Timestamp(hdebut.getTime()+2*temps));
-		this.matchs[4] = new Match(this.equipes[0], this.equipes[3],new Timestamp(hdebut.getTime()+2*temps) , new Timestamp(hdebut.getTime()+3*temps));
-		this.matchs[5] = new Match(this.equipes[1], this.equipes[2], new Timestamp(hdebut.getTime()+2*temps), new Timestamp(hdebut.getTime()+3*temps));
-	}
+        int temps = Jeu.getTimeFromID(this.equipes[0].getIdJeu());
+        this.matchs[0] = new Match(this.equipes[2],this.equipes[3],hdebut,new Timestamp(hdebut.getTime()+temps*60000));
+        this.matchs[1] = new Match(this.equipes[0],this.equipes[1],hdebut,new Timestamp(hdebut.getTime()+temps*60000));
+        this.matchs[2] = new Match(this.equipes[0], this.equipes[2],new Timestamp(hdebut.getTime()+temps*60000), new Timestamp(hdebut.getTime()+2*(temps*60000)));
+        this.matchs[3] = new Match(this.equipes[1], this.equipes[3], new Timestamp(hdebut.getTime()+temps*60000), new Timestamp(hdebut.getTime()+2*(temps*60000)));
+        this.matchs[4] = new Match(this.equipes[0], this.equipes[3],new Timestamp(hdebut.getTime()+2*(temps*60000)) , new Timestamp(hdebut.getTime()+3*(temps*60000)));
+        this.matchs[5] = new Match(this.equipes[1], this.equipes[2], new Timestamp(hdebut.getTime()+2*(temps*60000)), new Timestamp(hdebut.getTime()+3*(temps*60000)));
+    }
 
 	public Match[] getMatch() {
 		return this.matchs;

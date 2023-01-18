@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
@@ -34,7 +35,7 @@ public class testPoule {
 	}
 	
 	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
+	public  static void tearDownAfterClass() throws Exception {
 		String loginBD = "ndf4080a";
 		String mdpBD = "fatime31";
 		String connectString = "jdbc:oracle:thin:@telline.univ-tlse3.fr:1521:etupre";
@@ -49,32 +50,22 @@ public class testPoule {
 			Connection connx = DriverManager.getConnection(connectString, loginBD, mdpBD);
 
 			Statement st = connx.createStatement();
-
 			
-			st.executeQuery("delete Joueur where nom = 'O'");
-			st.executeQuery("delete Joueur where nom = 'P'");
-			st.executeQuery("delete Joueur where nom = 'Y'");
-			st.executeQuery("delete Joueur where nom = 'A'");
-			st.executeQuery("delete Joueur where nom = 'G'");
-			st.executeQuery("delete Joueur where nom = 'Q'");
-			st.executeQuery("delete Joueur where nom = 'I'");
-			st.executeQuery("delete Joueur where nom = 'V'");
-			st.executeQuery("delete Joueur where nom = 'N'");
-			st.executeQuery("delete Joueur where nom = 'J'");
-			st.executeQuery("delete Joueur where nom = 'S'");
-			st.executeQuery("delete Joueur where nom = 'B'");
-			st.executeQuery("delete Participer where id_poule = 54");
-			st.executeQuery("delete Poule where id_tournoi = 1");
-			st.executeQuery("delete Equipe where nom = 'Moi'");
-			st.executeQuery("delete Equipe where nom = 'M'");
-			st.executeQuery("delete Equipe where nom = 'N'");
-			st.executeQuery("delete Equipe where nom = 'P'");
-			st.executeQuery("delete Matchs where id_poule = 54");
+			ResultSet rs = st.executeQuery("SELECT id_poule from Poule order by 1 desc");
+			rs.next();
+			int id = rs.getInt(1);
+			st.executeQuery("delete Joueur where nom like 'Test%'");
+			st.executeQuery("delete Participer where id_poule = "+id);
+			st.executeQuery("delete Matchs where id_poule ="+id);
+			st.executeQuery("delete Poule where id_poule = "+id);
+			st.executeQuery("delete Equipe where nom like 'Test%'");
+			
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
+
 	
 	@Test
 	public void testInsererEquipe() {
@@ -96,30 +87,30 @@ public class testPoule {
 	@Test
 	public void testInsert() throws ErreurBD {
 		Poule p1 = new Poule();
-		Equipe e1 = new Equipe("Moi",60,1);
-		Equipe e2 = new Equipe("M", 40,1);
-		Equipe e3 = new Equipe("N", 20,1);
-		Equipe e4 = new Equipe("P",10,1);
+		Equipe e1 = new Equipe("Test1",60,1);
+		Equipe e2 = new Equipe("Test2", 40,1);
+		Equipe e3 = new Equipe("Test3", 20,1);
+		Equipe e4 = new Equipe("Test4",10,1);
 		p1.insérerEquipe(e1);
 		p1.insérerEquipe(e2);
 		p1.insérerEquipe(e3);
 		p1.insérerEquipe(e4);
-		Joueur je1 = new Joueur("O","T",new Date(1075503600000L),'M',"0797435176","ot@gmail.com");
-		Joueur je2 = new Joueur("P","I",new Date(1095503600000L),'M',"0787435976","pi@gmail.com");
-		Joueur je3 = new Joueur("Y","A",new Date(1075503700000L),'M',"0647435176","ya@gmail.com");
-		Joueur je4 = new Joueur("A","Z",new Date(1075503600000L),'M',"0797135176","az@gmail.com");
-		Joueur je11 = new Joueur("G","X",new Date(1075503600000L),'M',"0697435176","gx@gmail.com");
-		Joueur je12 = new Joueur("Q","X",new Date(1075503600000L),'M',"0797035176","qx@gmail.com");
-		Joueur je13 = new Joueur("I","H",new Date(1075503600000L),'M',"0737435176","ih@gmail.com");
-		Joueur je14 = new Joueur("V","D",new Date(1075503600000L),'M',"0797435176","vd@gmail.com");
-		Joueur je21 = new Joueur("N","O",new Date(1075503600000L),'M',"0797485176","no@gmail.com");
-		Joueur je22 = new Joueur("A","P",new Date(1075503600000L),'M',"0697435179","ap@gmail.com");
-		Joueur je23 = new Joueur("P","T",new Date(1075503600000L),'M',"0797495176","pt@gmail.com");
-		Joueur je24 = new Joueur("J","X",new Date(1075503600000L),'M',"0797035186","jx@gmail.com");
-		Joueur je31 = new Joueur("S","W",new Date(1075503600000L),'M',"0727435196","sw@gmail.com");
-		Joueur je32 = new Joueur("B","T",new Date(1075503600000L),'M',"0697495376","bt@gmail.com");
-		Joueur je33 = new Joueur("N","A",new Date(1075503600000L),'M',"0607430176","na@gmail.com");
-		Joueur je34 = new Joueur("I","D",new Date(1075503600000L),'M',"0697935177","id@gmail.com");
+		Joueur je1 = new Joueur("Test1","T",new Date(1075503600000L),'M',"0797435176","ot@gmail.com");
+		Joueur je2 = new Joueur("Test2","I",new Date(1095503600000L),'M',"0787435976","pi@gmail.com");
+		Joueur je3 = new Joueur("Test3","A",new Date(1075503700000L),'M',"0647435176","ya@gmail.com");
+		Joueur je4 = new Joueur("Test4","Z",new Date(1075503600000L),'M',"0797135176","az@gmail.com");
+		Joueur je11 = new Joueur("Test5","X",new Date(1075503600000L),'M',"0697435176","gx@gmail.com");
+		Joueur je12 = new Joueur("Test6","X",new Date(1075503600000L),'M',"0797035176","qx@gmail.com");
+		Joueur je13 = new Joueur("Test7","H",new Date(1075503600000L),'M',"0737435176","ih@gmail.com");
+		Joueur je14 = new Joueur("Test8","D",new Date(1075503600000L),'M',"0797435176","vd@gmail.com");
+		Joueur je21 = new Joueur("Test9","O",new Date(1075503600000L),'M',"0797485176","no@gmail.com");
+		Joueur je22 = new Joueur("Test10","P",new Date(1075503600000L),'M',"0697435179","ap@gmail.com");
+		Joueur je23 = new Joueur("Test11","T",new Date(1075503600000L),'M',"0797495176","pt@gmail.com");
+		Joueur je24 = new Joueur("Test12","X",new Date(1075503600000L),'M',"0797035186","jx@gmail.com");
+		Joueur je31 = new Joueur("Test13","W",new Date(1075503600000L),'M',"0727435196","sw@gmail.com");
+		Joueur je32 = new Joueur("Test14","T",new Date(1075503600000L),'M',"0697495376","bt@gmail.com");
+		Joueur je33 = new Joueur("Test15","A",new Date(1075503600000L),'M',"0607430176","na@gmail.com");
+		Joueur je34 = new Joueur("Test16","D",new Date(1075503600000L),'M',"0697935177","id@gmail.com");
 		try {
 			e1.insert(1);
 			e2.insert(1);
@@ -127,7 +118,7 @@ public class testPoule {
 			e4.insert(1);
 		} catch (ErreurBD e5) {
 			// TODO Auto-generated catch block
-			e5.printStackTrace();
+			fail(e5.getMessage());
 		}
 		try {
 			je1.insert(e1.getID());
@@ -148,9 +139,9 @@ public class testPoule {
 			je34.insert(e4.getID());
 		} catch (ErreurBD e5) {
 			// TODO Auto-generated catch block
-			e5.printStackTrace();
+			fail(e5.getMessage());
 		}
-		p1.GenererMatch(Timestamp.valueOf("2023-01-22 10:00:00"));
+		p1.GenererMatch(Timestamp.valueOf("2023-12-22 10:00:00"));
 		try {
 			p1.insert(1);
 		} catch(ErreurBD e) {
@@ -160,7 +151,7 @@ public class testPoule {
 	}
 	
 	@Test
-	public void testGenererMatch() throws ErreurBD {
+	public void testGenererMatch()  {
 		Equipe e = new Equipe("Toto",10,1);
 		Equipe e1 = new Equipe("M",11,1);
 		Equipe e2 = new Equipe("N",50,1);
@@ -169,7 +160,12 @@ public class testPoule {
 		this.p.insérerEquipe(e1);
 		this.p.insérerEquipe(e2);
 		this.p.insérerEquipe(e3);
-		this.p.GenererMatch(Timestamp.valueOf("2023-01-22 10:00:00"));
+		try {
+			this.p.GenererMatch(Timestamp.valueOf("2023-01-22 10:00:00"));
+		} catch (ErreurBD e4) {
+			// TODO Auto-generated catch block
+			fail(e4.getMessage());
+		}
 		assertEquals(e2,this.p.getMatch()[0].getEquipe1());
 		assertEquals(e3,this.p.getMatch()[0].getEquipe2());
 	}
