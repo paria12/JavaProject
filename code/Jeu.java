@@ -153,6 +153,28 @@ public class Jeu {
 		return retour;
 	}
 	
+	public static int getNomFromID(int j) throws ErreurBD {
+		int retour = 0;
+		try {
+			DataSource bd = new ConnexionBD();
+			
+			Connection connx = bd.getConnection();
+
+			Statement st = connx.createStatement();
+
+			ResultSet rs = st.executeQuery("select nom from jeu where id_jeu="+j);
+			
+			while(rs.next()) {
+				retour=rs.getInt(1);
+			}
+
+			connx.close();
+		} catch (SQLException e) {
+			throw new ErreurBD("Erreur de requête à la bd : "+e);
+		}
+		return retour;
+	}
+	
 	/**renvoie la durée d'un jeu en fonction de son id
 	 * @param id
 	 * @return int
