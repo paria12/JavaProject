@@ -43,7 +43,7 @@ public class Match {
 		return E2;
 	}
 
-	public void setWiner(Equipe e) throws ErreurBD {
+	public void setWinner(Equipe e) throws ErreurBD {
 		if (!e.equals(this.E1)&&!e.equals(this.E2)) {
 			throw new IllegalArgumentException("L'equipe est invalide");
 		}
@@ -53,12 +53,34 @@ public class Match {
 			Connection connx = bd.getConnection();
 
 			Statement st = connx.createStatement();
+			
+			Calendar cal = Calendar.getInstance();
+	        cal.setTime(this.Hdebut);
 
-			st.executeUpdate("Update matchs set gagnant = "+e.getID()+" where ID_equipe ="+this.E1.getID()+" and ID_equipe1 ="+this.E2.getID()+"and heuredebut ="+this.Hdebut+")");
+			st.executeUpdate("Update matchs set gagnant = "+e.getID()+" where ID_equipe ="+this.E1.getID()+" and ID_equipe1 ="+this.E2.getID()+"and heuredebut ="
+					+cal.get(Calendar.DAY_OF_MONTH)+"/"+(cal.get(Calendar.MONTH)+1)+"/"+(cal.get(Calendar.YEAR))+" "
+					+cal.get(Calendar.HOUR_OF_DAY)+":"+cal.get(Calendar.MINUTE)+":"+cal.get(Calendar.SECOND)+"'");
 
 			connx.close();
 		} catch (SQLException exc) {
-			throw new ErreurBD("Erreur de requéte a la bd");
+			switch(exc.getErrorCode()) {
+            case 1 : 
+                throw new ErreurBD("Un enregistrement similaire est déjà présent dans la base de données");
+            case 2291:
+                throw new ErreurBD("Il manque la clé étrangère");
+            case 2292:
+                throw new ErreurBD("Impossibilité de supprimer car l'enregistrement est présent dans une autre table");
+            case 2290:
+                throw new ErreurBD("Vous ne pouvez pas renseigner cette valeur dans ce champ");
+            case 1400:
+                throw new ErreurBD("Une valeur n'a pas été renseigné");
+            case 1407:
+                throw new ErreurBD("Une valeur n'a pas été renseigné");
+                
+            }
+            if (200000<= exc.getErrorCode() && exc.getErrorCode() <=20999) {
+                throw new ErreurBD("Transgréssion de l'un des déclencheurs de la base de données");
+            }
 		}
 	}
 
@@ -84,7 +106,24 @@ public class Match {
 
 			connx.close();
 		} catch (SQLException e) {
-			throw new ErreurBD("Erreur de requéte a la bd");
+			switch(e.getErrorCode()) {
+            case 1 : 
+                throw new ErreurBD("Un enregistrement similaire est déjà présent dans la base de données");
+            case 2291:
+                throw new ErreurBD("Il manque la clé étrangère");
+            case 2292:
+                throw new ErreurBD("Impossibilité de supprimer car l'enregistrement est présent dans une autre table");
+            case 2290:
+                throw new ErreurBD("Vous ne pouvez pas renseigner cette valeur dans ce champ");
+            case 1400:
+                throw new ErreurBD("Une valeur n'a pas été renseigné");
+            case 1407:
+                throw new ErreurBD("Une valeur n'a pas été renseigné");
+                
+            }
+            if (200000<= e.getErrorCode() && e.getErrorCode() <=20999) {
+                throw new ErreurBD("Transgréssion de l'un des déclencheurs de la base de données");
+            }
 		}
 	}
 

@@ -11,16 +11,16 @@ import javax.sql.DataSource;
 
 public class Arbitre {
 	private String login;
-	
+
 	public Arbitre(String log) {
 		this.login = log;
 	}
-	
+
 	public int getID() throws ErreurBD {
 		int ID = -1;
-    	try {
+		try {
 			DataSource bd = new ConnexionBD();
-			
+
 			Connection connx = bd.getConnection();
 
 			Statement st = connx.createStatement();
@@ -28,16 +28,34 @@ public class Arbitre {
 			ResultSet rs = st.executeQuery("select id_arbitre from arbitre where login ='"+this.login+"'");
 			rs.next();
 			ID = rs.getInt(1);
-			
+
 			connx.close();
 		} catch (SQLException e) {
-			throw new ErreurBD("Erreur getID : "+e.getMessage());
+			switch(e.getErrorCode()) {
+			case 1 : 
+				throw new ErreurBD("Un enregistrement similaire est déjà présent dans la base de données");
+			case 2291:
+				throw new ErreurBD("Il manque la clé étrangère");
+			case 2292:
+				throw new ErreurBD("Impossibilité de supprimer car l'enregistrement est présent dans une autre table");
+			case 2290:
+				throw new ErreurBD("Vous ne pouvez pas renseigner cette valeur dans ce champ");
+			case 1400:
+				throw new ErreurBD("Une valeur n'a pas été renseigné");
+			case 1407:
+				throw new ErreurBD("Une valeur n'a pas été renseigné");
+
+			}
+			if (200000<= e.getErrorCode() && e.getErrorCode() <=20999) {
+				throw new ErreurBD("Transgréssion de l'un des déclencheurs de la base de données");
+			}
 		}
 		return ID;
-    }
-	
+	}
+
 	public Match[] getMatch() throws ErreurBD {
 		ArrayList<Match> result = new ArrayList<Match>();
+		Match[] t = null;
 		try {
 			DataSource bd = new ConnexionBD();
 
@@ -49,24 +67,42 @@ public class Arbitre {
 					+ "where e1.id_equipe=matchs.id_equipe and e2.id_equipe=matchs.id_equipe1 "
 					+ "and matchs.id_poule=poule.id_poule and poule.id_tournoi=tournoi.id_tournoi "
 					+ "and tournoi.id_arbitre=arbitre.id_arbitre and arbitre.login='"+this.login+"'");
-			
+
 			while(rs.next()) {
 				result.add(new Match(new Equipe(rs.getString(1)),new Equipe(rs.getString(2)),rs.getTimestamp(3),rs.getTimestamp(4)));
 			}
-			
+
 			connx.close();
-			
-			Match[] t = new Match[result.size()];
+
+			t = new Match[result.size()];
 			t = result.toArray(t);
-			return t;
 		} catch (SQLException e) {
-			throw new ErreurBD("Erreur de requ�te a la bd");
+			switch(e.getErrorCode()) {
+			case 1 : 
+				throw new ErreurBD("Un enregistrement similaire est déjà présent dans la base de données");
+			case 2291:
+				throw new ErreurBD("Il manque la clé étrangère");
+			case 2292:
+				throw new ErreurBD("Impossibilité de supprimer car l'enregistrement est présent dans une autre table");
+			case 2290:
+				throw new ErreurBD("Vous ne pouvez pas renseigner cette valeur dans ce champ");
+			case 1400:
+				throw new ErreurBD("Une valeur n'a pas été renseigné");
+			case 1407:
+				throw new ErreurBD("Une valeur n'a pas été renseigné");
+
+			}
+			if (200000<= e.getErrorCode() && e.getErrorCode() <=20999) {
+				throw new ErreurBD("Transgréssion de l'un des déclencheurs de la base de données");
+			}
 		}
-		
+		return t;
+
 	}
-	
+
 	public static String[] getAll() throws ErreurBD {
 		ArrayList<String> result = new ArrayList<String>();
+		String[] t = null;
 		try {
 			DataSource bd = new ConnexionBD();
 
@@ -75,19 +111,71 @@ public class Arbitre {
 			Statement st = connx.createStatement();
 
 			ResultSet rs = st.executeQuery("select login from arbitre order by 1");
-			
+
 			while(rs.next()) {
 				result.add(rs.getString(1));
 			}
-			
+
 			connx.close();
-			
-			String[] t = new String[result.size()];
+
+			t = new String[result.size()];
 			t = result.toArray(t);
-			return t;
+
 		} catch (SQLException e) {
-			throw new ErreurBD("Erreur de requ�te a la bd");
+			switch(e.getErrorCode()) {
+			case 1 : 
+				throw new ErreurBD("Un enregistrement similaire est déjà présent dans la base de données");
+			case 2291:
+				throw new ErreurBD("Il manque la clé étrangère");
+			case 2292:
+				throw new ErreurBD("Impossibilité de supprimer car l'enregistrement est présent dans une autre table");
+			case 2290:
+				throw new ErreurBD("Vous ne pouvez pas renseigner cette valeur dans ce champ");
+			case 1400:
+				throw new ErreurBD("Une valeur n'a pas été renseigné");
+			case 1407:
+				throw new ErreurBD("Une valeur n'a pas été renseigné");
+
+			}
+			if (200000<= e.getErrorCode() && e.getErrorCode() <=20999) {
+				throw new ErreurBD("Transgréssion de l'un des déclencheurs de la base de données");
+			}
 		}
+		return t;
+	}
+
+	public void insert(String pwd) throws ErreurBD {
+
+		try {
+			DataSource bd = new ConnexionBD();
+
+			Connection connx = bd.getConnection();
+
+			Statement st = connx.createStatement();
+
+			st.executeQuery("INSERT INTO arbitre values(seq_arbitre.nextVal,'"+this.login+"','"+Connexion.sta256(pwd)+"')");
+
+		} catch (SQLException e) {
+			switch(e.getErrorCode()) {
+			case 1 : 
+				throw new ErreurBD("Un enregistrement similaire est déjà présent dans la base de données");
+			case 2291:
+				throw new ErreurBD("Il manque la clé étrangère");
+			case 2292:
+				throw new ErreurBD("Impossibilité de supprimer car l'enregistrement est présent dans une autre table");
+			case 2290:
+				throw new ErreurBD("Vous ne pouvez pas renseigner cette valeur dans ce champ");
+			case 1400:
+				throw new ErreurBD("Une valeur n'a pas été renseigné");
+			case 1407:
+				throw new ErreurBD("Une valeur n'a pas été renseigné");
+
+			}
+			if (200000<= e.getErrorCode() && e.getErrorCode() <=20999) {
+				throw new ErreurBD("Transgréssion de l'un des déclencheurs de la base de données");
+			}
+		}
+
 	}
 
 	@Override

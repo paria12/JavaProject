@@ -165,7 +165,24 @@ public class Joueur {
 
 			connx.close();
 		} catch (SQLException e) {
-			throw new ErreurBD("Erreur de requette a la bd");
+			switch(e.getErrorCode()) {
+            case 1 : 
+                throw new ErreurBD("Un enregistrement similaire est déjà présent dans la base de données");
+            case 2291:
+                throw new ErreurBD("Il manque la clé étrangère");
+            case 2292:
+                throw new ErreurBD("Impossibilité de supprimer car l'enregistrement est présent dans une autre table");
+            case 2290:
+                throw new ErreurBD("Vous ne pouvez pas renseigner cette valeur dans ce champ");
+            case 1400:
+                throw new ErreurBD("Une valeur n'a pas été renseigné");
+            case 1407:
+                throw new ErreurBD("Une valeur n'a pas été renseigné");
+                
+            }
+            if (200000<= e.getErrorCode() && e.getErrorCode() <=20999) {
+                throw new ErreurBD("Transgréssion de l'un des déclencheurs de la base de données");
+            }
 		}
 	}
 
@@ -189,7 +206,24 @@ public class Joueur {
 
 				connx.close();
 			} catch (SQLException e) {
-				throw new ErreurBD("Erreur de reqette a la bd");
+				switch(e.getErrorCode()) {
+	            case 1 : 
+	                throw new ErreurBD("Un enregistrement similaire est déjà présent dans la base de données");
+	            case 2291:
+	                throw new ErreurBD("Il manque la clé étrangère");
+	            case 2292:
+	                throw new ErreurBD("Impossibilité de supprimer car l'enregistrement est présent dans une autre table");
+	            case 2290:
+	                throw new ErreurBD("Vous ne pouvez pas renseigner cette valeur dans ce champ");
+	            case 1400:
+	                throw new ErreurBD("Une valeur n'a pas été renseigné");
+	            case 1407:
+	                throw new ErreurBD("Une valeur n'a pas été renseigné");
+	                
+	            }
+	            if (200000<= e.getErrorCode() && e.getErrorCode() <=20999) {
+	                throw new ErreurBD("Transgréssion de l'un des déclencheurs de la base de données");
+	            }
 			}
 		} else {
 			throw new IllegalArgumentException("Au moins un des param�tres n'est pas valide/definie");

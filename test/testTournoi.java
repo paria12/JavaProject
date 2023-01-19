@@ -161,29 +161,6 @@ public class testTournoi {
 	}
 
 	@Test
-	public void testAddEquipe() {
-		t1.addEquipe(new Equipe("test"));
-		t2.addEquipe(new Equipe("test"));
-	}
-
-	@Test
-	public void testRemoveEquipe() {
-		t1.addEquipe(new Equipe("test"));
-		t2.addEquipe(new Equipe("test"));
-		t1.removeEquipe(new Equipe("test"));
-		t2.removeEquipe(new Equipe("test"));
-	}
-
-	@Test
-	public void testGenererPoule() {
-		for(int i = 0; i<16;i++) {
-			Equipe e = new Equipe("t_e"+i,i,3);
-			t2.addEquipe(e);
-		}
-		t2.GenererPoule();
-	}
-
-	@Test
 	public void testInsert() {
 		try {
 			t2.insert(1);

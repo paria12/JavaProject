@@ -8,6 +8,7 @@ import java.awt.Color;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.GridLayout;
 import java.awt.Font;
@@ -182,7 +183,8 @@ public class ConnexionWindow{
 							frmConnexion.dispose();
 							break;
 						case -1 : //Wrong Password;
-							System.out.println("Erreur : L'identifiant ou le Mot de passe est éronné, réessayez." + inputUserName.getText() + String.valueOf(inputPassword.getPassword()));
+							JOptionPane fenetre = new JOptionPane();
+							fenetre.showMessageDialog(fenetre, "Votre login ou votre mot de passe est incorrect","Erreur",JOptionPane.ERROR_MESSAGE);
 					}
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block

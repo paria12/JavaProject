@@ -62,7 +62,24 @@ public class Jeu {
 				
 				connx.close();
 			} catch (SQLException e) {
-				throw new ErreurBD("Erreur de requête a la bd");
+				switch(e.getErrorCode()) {
+	            case 1 : 
+	                throw new ErreurBD("Un enregistrement similaire est déjà présent dans la base de données");
+	            case 2291:
+	                throw new ErreurBD("Il manque la clé étrangère");
+	            case 2292:
+	                throw new ErreurBD("Impossibilité de supprimer car l'enregistrement est présent dans une autre table");
+	            case 2290:
+	                throw new ErreurBD("Vous ne pouvez pas renseigner cette valeur dans ce champ");
+	            case 1400:
+	                throw new ErreurBD("Une valeur n'a pas été renseigné");
+	            case 1407:
+	                throw new ErreurBD("Une valeur n'a pas été renseigné");
+	                
+	            }
+	            if (200000<= e.getErrorCode() && e.getErrorCode() <=20999) {
+	                throw new ErreurBD("Transgréssion de l'un des déclencheurs de la base de données");
+	            }
 			}
 			return this.duree;
 		}
@@ -90,7 +107,24 @@ public class Jeu {
 
 				connx.close();
 			} catch (SQLException e) {
-				throw new ErreurBD("Erreur de requ�te a la bd");
+				switch(e.getErrorCode()) {
+	            case 1 : 
+	                throw new ErreurBD("Un enregistrement similaire est déjà présent dans la base de données");
+	            case 2291:
+	                throw new ErreurBD("Il manque la clé étrangère");
+	            case 2292:
+	                throw new ErreurBD("Impossibilité de supprimer car l'enregistrement est présent dans une autre table");
+	            case 2290:
+	                throw new ErreurBD("Vous ne pouvez pas renseigner cette valeur dans ce champ");
+	            case 1400:
+	                throw new ErreurBD("Une valeur n'a pas été renseigné");
+	            case 1407:
+	                throw new ErreurBD("Une valeur n'a pas été renseigné");
+	                
+	            }
+	            if (200000<= e.getErrorCode() && e.getErrorCode() <=20999) {
+	                throw new ErreurBD("Transgréssion de l'un des déclencheurs de la base de données");
+	            }
 			}
 		}
 	}
@@ -119,7 +153,24 @@ public class Jeu {
 
 			connx.close();
 		} catch (SQLException e) {
-			throw new ErreurBD("Erreur de requête a la bd : "+e);
+			switch(e.getErrorCode()) {
+            case 1 : 
+                throw new ErreurBD("Un enregistrement similaire est déjà présent dans la base de données");
+            case 2291:
+                throw new ErreurBD("Il manque la clé étrangère");
+            case 2292:
+                throw new ErreurBD("Impossibilité de supprimer car l'enregistrement est présent dans une autre table");
+            case 2290:
+                throw new ErreurBD("Vous ne pouvez pas renseigner cette valeur dans ce champ");
+            case 1400:
+                throw new ErreurBD("Une valeur n'a pas été renseigné");
+            case 1407:
+                throw new ErreurBD("Une valeur n'a pas été renseigné");
+                
+            }
+            if (200000<= e.getErrorCode() && e.getErrorCode() <=20999) {
+                throw new ErreurBD("Transgréssion de l'un des déclencheurs de la base de données");
+            }
 		}
 		return l.toArray();
 	}
@@ -148,13 +199,30 @@ public class Jeu {
 
 			connx.close();
 		} catch (SQLException e) {
-			throw new ErreurBD("Erreur de requête à la bd : "+e);
+			switch(e.getErrorCode()) {
+            case 1 : 
+                throw new ErreurBD("Un enregistrement similaire est déjà présent dans la base de données");
+            case 2291:
+                throw new ErreurBD("Il manque la clé étrangère");
+            case 2292:
+                throw new ErreurBD("Impossibilité de supprimer car l'enregistrement est présent dans une autre table");
+            case 2290:
+                throw new ErreurBD("Vous ne pouvez pas renseigner cette valeur dans ce champ");
+            case 1400:
+                throw new ErreurBD("Une valeur n'a pas été renseigné");
+            case 1407:
+                throw new ErreurBD("Une valeur n'a pas été renseigné");
+                
+            }
+            if (200000<= e.getErrorCode() && e.getErrorCode() <=20999) {
+                throw new ErreurBD("Transgréssion de l'un des déclencheurs de la base de données");
+            }
 		}
 		return retour;
 	}
 	
-	public static int getNomFromID(int j) throws ErreurBD {
-		int retour = 0;
+	public static String getNomFromID(int j) throws ErreurBD {
+		String retour = null;
 		try {
 			DataSource bd = new ConnexionBD();
 			
@@ -165,12 +233,29 @@ public class Jeu {
 			ResultSet rs = st.executeQuery("select nom from jeu where id_jeu="+j);
 			
 			while(rs.next()) {
-				retour=rs.getInt(1);
+				retour=rs.getString(1);
 			}
 
 			connx.close();
 		} catch (SQLException e) {
-			throw new ErreurBD("Erreur de requête à la bd : "+e);
+			switch(e.getErrorCode()) {
+            case 1 : 
+                throw new ErreurBD("Un enregistrement similaire est déjà présent dans la base de données");
+            case 2291:
+                throw new ErreurBD("Il manque la clé étrangère");
+            case 2292:
+                throw new ErreurBD("Impossibilité de supprimer car l'enregistrement est présent dans une autre table");
+            case 2290:
+                throw new ErreurBD("Vous ne pouvez pas renseigner cette valeur dans ce champ");
+            case 1400:
+                throw new ErreurBD("Une valeur n'a pas été renseigné");
+            case 1407:
+                throw new ErreurBD("Une valeur n'a pas été renseigné");
+                
+            }
+            if (200000<= e.getErrorCode() && e.getErrorCode() <=20999) {
+                throw new ErreurBD("Transgréssion de l'un des déclencheurs de la base de données");
+            }
 		}
 		return retour;
 	}
@@ -199,7 +284,24 @@ public class Jeu {
 
 			connx.close();
 		} catch (SQLException e) {
-			throw new ErreurBD("Erreur de requéte a la bd : "+e);
+			switch(e.getErrorCode()) {
+            case 1 : 
+                throw new ErreurBD("Un enregistrement similaire est déjà présent dans la base de données");
+            case 2291:
+                throw new ErreurBD("Il manque la clé étrangère");
+            case 2292:
+                throw new ErreurBD("Impossibilité de supprimer car l'enregistrement est présent dans une autre table");
+            case 2290:
+                throw new ErreurBD("Vous ne pouvez pas renseigner cette valeur dans ce champ");
+            case 1400:
+                throw new ErreurBD("Une valeur n'a pas été renseigné");
+            case 1407:
+                throw new ErreurBD("Une valeur n'a pas été renseigné");
+                
+            }
+            if (200000<= e.getErrorCode() && e.getErrorCode() <=20999) {
+                throw new ErreurBD("Transgréssion de l'un des déclencheurs de la base de données");
+            }
 		}
 		return retour;
 	}

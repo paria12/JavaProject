@@ -53,4 +53,13 @@ public class testArbitre {
 		}
 	}
 
+	@Test
+    public void testGetId() {
+        Arbitre a = new Arbitre("chien");
+        try {
+            assertEquals(a.getID(),1);
+        } catch (ErreurBD e){
+            fail(e.getMessage());
+        }
+    }
 }

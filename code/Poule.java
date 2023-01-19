@@ -70,13 +70,31 @@ public class Poule {
 			
 			connx.close();
 		}catch (SQLException e){ 
-			throw new ErreurBD("Erreur de requete a la bd"+e);
+			switch(e.getErrorCode()) {
+            case 1 : 
+                throw new ErreurBD("Un enregistrement similaire est déjà présent dans la base de données");
+            case 2291:
+                throw new ErreurBD("Il manque la clé étrangère");
+            case 2292:
+                throw new ErreurBD("Impossibilité de supprimer car l'enregistrement est présent dans une autre table");
+            case 2290:
+                throw new ErreurBD("Vous ne pouvez pas renseigner cette valeur dans ce champ");
+            case 1400:
+                throw new ErreurBD("Une valeur n'a pas été renseigné");
+            case 1407:
+                throw new ErreurBD("Une valeur n'a pas été renseigné");
+                
+            }
+            if (200000<= e.getErrorCode() && e.getErrorCode() <=20999) {
+                throw new ErreurBD("Transgréssion de l'un des déclencheurs de la base de données");
+            }
 		}    
 	}
 
 	public String[][] getClassement() throws ErreurBD {
+		String[][] classement = null;
 		try {
-			String[][] classement = new String[2][4];
+			classement = new String[2][4];
 			
 			DataSource bd = new ConnexionBD();
 
@@ -93,11 +111,27 @@ public class Poule {
 			}
 			
 			connx.close();
-			
-			return classement;
 		} catch (SQLException e){ 
-			throw new ErreurBD("Erreur de requete a la bd"+e);
+			switch(e.getErrorCode()) {
+            case 1 : 
+                throw new ErreurBD("Un enregistrement similaire est déjà présent dans la base de données");
+            case 2291:
+                throw new ErreurBD("Il manque la clé étrangère");
+            case 2292:
+                throw new ErreurBD("Impossibilité de supprimer car l'enregistrement est présent dans une autre table");
+            case 2290:
+                throw new ErreurBD("Vous ne pouvez pas renseigner cette valeur dans ce champ");
+            case 1400:
+                throw new ErreurBD("Une valeur n'a pas été renseigné");
+            case 1407:
+                throw new ErreurBD("Une valeur n'a pas été renseigné");
+                
+            }
+            if (200000<= e.getErrorCode() && e.getErrorCode() <=20999) {
+                throw new ErreurBD("Transgréssion de l'un des déclencheurs de la base de données");
+            }
 		}
+		return classement;
 	}
 
 }

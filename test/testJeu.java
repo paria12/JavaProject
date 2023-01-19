@@ -94,4 +94,35 @@ public class testJeu {
 			fail("erreur bd");
 		}
 	}
+	
+	@Test
+    public void testGetId() {
+        Jeu t = new Jeu("Overwatch");
+        try {
+            assertEquals(Jeu.getID(t),1);
+        }catch(ErreurBD e) {
+            fail("erreur BD");
+        }
+    }
+    
+    @Test
+    public void testGetNomFromId() {
+        Jeu t = new Jeu("test1",2000);
+        try {
+            t.insert();
+            assertEquals(Jeu.getNomFromID(Jeu.getID(t)),"test1");
+        }catch (ErreurBD e){
+            fail("erreurBD");
+        }
+    }
+    
+    @Test
+    public void testGetTimeFromId() {
+        Jeu t = new Jeu("Overwatch");
+        try {
+            assertEquals(Jeu.getTimeFromID(Jeu.getID(t)),25);
+        }catch(ErreurBD e) {
+            
+        }
+    }
 }
