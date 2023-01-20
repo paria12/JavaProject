@@ -62,6 +62,9 @@ public class AjouterJoueur {
 	private JSpinnerDark spinnerBirthDateDay;
 	private JSpinnerDark spinnerBirthDateMonth;
 	private AjouterJoueur currentInstance = this;
+	private CreerEquipe equipe;
+	private String nbJ;
+	private JPanelBackground panelPlayerInner;
 
 	/**
 	 * Launch the application.
@@ -103,8 +106,12 @@ public class AjouterJoueur {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(String nom, String prenom, Date date, char sexe, String tel, String email, CreerEquipe equipe, String nbJ, JPanelBackground panelPlayerInner) {
+		this.equipe = equipe;
+		this.nbJ = nbJ;
+		this.panelPlayerInner = panelPlayerInner;
 		frmAjouterUnJoueur = new JFrame();
-		frmAjouterUnJoueur.setTitle("Ajouter un joueur");
+		frmAjouterUnJoueur.setTitle("E-Sporter | Ajouter un joueur");
+		frmAjouterUnJoueur.setLocationRelativeTo(null);
 		frmAjouterUnJoueur.setBounds(100, 100, 400, 400);
 		frmAjouterUnJoueur.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
@@ -255,10 +262,10 @@ public class AjouterJoueur {
 		} else {
 			day = LocalDate.now().getDayOfMonth();
 			month = LocalDate.now().getMonth();
-			year = LocalDate.now().getYear() - StaticValues.AGE_MIN;
+			year = 2000;
 			leapYear = (year % 4 == 0);
-			maxMonth = LocalDate.now().getMonthValue();
-			maxDay = LocalDate.now().getDayOfMonth();
+			maxMonth = 12;
+			maxDay = month.length(leapYear);
 		}
 		
 		JPanelBackground panelSpinnerBirthDate = new JPanelBackground();
@@ -508,33 +515,33 @@ public class AjouterJoueur {
 		panelFormButtons.add(panelFormButtonsInner);
 		
 		JButtonDark buttonCancel = new JButtonDark("Annuler");
+		buttonCancel.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+					submitAnnuler();
+				}
+			}
+		});
 		buttonCancel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frmAjouterUnJoueur.dispose();
+				submitAnnuler();
 			}
 		});
 		panelFormButtonsInner.add(buttonCancel);
 		
 		buttonValidation = new JButtonYellow("Ajouter");
+		buttonValidation.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				submitValider();
+			}
+		});
 		buttonValidation.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (buttonValidation.isEnabled()) {
-					//Create calandar from inputs
-					Calendar cal = Calendar.getInstance();
-					cal.set( Calendar.DAY_OF_MONTH, day);
-					cal.set( Calendar.MONTH, month.getValue() - 1);
-					cal.set( Calendar.YEAR, year);
-					//Create and return player from inputs
-					equipe.setJoueur(new Joueur(inputLastName.getText(), 
-									 inputFirstName.getText(), 
-									 new Date(cal.getTimeInMillis()), 
-									 getSelectedButtonText(buttonGroup),
-									 inputPhone.getText(), 
-									 inputMail.getText()), nbJ, panelPlayerInner);
-					frmAjouterUnJoueur.dispose();
-				}
+				submitValider();
 			}
 		});
 		buttonValidation.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -590,6 +597,27 @@ public class AjouterJoueur {
 		}
 		spinnerBirthDateDay.setModel(new SpinnerNumberModel(day, 1, maxDay, 1));
 		spinnerBirthDateMonth.setModel(new SpinnerNumberModel(month.getValue(), 1, maxMonth, 1));
+	}
+	private void submitAnnuler() {
+		frmAjouterUnJoueur.dispose();
+	}
+	private void submitValider() {
+		if (buttonValidation.isEnabled()) {
+			//Create calandar from inputs
+			Calendar cal = Calendar.getInstance();
+			cal.set( Calendar.DAY_OF_MONTH, day);
+			cal.set( Calendar.MONTH, month.getValue() - 1);
+			cal.set( Calendar.YEAR, year);
+			//Create and return player from inputs
+			equipe.setJoueur(new Joueur(inputLastName.getText(), 
+							 inputFirstName.getText(), 
+							 new Date(cal.getTimeInMillis()), 
+							 getSelectedButtonText(buttonGroup),
+							 inputPhone.getText(), 
+							 inputMail.getText()), nbJ, panelPlayerInner);
+			frmAjouterUnJoueur.dispose();
+		}
+		
 	}
 
 }

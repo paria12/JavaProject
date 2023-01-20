@@ -28,24 +28,40 @@ import javax.swing.border.TitledBorder;
 import javax.swing.BoxLayout;
 
 import Commons.Colors;
+import Commons.ErrorMessage;
 import Commons.Header;
 import Commons.JButtonYellow;
 import Commons.JPanelBackground;
 import Commons.JPanelDarkest;
+import Commons.StaticValues;
+import Ecurie.AcceuilEcurie;
+import Gerant.AcceuilGerant;
+import code.Arbitre;
+import code.Connexion;
+import code.ErreurBD;
+import code.Match;
+import code.Poule;
 
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
+
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.border.LineBorder;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 
 public class AcceuilArbitre {
 
 	private JFrame frame;
 	private JButtonYellow buttonInsertScore;
+	private JList<String> listTournoi;
 
 	/**
 	 * Launch the application.
@@ -78,6 +94,8 @@ public class AcceuilArbitre {
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		frame.setBounds(100, 100, 643, 408);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLocationRelativeTo(null);
+	    frame.setTitle("E-Sporter | Acceuil");
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		
@@ -112,7 +130,7 @@ public class AcceuilArbitre {
 		scrollTournoi.setBorder(new LineBorder(Color.black));
 		panelScrollTournoi.add(scrollTournoi);
 		
-		JList<String> listTournoi = new JList<String>();
+		this.listTournoi = new JList<String>();
 		listTournoi.setBackground(Colors.darkestBlue);
 		listTournoi.setForeground(Colors.lightText);
 		listTournoi.addListSelectionListener(new ListSelectionListener() {
@@ -124,15 +142,20 @@ public class AcceuilArbitre {
 				}
 			}
 		});
-		listTournoi.setModel(new AbstractListModel() {
-			String[] values = new String[] {"Equipe 1 vs Equipe 2", "Equipe 1 vs Equipe 3", "Equipe 1 vs Equipe 4", "Equipe 1 vs Equipe 5", "Equipe 1 vs Equipe 6", "Equipe 1 vs Equipe 7", "Equipe 1 vs Equipe 8", "Equipe 2 vs Equipe 1", "Equipe 2 vs Equipe 1", "Equipe 2 vs Equipe 1", "Equipe 2 vs Equipe 1", "Equipe 2 vs Equipe 1", "Equipe 2 vs Equipe 1", "Equipe 2 vs Equipe 1"};
-			public int getSize() {
-				return values.length;
-			}
-			public Object getElementAt(int index) {
-				return values[index];
-			}
-		});
+		try {
+			listTournoi.setModel(new AbstractListModel() {
+				Match[] values = new Arbitre(Header.header).getMatch();
+				public int getSize() {
+					return values.length;
+				}
+				public Object getElementAt(int index) {
+					return values[index];
+				}
+			});
+		} catch (ErreurBD e1) {
+			// TODO Auto-generated catch block
+			ErrorMessage.ErrorMessage(e1.getMessage());
+		}
 		scrollTournoi.setViewportView(listTournoi);
 		
 		JPanelBackground panelSpacing_ScrollBottom = new JPanelBackground();
@@ -162,12 +185,18 @@ public class AcceuilArbitre {
 		panelButtonInsertScore.add(panelButtonInsertScoreInner);
 		
 		buttonInsertScore = new JButtonYellow("Saisir Score");
+		buttonInsertScore.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					ouvrirSaisirScore();
+				}
+			}
+		});
 		buttonInsertScore.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (buttonInsertScore.isEnabled()) {
-					SaisirScore.main(null);
-				}
+				ouvrirSaisirScore();
 			}
 		});
 		panelButtonInsertScoreInner.add(buttonInsertScore);
@@ -179,5 +208,14 @@ public class AcceuilArbitre {
 		JPanelBackground panelSpacing_ButtonRight = new JPanelBackground();
 		panelButtonInsertScore.add(panelSpacing_ButtonRight);
 	}
-
+	private void ouvrirSaisirScore() {
+		if (buttonInsertScore.isEnabled()) {
+			try {
+				SaisirScore.mainWithValues(new Arbitre(Header.header).getMatch()[this.listTournoi.getSelectedIndex()]);
+			} catch (ErreurBD e) {
+				// TODO Auto-generated catch block
+				ErrorMessage.ErrorMessage(e.getMessage());
+			}
+		}
+	}
 }

@@ -1,4 +1,4 @@
-package Ecurie;
+package Gerant;
 
 import java.awt.EventQueue;
 
@@ -9,7 +9,6 @@ import Commons.Colors;
 import Commons.ErrorMessage;
 import Commons.JButtonYellow;
 import Commons.JPanelBackground;
-import code.Equipe;
 import code.ErreurBD;
 import code.Tournoi;
 
@@ -27,10 +26,9 @@ import java.sql.Timestamp;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class PopUp_ConfirmInscription {
+public class PopUp_ConfirmDeleteTournoi {
 
 	private JFrame frame;
-	private AcceuilEcurie parent;
 
 	/**
 	 * Launch the application.
@@ -39,7 +37,7 @@ public class PopUp_ConfirmInscription {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					PopUp_ConfirmInscription window = new PopUp_ConfirmInscription(new Equipe("Best OF The Best"),new Tournoi("Esport world convention",new Date(2023-01-15),1), new AcceuilEcurie());
+					PopUp_ConfirmDeleteTournoi window = new PopUp_ConfirmDeleteTournoi(Tournoi.getAll()[0]);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -47,11 +45,11 @@ public class PopUp_ConfirmInscription {
 			}
 		});
 	}
-	public static void mainWithValues(Equipe eq, Tournoi t, AcceuilEcurie p) {
+	public static void mainWithValues(Tournoi t) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					PopUp_ConfirmInscription window = new PopUp_ConfirmInscription(eq,t,p);
+					PopUp_ConfirmDeleteTournoi window = new PopUp_ConfirmDeleteTournoi(t);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -62,60 +60,43 @@ public class PopUp_ConfirmInscription {
 	/**
 	 * Create the application.
 	 */
-	public PopUp_ConfirmInscription(Equipe equipe,Tournoi tournoi,AcceuilEcurie parent) {
-		initialize(equipe,tournoi,parent);
+	public PopUp_ConfirmDeleteTournoi(Tournoi t) {
+		initialize(t);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize(Equipe equipe,Tournoi tournoi, AcceuilEcurie parent) {
-		this.parent = parent;
+	private void initialize(Tournoi t) {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 250, 250);
+		frame.setBounds(100, 100, 250, 175);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frame.setTitle("Confirmation Inscription ?");
+		frame.setTitle("Confirmer suppression ?");
 		frame.setLocationRelativeTo(null);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		JPanelBackground panelHeader = new JPanelBackground();
 		frame.getContentPane().add(panelHeader, BorderLayout.NORTH);
 		panelHeader.setLayout(new GridLayout(0, 1, 0, 0));
-
-		JPanelBackground panelSpacing_HeaderTop = new JPanelBackground();
-		panelHeader.add(panelSpacing_HeaderTop);
 		
-		JPanelBackground panelLabelSouhaitez = new JPanelBackground();
-		panelHeader.add(panelLabelSouhaitez);
+		JPanelBackground panelLabelConfirmer = new JPanelBackground();
+		panelHeader.add(panelLabelConfirmer);
 		
-		JLabel labelSouhaitez = new JLabel("Souhaitez-vous inscrire");
-		labelSouhaitez.setForeground(Colors.lightText);
-		labelSouhaitez.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		panelLabelSouhaitez.add(labelSouhaitez);
+		JLabel labelConfirmez = new JLabel("\u00CAtes-vous s\u00FBr de vouloir");
+		labelConfirmez.setForeground(Colors.lightText);
+		labelConfirmez.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		panelLabelConfirmer.add(labelConfirmez);
 		
-		JPanelBackground panelLabelEquipe = new JPanelBackground();
-		panelHeader.add(panelLabelEquipe);
+		JPanelBackground panelLabelt = new JPanelBackground();
+		panelHeader.add(panelLabelt);
 		
-		JLabel labelEquipe = new JLabel(equipe.getNom()+" au tournoi ");
-		labelEquipe.setForeground(Colors.lightText);
-		labelEquipe.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		panelLabelEquipe.add(labelEquipe);
-		
-		JPanelBackground panelLabelNom = new JPanelBackground();
-		panelHeader.add(panelLabelNom);
-		
-		JLabel labelNom = new JLabel(tournoi.getNom());
-		labelNom.setForeground(Colors.lightText);
-		labelNom.setFont(new Font("Tahoma", Font.BOLD, 15));
-		panelLabelNom.add(labelNom);
+		JLabel labelt = new JLabel("Supprimer "+t.getNom());
+		labelt.setForeground(Colors.lightText);
+		labelt.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		panelLabelt.add(labelt);
 		
 		JPanelBackground panelLabelDate = new JPanelBackground();
 		panelHeader.add(panelLabelDate);
-		
-		JLabel labelDate = new JLabel("du "+tournoi.getDate()+" ?");
-		labelDate.setForeground(Colors.lightText);
-		labelDate.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		panelLabelDate.add(labelDate);
 		
 		JPanelBackground panelMenu = new JPanelBackground();
 		frame.getContentPane().add(panelMenu, BorderLayout.CENTER);
@@ -123,7 +104,6 @@ public class PopUp_ConfirmInscription {
 		
 		JPanelBackground panelButtonNo = new JPanelBackground();
 		FlowLayout fl_panelButtonNo = (FlowLayout) panelButtonNo.getLayout();
-		fl_panelButtonNo.setVgap(20);
 		panelMenu.add(panelButtonNo);
 		
 		JButtonYellow buttonNo = new JButtonYellow("Non");
@@ -149,7 +129,6 @@ public class PopUp_ConfirmInscription {
 		
 		JPanelBackground panelButtonYes = new JPanelBackground();
 		FlowLayout fl_panelButtonYes = (FlowLayout) panelButtonYes.getLayout();
-		fl_panelButtonYes.setVgap(20);
 		panelMenu.add(panelButtonYes);
 		
 		JButtonYellow buttonYes = new JButtonYellow("Oui");
@@ -157,14 +136,14 @@ public class PopUp_ConfirmInscription {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode()==KeyEvent.VK_ENTER) {
-					submitOui(tournoi,equipe);
+					submitOui(t);
 				}
 			}
 		});
 		buttonYes.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				submitOui(tournoi,equipe);
+				submitOui(t);
 			}
 		});
 		panelButtonYes.add(buttonYes);
@@ -172,14 +151,13 @@ public class PopUp_ConfirmInscription {
 	private void submitNon() {
 		frame.dispose();
 	}
-	private void submitOui(Tournoi tournoi, Equipe equipe) {
+	private void submitOui(Tournoi t) {
 		try {
-			tournoi.addEquipe(equipe);
+			t.delete();
 		} catch (ErreurBD e) {
 			// TODO Auto-generated catch block
 			ErrorMessage.ErrorMessage(e.getMessage());
-		}
-		parent.setListEquipes();
+		};
 		frame.dispose();
 	}
 }

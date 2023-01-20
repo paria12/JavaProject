@@ -144,4 +144,22 @@ public class Match {
 		return Objects.equals(E1, other.E1) && Objects.equals(E2, other.E2) && Objects.equals(Hdebut, other.Hdebut)
 				&& Objects.equals(Hfin, other.Hfin);
 	}
+	
+	@Override
+    public String toString() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(Hdebut);
+        String min = String.valueOf(cal.get(Calendar.MINUTE));
+        if (min.length() <= 1) {
+            min = "0"+min;
+        }
+        String hD = cal.get(Calendar.HOUR)+"h"+min;
+        cal.setTime(Hfin);
+        min = String.valueOf(cal.get(Calendar.MINUTE));
+        if (min.length() <= 1) {
+            min = "0"+min;
+        }
+        String hF = cal.get(Calendar.HOUR)+"h"+min;
+        return E1+" VS. "+E2+" ("+hD+" - "+hF+")";
+    }
 }

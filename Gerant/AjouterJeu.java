@@ -13,6 +13,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 import Commons.Colors;
+import Commons.ErrorMessage;
 import Commons.JButtonYellow;
 import Commons.JPanelBackground;
 import Commons.JSpinnerDark;
@@ -65,7 +66,8 @@ public class AjouterJeu {
 	 */
 	private void initialize() {
 		frmAjouterUnJeu = new JFrame();
-		frmAjouterUnJeu.setTitle("Ajouter un jeu");
+		frmAjouterUnJeu.setTitle("E-Sporter | Ajouter un jeu");
+		frmAjouterUnJeu.setLocationRelativeTo(null);
 		final int FRAMESIZE = 350;
 		frmAjouterUnJeu.setBounds(100, 100, FRAMESIZE, FRAMESIZE);
 		frmAjouterUnJeu.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -179,36 +181,55 @@ public class AjouterJeu {
 		flowLayout.setVgap(0);
 		flowLayout.setAlignment(FlowLayout.RIGHT);
 		panelFormButtons.add(panelFormButtonsInner);
-		
 		JButtonYellow buttonCancel = new JButtonYellow("Annuler");
+		buttonCancel.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+					submitAnnuler();
+				}
+			}
+		});
 		buttonCancel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frmAjouterUnJeu.dispose();
+				submitAnnuler();
 			}
 		});
 		panelFormButtonsInner.add(buttonCancel);
 		
 		buttonValidation = new JButtonYellow("Cr\u00E9er");
+		buttonValidation.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					submitCreer();
+				}
+			}
+		});
 		buttonValidation.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (buttonValidation.isEnabled()) {
-					Jeu gameAdded = new Jeu(inputGameName.getText(), Integer.valueOf(spinnerGamelength.getValue().toString()));
-					try {
-						gameAdded.insert();
-					} catch (IllegalArgumentException | ErreurBD e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-						System.out.printf("Erreur, ajout du jeu impossible, veuillez verifier votre saisie");
-					}
-					frmAjouterUnJeu.dispose();
-				}
+				submitCreer();
 			}
 		});
 		buttonValidation.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		buttonValidation.setEnabled(false);
 		panelFormButtonsInner.add(buttonValidation);
 	}
-
+	private void submitAnnuler() {
+		frmAjouterUnJeu.dispose();
+	}
+	private void submitCreer() {
+		if (buttonValidation.isEnabled()) {
+			Jeu gameAdded = new Jeu(inputGameName.getText(), Integer.valueOf(spinnerGamelength.getValue().toString()));
+			try {
+				gameAdded.insert();
+			} catch (IllegalArgumentException | ErreurBD e1) {
+				// TODO Auto-generated catch block
+				ErrorMessage.ErrorMessage(e1.getMessage());
+			}
+			frmAjouterUnJeu.dispose();
+		}
+	}
 }

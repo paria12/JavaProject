@@ -70,7 +70,7 @@ public class testPoule {
 	@Test
 	public void testInsererEquipe() {
 		Equipe e = new Equipe("Test", 10,1);
-		this.p.insérerEquipe(e);
+		this.p.insererEquipe(e);
 		assertEquals(e,this.p.getEquipe()[0]);
 	}
 
@@ -78,8 +78,8 @@ public class testPoule {
 	public void testGetEquipe() {
 		Equipe e = new Equipe("Test", 10,1);
 		Equipe e2 = new Equipe("Test2",10,1);
-		this.p.insérerEquipe(e);
-		this.p.insérerEquipe(e2); 
+		this.p.insererEquipe(e);
+		this.p.insererEquipe(e2); 
 		assertEquals(e,this.p.getEquipe()[0]);
 		assertEquals(e2,this.p.getEquipe()[1]);
 	}
@@ -91,10 +91,10 @@ public class testPoule {
 		Equipe e2 = new Equipe("Test2", 40,1);
 		Equipe e3 = new Equipe("Test3", 20,1);
 		Equipe e4 = new Equipe("Test4",10,1);
-		p1.insérerEquipe(e1);
-		p1.insérerEquipe(e2);
-		p1.insérerEquipe(e3);
-		p1.insérerEquipe(e4);
+		p1.insererEquipe(e1);
+		p1.insererEquipe(e2);
+		p1.insererEquipe(e3);
+		p1.insererEquipe(e4);
 		Joueur je1 = new Joueur("Test1","T",new Date(1075503600000L),'M',"0797435176","ot@gmail.com");
 		Joueur je2 = new Joueur("Test2","I",new Date(1095503600000L),'M',"0787435976","pi@gmail.com");
 		Joueur je3 = new Joueur("Test3","A",new Date(1075503700000L),'M',"0647435176","ya@gmail.com");
@@ -156,10 +156,10 @@ public class testPoule {
 		Equipe e1 = new Equipe("M",11,1);
 		Equipe e2 = new Equipe("N",50,1);
 		Equipe e3 = new Equipe("G", 8,1);
-		this.p.insérerEquipe(e);
-		this.p.insérerEquipe(e1);
-		this.p.insérerEquipe(e2);
-		this.p.insérerEquipe(e3);
+		this.p.insererEquipe(e);
+		this.p.insererEquipe(e1);
+		this.p.insererEquipe(e2);
+		this.p.insererEquipe(e3);
 		try {
 			this.p.GenererMatch(Timestamp.valueOf("2023-01-22 10:00:00"));
 		} catch (ErreurBD e4) {

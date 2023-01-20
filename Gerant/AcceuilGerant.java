@@ -12,6 +12,8 @@ import java.awt.GridLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.ListModel;
+
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Color;
@@ -24,17 +26,32 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import Commons.Colors;
+import Commons.ErrorMessage;
 import Commons.Header;
+import Commons.JButtonDark;
 import Commons.JButtonYellow;
 import Commons.JPanelBackground;
+import Commons.JPanelDarkest;
+import Commons.PanelPresentationTournoi;
+import code.ErreurBD;
+import code.Tournoi;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class AcceuilGerant {
 
 	private JFrame frame;
 	private JPanelBackground panelMenuRight;
+	private JList<String> listClassement;
+	private JPanelBackground panelListTournoi;
+	private Tournoi t;
+	private JScrollPane scrollTournoi;
+	private AcceuilGerant thisInstance;
 
 	/**
 	 * Launch the application.
@@ -54,18 +71,23 @@ public class AcceuilGerant {
 
 	/**
 	 * Create the application.
+	 * @throws ErreurBD 
 	 */
-	public AcceuilGerant() {
+	public AcceuilGerant() throws ErreurBD {
 		initialize();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
+	 * @throws ErreurBD 
 	 */
-	private void initialize() {
+	private void initialize() throws ErreurBD {
+		thisInstance = this;
 		frame = new JFrame();
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setTitle("E-Sporter | Acceuil");
+		frame.setLocationRelativeTo(null);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		JPanelBackground panelMenu = new JPanelBackground();
@@ -84,10 +106,18 @@ public class AcceuilGerant {
 		JPanelBackground panelButtonTournoi = new JPanelBackground();
 		
 		JButtonYellow buttonAjouterJeu = new JButtonYellow("Ajouter jeu");
+		buttonAjouterJeu.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+					submitAjouterJeu();
+				}
+			}
+		});
 		buttonAjouterJeu.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				AjouterJeu.main(null);
+				submitAjouterJeu();
 			}
 		});
 		buttonAjouterJeu.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -122,38 +152,46 @@ public class AcceuilGerant {
 					.addGap(58))
 		);
 		
-		JScrollPane scrollTournoi = new JScrollPane();
+		scrollTournoi = new JScrollPane();
 		scrollTournoi.setBorder(new LineBorder(Color.BLACK));
 		panelListTournoi.add(scrollTournoi, BorderLayout.CENTER);
 		
-		JList<String> listTournoi = new JList<String>();
-		listTournoi.setBackground(Colors.darkestBlue);
-		listTournoi.setForeground(Colors.lightText);
-		listTournoi.addListSelectionListener(new ListSelectionListener() {
-			public void valueChanged(ListSelectionEvent e) {
-				if (listTournoi.getSelectedValue() != null) {
-					panelMenuRight.setVisible(true);
-				} else {
-					panelMenuRight.setVisible(false);
+		setListTournois();
+		
+		JButtonDark buttonRefreshTournois = new JButtonDark("refresh");
+		buttonRefreshTournois.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					setListTournois();
 				}
 			}
 		});
-		scrollTournoi.setViewportView(listTournoi);
-		listTournoi.setModel(new AbstractListModel() {
-			String[] values = new String[] {"18/28/24 Toulouse"};
-			public int getSize() {
-				return values.length;
-			}
-			public Object getElementAt(int index) {
-				return values[index];
+		buttonRefreshTournois.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				setListTournois();
 			}
 		});
+		panelButtonTournoi.add(buttonRefreshTournois);
 		
 		JButtonYellow buttonTournoi = new JButtonYellow("Nouveau Tournoi");
+		buttonTournoi.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		buttonTournoi.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					submitNouveauTournoi();
+				}
+			}
+		});
 		buttonTournoi.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				CreerTournoi.main(null);
+				submitNouveauTournoi();
 			}
 		});
 		panelButtonTournoi.add(buttonTournoi);
@@ -166,6 +204,18 @@ public class AcceuilGerant {
 		labelClassement.setForeground(Colors.lightText);
 		
 		JPanelBackground panelListClassment = new JPanelBackground();
+		
+		JPanelBackground panelButtonTournoi_1 = new JPanelBackground();
+		
+		JButtonYellow buttonGeneralClassement = new JButtonYellow("Nouveau Tournoi");
+		buttonGeneralClassement.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				ClassementAnnuel.main(null);
+			}
+		});
+		buttonGeneralClassement.setText("Classement Annuel");
+		panelButtonTournoi_1.add(buttonGeneralClassement);
 		GroupLayout gl_panelMenuRight = new GroupLayout(panelMenuRight);
 		gl_panelMenuRight.setHorizontalGroup(
 			gl_panelMenuRight.createParallelGroup(Alignment.LEADING)
@@ -173,15 +223,23 @@ public class AcceuilGerant {
 					.addContainerGap()
 					.addGroup(gl_panelMenuRight.createParallelGroup(Alignment.LEADING)
 						.addComponent(panelListClassment, GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
-						.addComponent(labelClassement))
+						.addGroup(gl_panelMenuRight.createSequentialGroup()
+							.addComponent(labelClassement)
+							.addPreferredGap(ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+							.addComponent(panelButtonTournoi_1, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
 		gl_panelMenuRight.setVerticalGroup(
 			gl_panelMenuRight.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panelMenuRight.createSequentialGroup()
-					.addGap(20)
-					.addComponent(labelClassement)
-					.addGap(14)
+					.addContainerGap()
+					.addGroup(gl_panelMenuRight.createParallelGroup(Alignment.TRAILING)
+						.addGroup(gl_panelMenuRight.createSequentialGroup()
+							.addComponent(labelClassement)
+							.addGap(14))
+						.addGroup(gl_panelMenuRight.createSequentialGroup()
+							.addComponent(panelButtonTournoi_1, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)))
 					.addComponent(panelListClassment, GroupLayout.PREFERRED_SIZE, 108, Short.MAX_VALUE)
 					.addGap(105))
 		);
@@ -191,13 +249,13 @@ public class AcceuilGerant {
 		scrollClassement.setBorder(new LineBorder(Color.BLACK));
 		panelListClassment.add(scrollClassement, BorderLayout.CENTER);
 		
-		JList<String> listClassement = new JList<String>();
+		listClassement = new JList<String>();
 		listClassement.setBackground(Colors.darkestBlue);
 		listClassement.setForeground(Colors.lightText);
 		listClassement.setEnabled(false);
 		scrollClassement.setViewportView(listClassement);
 		listClassement.setModel(new AbstractListModel() {
-			String[] values = new String[] {"Equipe 1", "Equipe 2 ", "Equipe 3", "Equipe 4", "Equipe 5", "Equipe 6", "Equipe 7", "Equipe 8", "Equipe 9", "Equipe 10", "Equipe 11", "Equipe 12", "Equipe 13", "Equipe 14", "Equipe 15", "Equipe 16"};
+			String[] values = new String[] {};
 			public int getSize() {
 				return values.length;
 			}
@@ -209,5 +267,62 @@ public class AcceuilGerant {
 		panelMenuRight.setVisible(false);
 		
 		Header headerGerant = new Header(frame);
+	}
+	private void submitNouveauTournoi() {
+		CreerTournoi.mainWithValues(thisInstance);
+	}
+	private void submitAjouterJeu() {
+		AjouterJeu.main(null);
+	}
+	public void setListTournois() {
+		int sizeTournoi;
+		panelListTournoi = new JPanelBackground();
+        panelListTournoi.setLayout(new GridLayout(0, 1, 0, 0));
+		try {
+			sizeTournoi = Tournoi.getAll().length;
+			PanelPresentationTournoi[] panelsPresentationTournoi = new PanelPresentationTournoi[sizeTournoi];
+	        for (int i = 0; i < sizeTournoi; i++) {
+	        	t = Tournoi.getAll()[i];
+	            JLabel labelTournoi = new JLabel();
+	            labelTournoi.setText(t.getNom());
+	            PanelPresentationTournoi presentTournoi = new PanelPresentationTournoi(t, true);
+	            presentTournoi.getPanel().addMouseListener(new MouseAdapter() {
+	                @Override
+	                public void mouseClicked(MouseEvent e) {
+	                	panelMenuRight.setVisible(true);
+	                	t = presentTournoi.getTournoi();
+						try {
+							listClassement.setModel(new AbstractListModel() {
+								String[] values = t.getClassement()[0];
+								public int getSize() {
+									return values.length;
+								}
+								public Object getElementAt(int index) {
+									return values[index];
+								}
+							});
+						} catch (ErreurBD e1) {
+							// TODO Auto-generated catch block
+							ErrorMessage.ErrorMessage(e1.getMessage());
+						}
+						for (PanelPresentationTournoi pe : panelsPresentationTournoi) {
+	                		 pe.changeBorderColor(Color.black, 1);
+	                	 }
+	                	 presentTournoi.changeBorderColor(Colors.lightText, 2);
+	                }
+	            });
+	            panelsPresentationTournoi[i] = presentTournoi;
+	            panelListTournoi.add(presentTournoi.getPanel());
+	        }
+	
+	        for (int i = sizeTournoi; i < 4; i++) {
+	            panelListTournoi.add(new JPanelDarkest());
+	        }
+		} catch (ErreurBD e1) {
+			// TODO Auto-generated catch block
+			ErrorMessage.ErrorMessage(e1.getMessage());
+		}
+        
+        scrollTournoi.setViewportView(panelListTournoi);
 	}
 }

@@ -21,7 +21,7 @@ public class Poule {
 		this.pointeur = 0;
 	}
 
-	public void insérerEquipe(Equipe e) throws IllegalArgumentException{
+	public void insererEquipe(Equipe e) throws IllegalArgumentException{
 		if (this.pointeur == 4) {
 			throw new IllegalArgumentException("La poule est déjà pleine");
 		} else {

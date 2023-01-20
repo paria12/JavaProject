@@ -8,10 +8,11 @@ import java.awt.Color;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.GridLayout;
 import java.awt.Font;
+import java.awt.Frame;
+
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
@@ -21,20 +22,29 @@ import java.awt.FlowLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import java.util.Enumeration;
 
-import code.Connexion;
+import code.Arbitre;
 import code.Ecurie;
+import code.ErreurBD;
 import Gerant.AcceuilGerant;
 import Ecurie.AcceuilEcurie;
 import Arbitre.AcceuilArbitre;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
-public class ConnexionWindow{
+import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
 
-	private JFrame frmConnexion;
+public class Inscription{
+
+	private JFrame frmInscription;
 	private JTextFieldDark inputUserName;
 	private JPasswordField inputPassword;
+	private JButtonYellow buttonValidation;
+	private final ButtonGroup buttonGroup = new ButtonGroup();
 
 	/**
 	 * Launch the application.
@@ -43,8 +53,8 @@ public class ConnexionWindow{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ConnexionWindow window = new ConnexionWindow(null);
-					window.frmConnexion.setVisible(true);
+					Inscription window = new Inscription(null);
+					window.frmInscription.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -56,8 +66,8 @@ public class ConnexionWindow{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ConnexionWindow window = new ConnexionWindow(login);
-					window.frmConnexion.setVisible(true);
+					Inscription window = new Inscription(login);
+					window.frmInscription.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -68,7 +78,7 @@ public class ConnexionWindow{
 	/**
 	 * Create the application.
 	 */
-	public ConnexionWindow(String login) {
+	public Inscription(String login) {
 		initialize(login);
 	}
 
@@ -76,53 +86,22 @@ public class ConnexionWindow{
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(String login) {
-		frmConnexion = new JFrame();
-		frmConnexion.setTitle("E-Sporter | Connexion");
-		frmConnexion.setLocationRelativeTo(null);
+		frmInscription = new JFrame();
+		frmInscription.setTitle("E-Sporter | Inscription");
+		frmInscription.setLocationRelativeTo(null);
 		final int FRAMESIZE = 350;
-		frmConnexion.setBounds(100, 100, FRAMESIZE, FRAMESIZE);
-		frmConnexion.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmConnexion.getContentPane().setLayout(new BorderLayout(0, 0));
-		frmConnexion.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					try {
-						switch (Connexion.connexion(inputUserName.getText(), String.valueOf(inputPassword.getPassword()))) {
-							case 0 : //Owner
-								Header.header = "M. le Owner";
-								AcceuilGerant.main(null);
-								frmConnexion.dispose();
-								break;
-							case 1 : //Ecurie
-								Header.header = inputUserName.getText();
-								AcceuilEcurie.main(null);
-								frmConnexion.dispose();
-								break;
-							case 2 : //Arbitre
-								Header.header = inputUserName.getText();
-								AcceuilArbitre.main(null);
-								frmConnexion.dispose();
-								break;
-							case -1 : //Wrong Password;
-								System.out.println("Erreur : L'identifiant ou le Mot de passe est Ã©ronnÃ©, rÃ©essayez." + inputUserName.getText() + String.valueOf(inputPassword.getPassword()));
-						}
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
-			}
-		});
+		frmInscription.setBounds(100, 100, 450, 350);
+		frmInscription.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmInscription.getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		JPanelBackground panelTitle = new JPanelBackground();
-		frmConnexion.getContentPane().add(panelTitle, BorderLayout.NORTH);
+		frmInscription.getContentPane().add(panelTitle, BorderLayout.NORTH);
 		panelTitle.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		JPanelBackground panelSpacing_TopTitle = new JPanelBackground();
 		panelTitle.add(panelSpacing_TopTitle);
 		
-		JLabel labelTitle = new JLabel("Connexion");
+		JLabel labelTitle = new JLabel("Inscription");
 		labelTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		labelTitle.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		labelTitle.setForeground(Colors.lightText);
@@ -132,8 +111,58 @@ public class ConnexionWindow{
 		panelTitle.add(panelSpacing_BottomTitle);
 		
 		JPanelBackground panelForm = new JPanelBackground();
-		frmConnexion.getContentPane().add(panelForm, BorderLayout.CENTER);
+		frmInscription.getContentPane().add(panelForm, BorderLayout.CENTER);
 		panelForm.setLayout(new GridLayout(0, 1, 0, 0));
+		
+		JPanelBackground panelUserType = new JPanelBackground();
+		panelForm.add(panelUserType);
+		panelUserType.setLayout(new GridLayout(0, 1, 0, 0));
+		
+		JPanelBackground panelUserTypeLabel = new JPanelBackground();
+		FlowLayout fl_panelUserTypeLabel = (FlowLayout) panelUserTypeLabel.getLayout();
+		fl_panelUserTypeLabel.setHgap(25);
+		fl_panelUserTypeLabel.setAlignment(FlowLayout.LEFT);
+		panelUserType.add(panelUserTypeLabel);
+		
+		JLabel labelUserType = new JLabel("Vous êtes :");
+		labelUserType.setForeground(new Color(150, 180, 180));
+		labelUserType.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		panelUserTypeLabel.add(labelUserType);
+		
+		JPanelBackground panelUserTypeInput = new JPanelBackground();
+		FlowLayout fl_panelUserTypeInput = (FlowLayout) panelUserTypeInput.getLayout();
+		fl_panelUserTypeInput.setHgap(25);
+		panelUserType.add(panelUserTypeInput);
+		
+		JRadioDark rdbtnNewRadioButton_1 = new JRadioDark("Une écurie pro.");
+		rdbtnNewRadioButton_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				buttonValidation.setEnabled(isFormFilled());
+			}
+		});
+		buttonGroup.add(rdbtnNewRadioButton_1);
+		panelUserTypeInput.add(rdbtnNewRadioButton_1);
+		
+		JRadioDark rdbtnNewRadioButton_2 = new JRadioDark("Une écurie asso.");
+		rdbtnNewRadioButton_2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				buttonValidation.setEnabled(isFormFilled());
+			}
+		});
+		buttonGroup.add(rdbtnNewRadioButton_2);
+		panelUserTypeInput.add(rdbtnNewRadioButton_2);
+		
+		JRadioDark rdbtnNewRadioButton = new JRadioDark("Un.e arbitre");
+		rdbtnNewRadioButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				buttonValidation.setEnabled(isFormFilled());
+			}
+		});
+		buttonGroup.add(rdbtnNewRadioButton);
+		panelUserTypeInput.add(rdbtnNewRadioButton);
 		
 		JPanelBackground panelUserNameForm = new JPanelBackground();
 		panelForm.add(panelUserNameForm);
@@ -165,6 +194,10 @@ public class ConnexionWindow{
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					submit();
 				}
+			}
+			@Override
+			public void keyTyped(KeyEvent e) {
+				buttonValidation.setEnabled(isFormFilled());
 			}
 		});
 		inputUserName.setColumns(FRAMESIZE/15);
@@ -202,6 +235,10 @@ public class ConnexionWindow{
 					submit();
 				}
 			}
+			@Override
+			public void keyTyped(KeyEvent e) {
+				buttonValidation.setEnabled(isFormFilled());
+			}
 		});
 		inputPassword.setColumns(FRAMESIZE/15);
 		inputPassword.setForeground(Colors.lightText);
@@ -212,11 +249,8 @@ public class ConnexionWindow{
 		panelPasswordInput.add(inputPassword);
 		
 		JPanelBackground panelValidationButton = new JPanelBackground();
-		frmConnexion.getContentPane().add(panelValidationButton, BorderLayout.SOUTH);
+		frmInscription.getContentPane().add(panelValidationButton, BorderLayout.SOUTH);
 		panelValidationButton.setLayout(new GridLayout(0, 1, 0, 0));
-		
-		JPanelBackground panelSpacing_2 = new JPanelBackground();
-		panelValidationButton.add(panelSpacing_2);
 		
 		JPanelBackground panelButton = new JPanelBackground();
 		FlowLayout fl_panelButton = (FlowLayout) panelButton.getLayout();
@@ -225,7 +259,9 @@ public class ConnexionWindow{
 		fl_panelButton.setVgap(10);
 		panelValidationButton.add(panelButton);
 		
-		JButtonYellow buttonValidation = new JButtonYellow("Se connecter");
+		buttonValidation = new JButtonYellow("Se connecter");
+		buttonValidation.setEnabled(false);
+		buttonValidation.setText("S'inscrire");
 		buttonValidation.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -241,52 +277,78 @@ public class ConnexionWindow{
 			}
 		});
 		
-		JButtonDark buttonInscription = new JButtonDark("s'inscrire");
-		buttonInscription.addKeyListener(new KeyAdapter() {
+		JButtonDark buttonConnexion = new JButtonDark("se connecter");
+		buttonConnexion.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					frmConnexion.dispose();
-					Inscription.mainWithValues(inputUserName.getText());
+					frmInscription.dispose();
+					ConnexionWindow.mainWithValues(inputUserName.getText());
 				}
 			}
 		});
-		buttonInscription.addMouseListener(new MouseAdapter() {
+		buttonConnexion.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frmConnexion.dispose();
-				Inscription.mainWithValues(inputUserName.getText());
+				frmInscription.dispose();
+				ConnexionWindow.mainWithValues(inputUserName.getText());
 			}
 		});
-		panelButton.add(buttonInscription);
+		panelButton.add(buttonConnexion);
 		panelButton.add(buttonValidation);
 	}
 	
-	private void submit() {
-		try {
-			switch (Connexion.connexion(inputUserName.getText(), String.valueOf(inputPassword.getPassword()))) {
-				case 0 : //Owner
-					Header.header = "M. le Owner";
-					AcceuilGerant.main(null);
-					frmConnexion.dispose();
-					break;
-				case 1 : //Ecurie
-					Header.header = inputUserName.getText();
-					AcceuilEcurie.main(null);
-					frmConnexion.dispose();
-					break;
-				case 2 : //Arbitre
-					Header.header = inputUserName.getText();
-					AcceuilArbitre.main(null);
-					frmConnexion.dispose();
-					break;
-				case -1 : //Wrong Password;
-					JOptionPane fenetre = new JOptionPane();
-					fenetre.showMessageDialog(fenetre, "Le login ou le mot de passe est incorrect","Erreur",JOptionPane.ERROR_MESSAGE);
+	private boolean isFormFilled() {
+		if (inputUserName.getText().length() != 0) {
+			if (inputPassword.getPassword().length != 0) {
+				for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
+		            AbstractButton button = buttons.nextElement();
+		            if (button.isSelected()) {
+		            	return true;
+		            }
+		        }
 			}
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		}
+		return false;
+	}
+	
+	private void submit() {
+		if (buttonValidation.isEnabled()) {
+			String selectedButton = null;
+			for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
+	            AbstractButton button = buttons.nextElement();
+	            if (button.isSelected()) {
+	                selectedButton = button.getText();
+	            }
+	        }
+			switch(selectedButton) {
+				case "Un.e arbitre" :
+					try {
+						new Arbitre(inputUserName.getText()).insert(String.valueOf(inputPassword.getPassword()));
+					} catch (ErreurBD e) {
+						// TODO Auto-generated catch block
+						ErrorMessage.ErrorMessage(e.getMessage());
+					};
+					break;
+				case "Une écurie pro." :
+					try {
+						new Ecurie(inputUserName.getText(), "Professionnelle").insert(String.valueOf(inputPassword.getPassword()));
+					} catch (ErreurBD e) {
+						// TODO Auto-generated catch block
+						ErrorMessage.ErrorMessage(e.getMessage());
+					};
+					break;
+				case "Une écurie asso." :
+					try {
+						new Ecurie(inputUserName.getText(), "Associatif").insert(String.valueOf(inputPassword.getPassword()));
+					} catch (ErreurBD e) {
+						// TODO Auto-generated catch block
+						ErrorMessage.ErrorMessage(e.getMessage());
+					};
+					break;
+			}
+			frmInscription.dispose();
+			ConnexionWindow.mainWithValues(inputUserName.getText());
 		}
 	}
  

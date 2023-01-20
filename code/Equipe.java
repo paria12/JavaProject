@@ -194,47 +194,47 @@ public class Equipe {
 
 	}
 
-	public static String[] getClassement() throws ErreurBD {
-		String [] classement = null;
-		try {
-			DataSource bd = new ConnexionBD();
-			Connection connx = bd.getConnection();
+	public static String[] getClassement(int jeu) throws ErreurBD {
+        String [] classement = null;
+        try {
+            DataSource bd = new ConnexionBD();
+            Connection connx = bd.getConnection();
 
-			Statement st = connx.createStatement();
+            Statement st = connx.createStatement();
 
-			ResultSet rs = st.executeQuery("select nom,nb_points from equipe order by nb_points desc");
+            ResultSet rs = st.executeQuery("select nom,nb_points from equipe where id_jeu= "+jeu+"order by nb_points desc");
 
-			List<String> equipe = new ArrayList<String>();
+            List<String> equipe = new ArrayList<String>();
 
-			while(rs.next()) {
-				equipe.add(rs.getString(1));
-			}
-			classement = Arrays.copyOf(equipe.toArray(), equipe.toArray().length,String[].class);
+            while(rs.next()) {
+                equipe.add(rs.getString(1));
+            }
+            classement = Arrays.copyOf(equipe.toArray(), equipe.toArray().length,String[].class);
 
-			connx.close();
+            connx.close();
 
-		} catch (SQLException e) {
-			switch(e.getErrorCode()) {
-			case 1 : 
-				throw new ErreurBD("Un enregistrement similaire est d√©j√† pr√©sent dans la base de donn√©es");
-			case 2291:
-				throw new ErreurBD("Il manque la cl√© √©trang√®re");
-			case 2292:
-				throw new ErreurBD("Impossibilit√© de supprimer car l'enregistrement est pr√©sent dans une autre table");
-			case 2290:
-				throw new ErreurBD("Vous ne pouvez pas renseigner cette valeur dans ce champ");
-			case 1400:
-				throw new ErreurBD("Une valeur n'a pas √©t√© renseign√©");
-			case 1407:
-				throw new ErreurBD("Une valeur n'a pas √©t√© renseign√©");
+        } catch (SQLException e) {
+            switch(e.getErrorCode()) {
+            case 1 : 
+                throw new ErreurBD("Un enregistrement similaire est dÈj‡ prÈsent dans la base de donnÈes");
+            case 2291:
+                throw new ErreurBD("Il manque la clÈ ÈtrangËre");
+            case 2292:
+                throw new ErreurBD("ImpossibilitÈ de supprimer car l'enregistrement est prÈsent dans une autre table");
+            case 2290:
+                throw new ErreurBD("Vous ne pouvez pas renseigner cette valeur dans ce champ");
+            case 1400:
+                throw new ErreurBD("Une valeur n'a pas ÈtÈ renseignÈ");
+            case 1407:
+                throw new ErreurBD("Une valeur n'a pas ÈtÈ renseignÈ");
 
-			}
-			if (200000<= e.getErrorCode() && e.getErrorCode() <=20999) {
-				throw new ErreurBD("Transgr√©ssion de l'un des d√©clencheurs de la base de donn√©es");
-			}
-		}
-		return classement;
-	}
+            }
+            if (200000<= e.getErrorCode() && e.getErrorCode() <=20999) {
+                throw new ErreurBD("TransgrÈssion de l'un des dÈclencheurs de la base de donnÈes");
+            }
+        }
+        return classement;
+    }
 
 	/** importation des informations secondaires depuis la base de donnÔøΩes
 	 * @throws ErreurBD 
@@ -428,5 +428,10 @@ public class Equipe {
 		}
 		return r;
 	}
+	
+	@Override
+    public String toString() {
+        return nom;
+    }
 
 }

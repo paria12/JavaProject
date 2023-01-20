@@ -1,6 +1,8 @@
 package Ecurie;
 
 import java.awt.BorderLayout;
+
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
@@ -8,6 +10,8 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Date;
+import java.util.Calendar;
 
 import javax.swing.AbstractListModel;
 import javax.swing.JFrame;
@@ -19,21 +23,36 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import Commons.Colors;
+import Commons.ErrorMessage;
 import Commons.Header;
 import Commons.JButtonDark;
 import Commons.JButtonYellow;
 import Commons.JPanelBackground;
+import Commons.JPanelDarkest;
+import Commons.PanelPresentationEquipe;
+import Commons.PanelPresentationTournoi;
 import code.Ecurie;
 import code.Equipe;
 import code.ErreurBD;
+import code.Tournoi;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
 
 public class AcceuilEcurie {
 
 	private JFrame frame;
 	private JPanelBackground panelRight;
 	private JButtonYellow buttonInscriptionTournois;
-	private JList<String> listEquipe;
-	private AcceuilEcurie thisInstance = this;
+	private JList<String> listTournois;
+	private Equipe eq;
+	private Tournoi t;
+	private JPanelBackground panelListTournoi;
+	private JScrollPane scrollTournois;
+	private JScrollPane scrollEquipe;
+	private AcceuilEcurie thisInstance;
 	
 	/**
 	 * Launch the application.
@@ -64,9 +83,12 @@ public class AcceuilEcurie {
 	 * @throws ErreurBD 
 	 */
 	private void initialize() throws ErreurBD {
+		thisInstance = this;
 		frame = new JFrame();
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setTitle("E-Sporter | Acceuil");
+		frame.setLocationRelativeTo(null);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		Header headerEcurie = new Header(frame);
@@ -102,26 +124,41 @@ public class AcceuilEcurie {
 		fl_panelButtonAddEquipe.setAlignment(FlowLayout.RIGHT);
 		panelMenuLeftHeader.add(panelButtonAddEquipe);
 		
-		JButtonDark buttonRefreshEquipe = new JButtonDark("refresh");
-		buttonRefreshEquipe.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				refreshEquipe();
+		JButtonDark buttonRefreshEquipes = new JButtonDark("rafraîchir");
+		buttonRefreshEquipes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		panelButtonAddEquipe.add(buttonRefreshEquipe);
+		
+		buttonRefreshEquipes.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					setListEquipes();
+			}
+			}
+		});
+		buttonRefreshEquipes.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				setListEquipes();
+			}
+		});
+		panelButtonAddEquipe.add(buttonRefreshEquipes);
 		
 		JButtonYellow buttonAddEquipe = new JButtonYellow("Nouvelle Equipe");
+		buttonAddEquipe.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					submitNouvelleEquipe();
+			}
+			}
+		});
 		buttonAddEquipe.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				try {
-					System.out.println(Header.header);
-					CreerEquipe.MainWithValue(Ecurie.getID(new Ecurie(Header.header)), thisInstance);
-				} catch (ErreurBD e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				};
+				submitNouvelleEquipe();
 			}
 		});
 		panelButtonAddEquipe.add(buttonAddEquipe);
@@ -132,33 +169,12 @@ public class AcceuilEcurie {
 		panelMenuLeft.add(panelScrollEquipe);
 		panelScrollEquipe.setLayout(new BorderLayout(0, 0));
 		
-		JScrollPane scrollEquipe = new JScrollPane();
+		scrollEquipe = new JScrollPane();
 		scrollEquipe.setBorder(new LineBorder(Color.BLACK));
 		panelScrollEquipe.add(scrollEquipe);
 		
-		listEquipe = new JList<String>();
-		listEquipe.setBackground(Colors.darkestBlue);
-		listEquipe.setForeground(Colors.lightText);
-		listEquipe.addListSelectionListener(new ListSelectionListener() {
-			public void valueChanged(ListSelectionEvent e) {
-				if (listEquipe.getSelectedValue() != null) {
-					panelRight.setVisible(true);
-				} else {
-					panelRight.setVisible(false);
-				}
-			}
-		});
-		listEquipe.setModel(new AbstractListModel() {
-			String[] values = Equipe.getNomEquipe(Ecurie.getID(new Ecurie(Header.header)));
-			public int getSize() {
-				return values.length;
-			}
-			public Object getElementAt(int index) {
-				return values[index];
-			}
-		});
-		scrollEquipe.setViewportView(listEquipe);
-		
+		setListEquipes();
+        
 		JPanelBackground panelSpacing_EquipeBottom = new JPanelBackground();
 		FlowLayout fl_panelSpacing_EquipeBottom = (FlowLayout) panelSpacing_EquipeBottom.getLayout();
 		fl_panelSpacing_EquipeBottom.setVgap(52);
@@ -201,12 +217,18 @@ public class AcceuilEcurie {
 		panelRightHeader.add(panelButtonInscriptionTournois);
 		
 		buttonInscriptionTournois = new JButtonYellow("Inscrire");
+		buttonInscriptionTournois.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					submitInscrire();
+			}
+			}
+		});
 		buttonInscriptionTournois.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (buttonInscriptionTournois.isEnabled()) {
-					PopUp_ConfirmInscription.main(null);
-				}
+				submitInscrire();
 			}
 		});
 		buttonInscriptionTournois.setEnabled(false);
@@ -218,32 +240,9 @@ public class AcceuilEcurie {
 		panelRight.add(panelScrollTournois);
 		panelScrollTournois.setLayout(new BorderLayout(0, 0));
 		
-		JScrollPane scrollTournois = new JScrollPane();
+		scrollTournois = new JScrollPane();
+		scrollTournois.setBorder(new LineBorder(Color.BLACK));
 		panelScrollTournois.add(scrollTournois);
-		
-		JList<String> listTournois = new JList<String>();
-		listTournois.setBackground(Colors.darkestBlue);
-		listTournois.setForeground(Colors.lightText);
-		listTournois.addListSelectionListener(new ListSelectionListener() {
-			public void valueChanged(ListSelectionEvent e) {
-				if (listTournois.getSelectedValue() != null) {
-					buttonInscriptionTournois.setEnabled(true);
-				} else {
-					buttonInscriptionTournois.setEnabled(false);
-				}
-			}
-		});
-		
-		listTournois.setModel(new AbstractListModel() {
-			String[] values = new String[] {"23/02/2023 - Toulouse", "14/11/2023 - Perpignan", "05/12/2023 - Toulouse"};
-			public int getSize() {
-				return values.length;
-			}
-			public Object getElementAt(int index) {
-				return values[index];
-			}
-		});
-		scrollTournois.setViewportView(listTournois);
 		
 		JPanelBackground panelSpacing_TournoisBottom = new JPanelBackground();
 		FlowLayout fl_panelSpacing_TournoisBottom = (FlowLayout) panelSpacing_TournoisBottom.getLayout();
@@ -259,20 +258,99 @@ public class AcceuilEcurie {
 		panelRight.add(panelSpacing_TournoisRight, BorderLayout.EAST);
 	}
 	
-	public void refreshEquipe() {
+	public void setListEquipes() {
+		panelRight = new JPanelBackground();
+		panelRight.setVisible(false);
+		JPanelBackground panelListEquipe = new JPanelBackground();
+        panelListEquipe.setLayout(new GridLayout(0, 1, 0, 0));
+        
+
+        int sizeEcurie;
 		try {
-			listEquipe.setModel(new AbstractListModel() {
-				String[] values = Equipe.getNomEquipe(Ecurie.getID(new Ecurie(Header.header)));
-				public int getSize() {
-					return values.length;
-				}
-				public Object getElementAt(int index) {
-					return values[index];
-				}
-			});
+			sizeEcurie = new Ecurie(Header.header).getEquipe().size();
+		PanelPresentationEquipe[] panelsPresentationEquipe = new PanelPresentationEquipe[sizeEcurie];
+        for (int i = 0; i < sizeEcurie; i++) {
+        	eq = new Ecurie(Header.header).getEquipe().get(i);
+            JLabel labelEquipe = new JLabel();
+            labelEquipe.setText(eq.getNom());
+            PanelPresentationEquipe presentEquipe = new PanelPresentationEquipe(eq);
+            presentEquipe.getPanel().addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                	eq = presentEquipe.getEquipe();
+                	setListTournois();
+                	for (PanelPresentationEquipe pe : panelsPresentationEquipe) {
+                		pe.changeBorderColor(Color.black, 1);
+                	}
+                	presentEquipe.changeBorderColor(Colors.lightText, 2);
+                	panelRight.setVisible(true);
+                }
+            });
+            panelsPresentationEquipe[i] = presentEquipe;
+            panelListEquipe.add(presentEquipe.getPanel());
+        }
+
+        for (int i = new Ecurie(Header.header).getEquipe().size(); i < 4; i++) {
+            panelListEquipe.add(new JPanelDarkest());
+        }
 		} catch (ErreurBD e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+        scrollEquipe.setViewportView(panelListEquipe);
+	}
+	
+	private void setListTournois() {
+		buttonInscriptionTournois.setEnabled(false);
+		int sizeTournoi;
+		panelListTournoi = new JPanelBackground();
+        panelListTournoi.setLayout(new GridLayout(0, 1, 0, 0));
+		try {
+			sizeTournoi = Tournoi.getAvailableEquipe(eq).length;
+			PanelPresentationTournoi[] panelsPresentationTournoi = new PanelPresentationTournoi[sizeTournoi];
+	        for (int i = 0; i < sizeTournoi; i++) {
+	        	t = Tournoi.getAvailableEquipe(eq)[i];
+	            JLabel labelTournoi = new JLabel();
+	            labelTournoi.setText(t.getNom());
+	            PanelPresentationTournoi presentTournoi = new PanelPresentationTournoi(t, false);
+	            presentTournoi.getPanel().addMouseListener(new MouseAdapter() {
+	                @Override
+	                public void mouseClicked(MouseEvent e) {
+	                	 t = presentTournoi.getTournoi();
+	                	 for (PanelPresentationTournoi pe : panelsPresentationTournoi) {
+	                		 pe.changeBorderColor(Color.black, 1);
+	                	 }
+	                	 presentTournoi.changeBorderColor(Colors.lightText, 2);
+	                	 buttonInscriptionTournois.setEnabled(true);
+	                }
+	            });
+	            panelsPresentationTournoi[i] = presentTournoi;
+	            panelListTournoi.add(presentTournoi.getPanel());
+	        }
+	
+	        for (int i = sizeTournoi; i < 4; i++) {
+	            panelListTournoi.add(new JPanelDarkest());
+	        }
+		} catch (ErreurBD e1) {
+			// TODO Auto-generated catch block
+			ErrorMessage.ErrorMessage(e1.getMessage());
+		}
+        
+        scrollTournois.setViewportView(panelListTournoi);
+	}
+	
+	private void submitNouvelleEquipe() {
+		try {
+			CreerEquipe.MainWithValue(Ecurie.getID(new Ecurie(Header.header)), thisInstance);
+		} catch (ErreurBD e1) {
+			// TODO Auto-generated catch block
+			ErrorMessage.ErrorMessage(e1.getMessage());
+		};
+	}
+	private void submitInscrire() {
+		if (buttonInscriptionTournois.isEnabled()) {
+			PopUp_ConfirmInscription.mainWithValues(eq,t,thisInstance);
+		}
 	}
 }
+

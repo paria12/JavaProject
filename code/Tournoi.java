@@ -168,7 +168,7 @@ public class Tournoi {
 		}
 	}
 
-	public void selectEquipe() throws ErreurBD {
+	public List<Equipe> selectEquipe() throws ErreurBD {
 		try {
 			DataSource bd = new ConnexionBD();
 
@@ -195,12 +195,13 @@ public class Tournoi {
                 throw new ErreurBD("Une valeur n'a pas été renseigné");
             case 1407:
                 throw new ErreurBD("Une valeur n'a pas été renseigné");
-                
+            
             }
-            if (200000<= ex.getErrorCode() && ex.getErrorCode() <=20999) {
+			if (200000<= ex.getErrorCode() && ex.getErrorCode() <=20999) {
                 throw new ErreurBD("Transgréssion de l'un des déclencheurs de la base de données");
             }
 		}
+		return equipes;
 	}
 
 	public void GenererPoule() {
@@ -228,7 +229,7 @@ public class Tournoi {
 			this.poules[2]=new Poule();
 			this.poules[3]=new Poule();
 			for(int i = 0; i < 16; i++) {
-				this.poules[i%4].insérerEquipe(this.equipes.get(i));
+				this.poules[i%4].insererEquipe(this.equipes.get(i));
 			}
 		}
 	}
@@ -241,66 +242,50 @@ public class Tournoi {
 		}
 		this.poules[4] = new Poule();
 		for(int i = 0; i < 4; i++) {
-			this.poules[4].insérerEquipe(new Equipe(this.poules[i].getClassement()[0][0]));
+			this.poules[4].insererEquipe(new Equipe(this.poules[i].getClassement()[0][0]));
 		}
 	}
 
 	public String[][] getClassement() throws ErreurBD {
-		this.selectEquipe();
-		String[][] classement = null;
-		try {
-			classement = new String[2][16];
+        try {
+            this.selectEquipe();
+            String[][] classement = new String[2][16];
 
-			DataSource bd = new ConnexionBD();
+            DataSource bd = new ConnexionBD();
 
-			Connection connx = bd.getConnection();
+            Connection connx = bd.getConnection();
 
-			Statement st = connx.createStatement();
+            Statement st = connx.createStatement();
 
-			int i = 0;
-			ResultSet rs =st.executeQuery("SELECT equipe.nom, count(*) from equipe, matchs, poule, tournoi where matchs.gagnant=equipe.id_equipe and matchs.id_poule=poule.id_poule and poule.id_tournoi=tournoi.id_tournoi and tournoi.nomtournoi='"+this.nom+"' group by equipe.nom order by 2 desc");
-			while (rs.next()) {
-				classement[0][i] = rs.getString(1);
-				classement[1][i] = rs.getString(2);
-				i++;
-			}
-			if (i<15) {
-				ArrayList<String> tmp = new ArrayList<String>();
-				for(String s:classement[0]) {
-					tmp.add(s);
-				}
-				for(Equipe e:this.equipes) {
-					if(!tmp.contains(e.getNom())) {
-						classement[0][i] = e.getNom();
-						classement[1][i] = "0";
-					}
-				}
-			}
-			
-			connx.close();
-			
-		} catch (SQLException e){ 
-			switch(e.getErrorCode()) {
-            case 1 : 
-                throw new ErreurBD("Un enregistrement similaire est déjà présent dans la base de données");
-            case 2291:
-                throw new ErreurBD("Il manque la clé étrangère");
-            case 2292:
-                throw new ErreurBD("Impossibilité de supprimer car l'enregistrement est présent dans une autre table");
-            case 2290:
-                throw new ErreurBD("Vous ne pouvez pas renseigner cette valeur dans ce champ");
-            case 1400:
-                throw new ErreurBD("Une valeur n'a pas été renseigné");
-            case 1407:
-                throw new ErreurBD("Une valeur n'a pas été renseigné");
-                
+            int i = 0;
+            ResultSet rs =st.executeQuery("SELECT equipe.nom, count(*) from equipe, matchs, poule, tournoi where matchs.gagnant=equipe.id_equipe and matchs.id_poule=poule.id_poule and poule.id_tournoi=tournoi.id_tournoi and tournoi.nomtournoi='"+this.nom+"' group by equipe.nom order by 2 desc");
+            while (rs.next()) {
+                classement[0][i] = rs.getString(1);
+                classement[1][i] = rs.getString(2);
+                i++;
             }
-            if (200000<= e.getErrorCode() && e.getErrorCode() <=20999) {
-                throw new ErreurBD("Transgréssion de l'un des déclencheurs de la base de données");
+            if (i<15) {
+                ArrayList<String> tmp = new ArrayList<String>();
+                for(String s:classement[0]) {
+                    tmp.add(s);
+                }
+                for(Equipe e:this.equipes) {
+                    if(!tmp.contains(e.getNom())) {
+                        classement[0][i] = e.getNom();
+                        classement[1][i] = "0";
+                        tmp.add(e.getNom());
+                        i++;
+                    }
+                }
             }
-		}
-		return classement;
-	}
+
+            connx.close();
+
+            return classement;
+        } catch (SQLException e){ 
+            throw new ErreurBD("Erreur de requete a la bd"+e);
+        }
+    }
 
 	public void genererScore() throws ErreurBD {
 		if (this.poules[4]==null) {
