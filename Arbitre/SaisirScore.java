@@ -119,7 +119,7 @@ public class SaisirScore {
 			min = "0"+min;
 		}
 		String hF = cal.get(Calendar.HOUR)+"h"+min;
-		JLabel labelTurnamentDate = new JLabel("Du match de "+hD+" Ã  "+hF);
+		JLabel labelTurnamentDate = new JLabel("Du match de "+hD+" Ã   "+hF);
 		labelTurnamentDate.setForeground(Colors.lightText);
 		labelTurnamentDate.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		panelTurnamentDate.add(labelTurnamentDate);

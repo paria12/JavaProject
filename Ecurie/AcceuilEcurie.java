@@ -124,7 +124,7 @@ public class AcceuilEcurie {
 		fl_panelButtonAddEquipe.setAlignment(FlowLayout.RIGHT);
 		panelMenuLeftHeader.add(panelButtonAddEquipe);
 		
-		JButtonDark buttonRefreshEquipes = new JButtonDark("rafraîchir");
+		JButtonDark buttonRefreshEquipes = new JButtonDark("rafraÃ®chir");
 		buttonRefreshEquipes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}

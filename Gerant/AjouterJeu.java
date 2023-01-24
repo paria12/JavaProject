@@ -37,6 +37,7 @@ public class AjouterJeu {
 	private JTextFieldDark inputGameName;
 	private JButtonYellow buttonValidation;
 	private JSpinnerDark spinnerGamelength;
+	private CreerTournoi parent;
 
 	/**
 	 * Launch the application.
@@ -45,7 +46,20 @@ public class AjouterJeu {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AjouterJeu window = new AjouterJeu();
+					AjouterJeu window = new AjouterJeu(null);
+					window.frmAjouterUnJeu.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	
+	public static void mainWithValues(CreerTournoi parent) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					AjouterJeu window = new AjouterJeu(parent);
 					window.frmAjouterUnJeu.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -57,14 +71,15 @@ public class AjouterJeu {
 	/**
 	 * Create the application.
 	 */
-	public AjouterJeu() {
-		initialize();
+	public AjouterJeu(CreerTournoi parent) {
+		initialize(parent);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize(CreerTournoi parent) {
+		this.parent = parent;
 		frmAjouterUnJeu = new JFrame();
 		frmAjouterUnJeu.setTitle("E-Sporter | Ajouter un jeu");
 		frmAjouterUnJeu.setLocationRelativeTo(null);
@@ -229,6 +244,7 @@ public class AjouterJeu {
 				// TODO Auto-generated catch block
 				ErrorMessage.ErrorMessage(e1.getMessage());
 			}
+			parent.refreshComboGame();
 			frmAjouterUnJeu.dispose();
 		}
 	}

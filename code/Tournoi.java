@@ -166,6 +166,10 @@ public class Tournoi {
                 throw new ErreurBD("Transgréssion de l'un des déclencheurs de la base de données");
             }
 		}
+		this.selectEquipe();
+		if (this.equipes.size()==16) {
+			this.GenererPoule();
+		}
 	}
 
 	public List<Equipe> selectEquipe() throws ErreurBD {
@@ -201,7 +205,7 @@ public class Tournoi {
                 throw new ErreurBD("Transgréssion de l'un des déclencheurs de la base de données");
             }
 		}
-		return equipes;
+		return this.equipes;
 	}
 
 	public void GenererPoule() {
@@ -240,9 +244,40 @@ public class Tournoi {
 				throw new IllegalArgumentException("Au moins une des poule n'est pas definié");
 			}
 		}
-		this.poules[4] = new Poule();
-		for(int i = 0; i < 4; i++) {
-			this.poules[4].insererEquipe(new Equipe(this.poules[i].getClassement()[0][0]));
+		try {
+			DataSource bd = new ConnexionBD();
+
+			Connection connx = bd.getConnection();
+
+			Statement st = connx.createStatement();
+
+			ResultSet rese = st.executeQuery("SELECT COUNT(matchs.id_poule) from Matchs, Poule, Tournoi where matchs.id_poule = poule.id_poule AND poule.id_tournoi = tournoi.id_tournoi AND tournoi.id_tournoi = "+this.getId()+" AND matchs.gagnant is not null");
+
+			rese.next();
+			if (rese.getInt(1)==24) {
+				this.poules[4] = new Poule();
+				for(int i = 0; i < 4; i++) {
+					this.poules[4].insererEquipe(new Equipe(this.poules[i].getClassement()[0][0]));
+				}
+			}
+
+			connx.close();
+		} catch (SQLException e) {
+			switch(e.getErrorCode()) {
+            case 1 : 
+                throw new ErreurBD("Un enregistrement similaire est déjà présent dans la base de données");
+            case 2291:
+                throw new ErreurBD("Il manque la clé étrangère");
+            case 2292:
+                throw new ErreurBD("Impossibilité de supprimer car l'enregistrement est présent dans une autre table");
+            case 2290:
+                throw new ErreurBD("Vous ne pouvez pas renseigner cette valeur dans ce champ");
+            case 1400:
+                throw new ErreurBD("Une valeur n'a pas été renseigné");
+            case 1407:
+                throw new ErreurBD("Une valeur n'a pas été renseigné");
+                
+            }
 		}
 	}
 

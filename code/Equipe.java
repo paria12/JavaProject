@@ -216,21 +216,21 @@ public class Equipe {
         } catch (SQLException e) {
             switch(e.getErrorCode()) {
             case 1 : 
-                throw new ErreurBD("Un enregistrement similaire est déjà présent dans la base de données");
+                throw new ErreurBD("Un enregistrement similaire est dï¿½jï¿½ prï¿½sent dans la base de donnï¿½es");
             case 2291:
-                throw new ErreurBD("Il manque la clé étrangère");
+                throw new ErreurBD("Il manque la clï¿½ ï¿½trangï¿½re");
             case 2292:
-                throw new ErreurBD("Impossibilité de supprimer car l'enregistrement est présent dans une autre table");
+                throw new ErreurBD("Impossibilitï¿½ de supprimer car l'enregistrement est prï¿½sent dans une autre table");
             case 2290:
                 throw new ErreurBD("Vous ne pouvez pas renseigner cette valeur dans ce champ");
             case 1400:
-                throw new ErreurBD("Une valeur n'a pas été renseigné");
+                throw new ErreurBD("Une valeur n'a pas ï¿½tï¿½ renseignï¿½");
             case 1407:
-                throw new ErreurBD("Une valeur n'a pas été renseigné");
+                throw new ErreurBD("Une valeur n'a pas ï¿½tï¿½ renseignï¿½");
 
             }
             if (200000<= e.getErrorCode() && e.getErrorCode() <=20999) {
-                throw new ErreurBD("Transgréssion de l'un des déclencheurs de la base de données");
+                throw new ErreurBD("Transgrï¿½ssion de l'un des dï¿½clencheurs de la base de donnï¿½es");
             }
         }
         return classement;
@@ -330,10 +330,10 @@ public class Equipe {
 			Connection connx = bd.getConnection();
 
 			Statement st = connx.createStatement();
-
+			System.out.println("deleting "+this.nom);
 			st.executeUpdate("delete participation where id_equipe = "+this.getID());
 			st.executeUpdate("delete participer where id_equipe = "+this.getID());
-			st.executeUpdate("delete match where id_equipe = "+this.getID()+" or id_equipe1 = "+this.getID());
+			st.executeUpdate("delete matchs where id_equipe = "+this.getID()+" or id_equipe1 = "+this.getID());
 			st.executeUpdate("delete joueur where id_equipe = "+this.getID());
 			st.executeUpdate("delete equipe where nom = '"+this.nom+"'");
 

@@ -94,7 +94,7 @@ public class CreerEquipe {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 400, 400);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frame.setTitle("E-Sporter | Créer une nouvelle équipe");
+		frame.setTitle("E-Sporter | CrÃ©er une nouvelle Ã©quipe");
 		frame.setLocationRelativeTo(null);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		

@@ -85,6 +85,7 @@ public class CreerTournoi {
 	private JComboBoxDark<String> comboArbitre;
 	private String notoriete;
 	private AcceuilGerant parent;
+	private JPanelBackground panelComboGame;
 
 	/**
 	 * Launch the application.
@@ -130,9 +131,9 @@ public class CreerTournoi {
 	private void initialize(AcceuilGerant parent) throws ErreurBD {
 		this.parent = parent;
 		frmCrerTournois = new JFrame();
-		frmCrerTournois.setTitle("E-Sporter | Créer Tournoi");
+		frmCrerTournois.setTitle("E-Sporter | CrÃ©er Tournoi");
 		frmCrerTournois.setLocationRelativeTo(null);
-		frmCrerTournois.setSize(650, 600);
+		frmCrerTournois.setSize(650, 650);
 		//frmCrerTournois.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frmCrerTournois.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmCrerTournois.getContentPane().setLayout(new BorderLayout(0, 0));
@@ -448,7 +449,7 @@ public class CreerTournoi {
 		JPanelBackground panelRadios = new JPanelBackground();
 		panelInputTurnamentType.add(panelRadios);
 		
-		JRadioDark radioTurnamentTypeLocal = new JRadioDark("Local");
+		JRadioDark radioTurnamentTypeLocal = new JRadioDark("LOCAL");
 		radioTurnamentTypeLocal.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -468,7 +469,7 @@ public class CreerTournoi {
 		buttonGroup.add(radioTurnamentTypeLocal);
 		panelRadios.add(radioTurnamentTypeLocal);
 		
-		JRadioDark radioTurnamentTypeNationnal = new JRadioDark("Nationnal");
+		JRadioDark radioTurnamentTypeNationnal = new JRadioDark("NATIONAL");
 		radioTurnamentTypeNationnal.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -487,7 +488,7 @@ public class CreerTournoi {
 		buttonGroup.add(radioTurnamentTypeNationnal);
 		panelRadios.add(radioTurnamentTypeNationnal);
 		
-		JRadioDark radioTurnamentTypeInternationnal = new JRadioDark("Internationnal");
+		JRadioDark radioTurnamentTypeInternationnal = new JRadioDark("INTERNATIONAL");
 		radioTurnamentTypeInternationnal.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -527,7 +528,7 @@ public class CreerTournoi {
 		fl_panelInputGame.setHgap(25);
 		panelFormGame.add(panelInputGame);
 		
-		JPanelBackground panelComboGame = new JPanelBackground();
+		panelComboGame = new JPanelBackground();
 		panelInputGame.add(panelComboGame);
 		
 		comboGame = new JComboBoxDark<String>();
@@ -569,7 +570,7 @@ public class CreerTournoi {
 		buttonAddGame.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				AjouterJeu.main(null);
+				AjouterJeu.mainWithValues(currentInstance);
 			}
 		});
 		buttonAddGame.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -715,6 +716,15 @@ public class CreerTournoi {
 			buttonValidation.setEnabled(true);
 		} else {
 			buttonValidation.setEnabled(false);
+		}
+	}
+	
+	public void refreshComboGame() {
+		try {
+			comboGame.setModel(new DefaultComboBoxModel(Jeu.getAll()));
+		} catch (ErreurBD e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }
