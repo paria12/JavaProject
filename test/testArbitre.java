@@ -11,7 +11,7 @@ import org.junit.Test;
 import code.Arbitre;
 import code.ErreurBD;
 
-public class testArbitre {
+public class TestArbitre {
 	private Arbitre t;
 
 	@AfterClass
