@@ -6,7 +6,7 @@ import oracle.jdbc.pool.OracleDataSource;
 
 public class ConnexionBD extends OracleDataSource {
 
-	/** Connexion de l'application à la base de donnée
+	/** Connexion de l'application a la base de donnees
 	 * @throws SQLException
 	 */
 	public ConnexionBD() throws SQLException {

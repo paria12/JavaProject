@@ -23,7 +23,7 @@ public class Poule {
 
 	public void insererEquipe(Equipe e) throws IllegalArgumentException{
 		if (this.pointeur == 4) {
-			throw new IllegalArgumentException("La poule est déjà pleine");
+			throw new IllegalArgumentException("La poule est deja pleine");
 		} else {
 			this.equipes[pointeur] = e;
 			this.pointeur++;
@@ -72,21 +72,21 @@ public class Poule {
 		}catch (SQLException e){ 
 			switch(e.getErrorCode()) {
             case 1 : 
-                throw new ErreurBD("Un enregistrement similaire est déjà présent dans la base de données");
+                throw new ErreurBD("Un enregistrement similaire est deja present dans la base de donnees");
             case 2291:
-                throw new ErreurBD("Il manque la clé étrangère");
+                throw new ErreurBD("Il manque la cle etrangere");
             case 2292:
-                throw new ErreurBD("Impossibilité de supprimer car l'enregistrement est présent dans une autre table");
+                throw new ErreurBD("Impossibilite de supprimer car l'enregistrement est present dans une autre table");
             case 2290:
                 throw new ErreurBD("Vous ne pouvez pas renseigner cette valeur dans ce champ");
             case 1400:
-                throw new ErreurBD("Une valeur n'a pas été renseigné");
+                throw new ErreurBD("Une valeur n'a pas ete renseigne");
             case 1407:
-                throw new ErreurBD("Une valeur n'a pas été renseigné");
+                throw new ErreurBD("Une valeur n'a pas ete renseigne");
                 
             }
             if (200000<= e.getErrorCode() && e.getErrorCode() <=20999) {
-                throw new ErreurBD("Transgréssion de l'un des déclencheurs de la base de données");
+                throw new ErreurBD("Transgression de l'un des declencheurs de la base de donnees");
             }
 		}    
 	}
@@ -114,21 +114,21 @@ public class Poule {
 		} catch (SQLException e){ 
 			switch(e.getErrorCode()) {
             case 1 : 
-                throw new ErreurBD("Un enregistrement similaire est déjà présent dans la base de données");
+                throw new ErreurBD("Un enregistrement similaire est deja present dans la base de donnees");
             case 2291:
-                throw new ErreurBD("Il manque la clé étrangère");
+                throw new ErreurBD("Il manque la cle etrangere");
             case 2292:
-                throw new ErreurBD("Impossibilité de supprimer car l'enregistrement est présent dans une autre table");
+                throw new ErreurBD("Impossibilite de supprimer car l'enregistrement est present dans une autre table");
             case 2290:
                 throw new ErreurBD("Vous ne pouvez pas renseigner cette valeur dans ce champ");
             case 1400:
-                throw new ErreurBD("Une valeur n'a pas été renseigné");
+                throw new ErreurBD("Une valeur n'a pas ete renseigne");
             case 1407:
-                throw new ErreurBD("Une valeur n'a pas été renseigné");
+                throw new ErreurBD("Une valeur n'a pas ete renseigne");
                 
             }
             if (200000<= e.getErrorCode() && e.getErrorCode() <=20999) {
-                throw new ErreurBD("Transgréssion de l'un des déclencheurs de la base de données");
+                throw new ErreurBD("Transgression de l'un des declencheurs de la base de donnees");
             }
 		}
 		return classement;

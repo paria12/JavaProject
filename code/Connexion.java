@@ -16,7 +16,7 @@ import javax.sql.DataSource;
  */
 public class Connexion {
 
-	/** Connexion à l'application par les différents utilisateurs
+	/** Connexion a l'application par les differents utilisateurs
 	 * @param identifiant
 	 * @param mdp
 	 * @return int
@@ -43,7 +43,7 @@ public class Connexion {
 		}
 		
 		
-		// Connection arbitre
+		// Connexion arbitre
 		ResultSet resa = st.executeQuery("select mdp from arbitre where login='"+identifiant+"'");
 		if (resa.next()) {
 			if (resa.getString(1).equals(sta256(mdp))) {
@@ -55,7 +55,7 @@ public class Connexion {
 		return -1;
 	}
 	
-	/**Crypter un string en héxadécimal
+	/**Crypter un string en hexadecimal
 	 * @param str
 	 * @return string
 	 */
@@ -70,7 +70,7 @@ public class Connexion {
 		return bytesToHex(hash);
 	}
 	
-	/**Transformer un tableau de bytes en string qui correspond à l'héxadécimal de ce tableau
+	/**Transformer un tableau de bytes en string qui correspond a l'hexadecimal de ce tableau
 	 * @param hash
 	 * @return string 
 	 */

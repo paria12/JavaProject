@@ -14,7 +14,7 @@ import javax.sql.DataSource;
 public class Joueur {
 
 	
-//initialisation des diff�rentes variables	
+// Initialisation des differentes variables	
 	private String nom;
 	private String prenom;
 	private Date dateN;
@@ -23,21 +23,21 @@ public class Joueur {
 	private String email;
 
 
-	/** constructueur de la classe Joueur en fonction de son nom et de son prénom 
+	/** Constructueur de la classe Joueur en fonction de son nom et de son prenom 
 	 * @param nom
 	 * @param prenom
 	 * @throws IllegalArgumentException
-	 * @exception nom et pr�nom non null
+	 * @exception nom et prenom non null
 	 */
 	public Joueur(String nom, String prenom) throws IllegalArgumentException{
 		if (nom == null || prenom == null) {
-			throw new IllegalArgumentException("nom et pr�nom ne peuvent pas �tre null");
+			throw new IllegalArgumentException("nom et prenom ne peuvent pas etre null");
 		}
 		this.nom = nom;
 		this.prenom = prenom;
 	}
 
-	/** constructueur de la classe Joueur en fonction de son nom, son prénom, sa date de naissance, sonn sexe, son numéro de téléphone et de son email
+	/** Constructueur de la classe Joueur en fonction de son nom, son prenom, sa date de naissance, son sexe, son numero de telephone et de son email
 	 * @param nom
 	 * @param prenom
 	 * @param date
@@ -45,11 +45,11 @@ public class Joueur {
 	 * @param tel
 	 * @param email
 	 * @throws IllegalArgumentException
-	 * @exception nom et pr�nom non null
+	 * @exception nom et prenom non null
 	 */
 	public Joueur(String nom, String prenom, Date date, char sexe, String tel, String email) throws IllegalArgumentException{
 		if (nom == null || prenom == null) {
-			throw new IllegalArgumentException("nom et pr�nom ne peuvent pas �tre null");
+			throw new IllegalArgumentException("nom et prenom ne peuvent pas etre null");
 		}
 		this.nom = nom;
 		this.prenom = prenom;
@@ -59,21 +59,21 @@ public class Joueur {
 		this.email = email;
 	}
 
-	/** renvoie le nom du joueur
+	/** Renvoie le nom du joueur
 	 * @return string : nom
 	 */
 	public String getNom() {
 		return this.nom;
 	}
 
-	/** renvoie le pr�nom du joueur
+	/** Renvoie le prenom du joueur
 	 * @return string : prenom
 	 */
 	public String getPrenom() {
 		return this.prenom;
 	}
 
-	/** renvoie le date de naissance du joueur
+	/** Renvoie le date de naissance du joueur
 	 * @return Date : date de naissance
 	 * @throws ErreurBD 
 	 */
@@ -84,7 +84,7 @@ public class Joueur {
 		return this.dateN;
 	}
 
-	/** renvoie le sexe du joueur
+	/** Renvoie le sexe du joueur
 	 * @return char : sexe
 	 * @throws ErreurBD 
 	 */
@@ -95,8 +95,8 @@ public class Joueur {
 		return this.sexe;
 	}
 
-	/**renvoie le num�ro de t�l�phone d'un joueur
-	 * @return string : num�ro de t�l�phone
+	/** Renvoie le numero de telephone d'un joueur
+	 * @return string : numero de telephone
 	 * @throws ErreurBD 
 	 */
 	public String getTel() throws ErreurBD {
@@ -106,7 +106,7 @@ public class Joueur {
 		return this.numTel;
 	}
 
-	/**renvoie l'email d'un Joueur
+	/** Renvoie l'email d'un Joueur
 	 * @return string : email
 	 * @throws ErreurBD 
 	 */
@@ -117,7 +117,7 @@ public class Joueur {
 		return this.email;
 	}
 	
-	/**redéfinition de la méthode equals
+	/** Redefinition de la methode equals
 	 *
 	 */
 	@Override
@@ -134,10 +134,10 @@ public class Joueur {
 				&& Objects.equals(prenom, other.prenom) && sexe == other.sexe;
 	}
 
-	/** importation des informations secondaires d'un joueur depuis la base de donn�es
+	/** Importation des informations secondaires d'un joueur depuis la base de donnees
 	 * @throws ErreurBD 
-	 * @exception mauvaise connexion � la BD
-	 * @exception mauvaise requ�te
+	 * @exception mauvaise connexion a la BD
+	 * @exception mauvaise requete
 	 */
 	public void select() throws ErreurBD {
 		try {
@@ -167,30 +167,30 @@ public class Joueur {
 		} catch (SQLException e) {
 			switch(e.getErrorCode()) {
             case 1 : 
-                throw new ErreurBD("Un enregistrement similaire est déjà présent dans la base de données");
+                throw new ErreurBD("Un enregistrement similaire est deja present dans la base de donnees");
             case 2291:
-                throw new ErreurBD("Il manque la clé étrangère");
+                throw new ErreurBD("Il manque la cle etrangere");
             case 2292:
-                throw new ErreurBD("Impossibilité de supprimer car l'enregistrement est présent dans une autre table");
+                throw new ErreurBD("Impossibilite de supprimer car l'enregistrement est present dans une autre table");
             case 2290:
                 throw new ErreurBD("Vous ne pouvez pas renseigner cette valeur dans ce champ");
             case 1400:
-                throw new ErreurBD("Une valeur n'a pas été renseigné");
+                throw new ErreurBD("Une valeur n'a pas ete renseigne");
             case 1407:
-                throw new ErreurBD("Une valeur n'a pas été renseigné");
+                throw new ErreurBD("Une valeur n'a pas ete renseigne");
                 
             }
             if (200000<= e.getErrorCode() && e.getErrorCode() <=20999) {
-                throw new ErreurBD("Transgréssion de l'un des déclencheurs de la base de données");
+                throw new ErreurBD("Transgression de l'un des declencheurs de la base de donnees");
             }
 		}
 	}
 
-	/** ins�rer toutes les informations dans la base de donn�es
+	/** Inserer toutes les informations dans la base de donnees
 	 * @throws ErreurBD 
-	 * @exception mauvaise connexion � la BD
-	 * @exception mauvaise requ�te
-	 * @exception un des paramètres n'est pas valide
+	 * @exception mauvaise connexion a la BD
+	 * @exception mauvaise requete
+	 * @exception un des parametres n'est pas valide
 	 */
 	public void insert(int equipe) throws ErreurBD {
 		if (this.dateN != null && (this.sexe == 'M' || this.sexe == 'F' || this.sexe == 'X') && this.numTel != null && this.email != null && equipe>=0) {
@@ -208,25 +208,25 @@ public class Joueur {
 			} catch (SQLException e) {
 				switch(e.getErrorCode()) {
 	            case 1 : 
-	                throw new ErreurBD("Un enregistrement similaire est déjà présent dans la base de données");
+	                throw new ErreurBD("Un enregistrement similaire est deja present dans la base de donnees");
 	            case 2291:
-	                throw new ErreurBD("Il manque la clé étrangère");
+	                throw new ErreurBD("Il manque la cle etrangere");
 	            case 2292:
-	                throw new ErreurBD("Impossibilité de supprimer car l'enregistrement est présent dans une autre table");
+	                throw new ErreurBD("Impossibilite de supprimer car l'enregistrement est present dans une autre table");
 	            case 2290:
 	                throw new ErreurBD("Vous ne pouvez pas renseigner cette valeur dans ce champ");
 	            case 1400:
-	                throw new ErreurBD("Une valeur n'a pas été renseigné");
+	                throw new ErreurBD("Une valeur n'a pas ete renseigne");
 	            case 1407:
-	                throw new ErreurBD("Une valeur n'a pas été renseigné");
+	                throw new ErreurBD("Une valeur n'a pas ete renseigne");
 	                
 	            }
 	            if (200000<= e.getErrorCode() && e.getErrorCode() <=20999) {
-	                throw new ErreurBD("Transgréssion de l'un des déclencheurs de la base de données");
+	                throw new ErreurBD("Transgression de l'un des declencheurs de la base de donnees");
 	            }
 			}
 		} else {
-			throw new IllegalArgumentException("Au moins un des param�tres n'est pas valide/definie");
+			throw new IllegalArgumentException("Au moins un des parametres n'est pas valide/defini");
 		}
 	}
 }
