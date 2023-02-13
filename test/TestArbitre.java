@@ -31,14 +31,14 @@ public class TestArbitre {
 	@Test
 	public void testArbitre() {
 		Arbitre a = new Arbitre("test");
-		assertEquals(t,a);
+		assertEquals(a,t);
 	}
 
 	@Test
 	public void testGetMatch() {
 		Arbitre a = new Arbitre("chien");
 		try {
-			assertEquals(a.getMatch()[0].getEquipe1().getNom(),"Best OF The Best");
+			assertEquals("Best OF The Best",a.getMatch()[0].getEquipe1().getNom());
 		} catch (ErreurBD e) {
 			fail(e.getMessage());
 		}
@@ -47,7 +47,7 @@ public class TestArbitre {
 	@Test
 	public void testGetAll() {
 		try {
-			assertEquals(Arbitre.getAll()[0],"arbre");
+			assertEquals("arbre",Arbitre.getAll()[0]);
 		} catch (ErreurBD e) {
 			fail(e.getMessage());
 		}
@@ -57,7 +57,7 @@ public class TestArbitre {
     public void testGetId() {
         Arbitre a = new Arbitre("chien");
         try {
-            assertEquals(a.getID(),1);
+            assertEquals(1,a.getID());
         } catch (ErreurBD e){
             fail(e.getMessage());
         }

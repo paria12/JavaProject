@@ -7,36 +7,36 @@ import org.junit.Test;
 
 import code.Connexion;
 
-public class testConnexion {
+public class TestConnexion {
 
 	@Test
 	public void testOwner() throws SQLException {
-		assertEquals(Connexion.connexion("owner","admin"),0);
+		assertEquals(0,Connexion.connexion("owner","admin"));
 	}
 	
 	@Test
 	public void testNotOwner() throws SQLException {
-		assertEquals(Connexion.connexion("owner","mdp"),-1);
+		assertEquals(-1,Connexion.connexion("owner","mdp"));
 	}
 	
 	@Test
 	public void testArbitre() throws SQLException {
-		assertEquals(Connexion.connexion("arbre","feuilles"),2);
+		assertEquals(2,Connexion.connexion("arbre","feuilles"));
 	}
 	
 	@Test
 	public void testNotArbitre() throws SQLException {
-		assertEquals(Connexion.connexion("arbre","racine"),-1);
+		assertEquals(-1,Connexion.connexion("arbre","racine"));
 	}
 	
 	@Test
 	public void testEcurie() throws SQLException {
-		assertEquals(Connexion.connexion("Vitality","sport"),1);
+		assertEquals(1,Connexion.connexion("Vitality","sport"));
 	}
 	
 	@Test
 	public void testNotEcurie() throws SQLException {
-		assertEquals(Connexion.connexion("Vitality","play"),-1);
+		assertEquals(-1,Connexion.connexion("Vitality","play"));
 	}
 	
 }

@@ -20,7 +20,7 @@ import code.ErreurBD;
 import code.Joueur;
 import code.Poule;
 
-public class testPoule {
+public class TestPoule {
 
 	private Poule p;
 	 

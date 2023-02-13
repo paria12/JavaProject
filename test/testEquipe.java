@@ -21,7 +21,7 @@ import code.ErreurBD;
 import code.Joueur;
 
 
-public class testEquipe {
+public class TestEquipe {
 	private Equipe e;
 	private Equipe e2;
 
@@ -58,13 +58,13 @@ public class testEquipe {
 	@Test
 	public void testEquipeString() {
 		Equipe t = new Equipe("Dream Team");
-		assertEquals(this.e, t);
+		assertEquals(t,this.e);
 	}
 
 	@Test
 	public void testEquipeStringIntInt() {
 		Equipe t = new Equipe("Test",10,1);
-		assertEquals(this.e2,t);
+		assertEquals(t,this.e2);
 	}
 
 	@Test
@@ -98,7 +98,7 @@ public class testEquipe {
 		Joueur j = new Joueur("test","test");
 		this.e2.addJoueur(j);
 		try {
-			assertEquals(this.e2.getJoueur().get(0),j);
+			assertEquals(j,this.e2.getJoueur().get(0));
 		} catch (ErreurBD e) {
 			fail("Erreur local : "+e.getMessage());
 		}
@@ -114,7 +114,7 @@ public class testEquipe {
 		
 		Equipe test2 = new Equipe("test",0,1);
 		try {
-			assertEquals(test2.getJoueur().get(0),t);
+			assertEquals(t,test2.getJoueur().get(0));
 		} catch (ErreurBD e) {
 			fail("Erreur distant : "+e.getMessage());
 		}
@@ -169,7 +169,7 @@ public class testEquipe {
 
 		Equipe e4 = new Equipe("Jeanne");
 		try {
-			assertEquals(e4.getIdJeu(),1);
+			assertEquals(1,e4.getIdJeu());
 		}
 		catch(ErreurBD e) {
 			fail("erreur BD get");
