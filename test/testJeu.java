@@ -14,7 +14,7 @@ import org.junit.Test;
 import code.ErreurBD;
 import code.Jeu;
 
-public class testJeu {
+public class TestJeu {
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {

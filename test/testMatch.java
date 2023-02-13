@@ -13,7 +13,7 @@ import org.junit.Test;
 import code.Equipe;
 import code.Match;
 
-public class testMatch {
+public class TestMatch {
 	private Match m;
 
 	@AfterClass

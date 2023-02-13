@@ -19,7 +19,7 @@ import code.Ecurie;
 import code.Equipe;
 import code.ErreurBD;
 
-public class testEcurie {
+public class TestEcurie {
 	private Ecurie e;
 	private Ecurie e2;
 
@@ -91,15 +91,15 @@ public class testEcurie {
 
 	@Test
 	public void testGetNom() {
-		assertEquals(this.e.getNom(),"KCorp");
-		assertEquals(this.e2.getNom(),"Vitality");
+		assertEquals("KCorp",this.e.getNom());
+		assertEquals("Vitality",this.e2.getNom());
 	}
 
 	@Test
 	public void testGetType() {
 		try {
-			assertEquals(this.e.getType(),"Professionnelle");
-			assertEquals(this.e2.getType(),"Professionnelle");
+			assertEquals("Professionnelle",this.e.getType());
+			assertEquals("Professionnelle",this.e2.getType());
 		} catch (ErreurBD e) {
 			fail("ErreurBd");
 		}
@@ -119,7 +119,7 @@ public class testEcurie {
 		
 		Ecurie t2 = new Ecurie("test");
 		try {
-			assertEquals(t2.getEquipe().get(0),test);
+			assertEquals(test,t2.getEquipe().get(0));
 		} catch (ErreurBD e) {
 			fail("Erreur Get : "+e.getMessage());
 		}
@@ -136,7 +136,7 @@ public class testEcurie {
 		
 		Ecurie t2 = new Ecurie("test2");
 		try {
-			assertEquals(t2.getType(),"Professionnelle");
+			assertEquals("Professionnelle",t2.getType());
 		} catch (ErreurBD e) {
 			fail("Erreur get : "+e.getMessage());
 		}

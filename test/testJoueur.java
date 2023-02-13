@@ -20,7 +20,7 @@ import code.Equipe;
 import code.ErreurBD;
 import code.Joueur;
 
-public class testJoueur {
+public class TestJoueur {
 	private Joueur j;
 	private Joueur j2;
 	

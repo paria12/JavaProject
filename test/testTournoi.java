@@ -21,7 +21,7 @@ import code.Equipe;
 import code.ErreurBD;
 import code.Tournoi;
 
-public class testTournoi {
+public class TestTournoi {
 	private Tournoi t1;
 	private Tournoi t2;
 
