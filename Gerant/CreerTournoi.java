@@ -84,7 +84,7 @@ public class CreerTournoi {
 	private JComboBoxDark<String> comboGame;
 	private JComboBoxDark<String> comboArbitre;
 	private String notoriete;
-	private AcceuilGerant parent;
+	private AccueilGerant parent;
 	private JPanelBackground panelComboGame;
 
 	/**
@@ -94,7 +94,7 @@ public class CreerTournoi {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					CreerTournoi window = new CreerTournoi(new AcceuilGerant());
+					CreerTournoi window = new CreerTournoi(new AccueilGerant());
 					window.frmCrerTournois.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -103,7 +103,7 @@ public class CreerTournoi {
 		});
 	}
 	
-	public static void mainWithValues(AcceuilGerant parent) {
+	public static void mainWithValues(AccueilGerant parent) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -120,7 +120,7 @@ public class CreerTournoi {
 	 * Create the application.
 	 * @throws ErreurBD 
 	 */
-	public CreerTournoi(AcceuilGerant parent) throws ErreurBD {
+	public CreerTournoi(AccueilGerant parent) throws ErreurBD {
 		initialize(parent);
 	}
 
@@ -128,7 +128,7 @@ public class CreerTournoi {
 	 * Initialize the contents of the frame.
 	 * @throws ErreurBD 
 	 */
-	private void initialize(AcceuilGerant parent) throws ErreurBD {
+	private void initialize(AccueilGerant parent) throws ErreurBD {
 		this.parent = parent;
 		frmCrerTournois = new JFrame();
 		frmCrerTournois.setTitle("E-Sporter | Créer Tournoi");

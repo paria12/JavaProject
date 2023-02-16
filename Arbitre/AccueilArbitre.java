@@ -34,8 +34,8 @@ import Commons.JButtonYellow;
 import Commons.JPanelBackground;
 import Commons.JPanelDarkest;
 import Commons.StaticValues;
-import Ecurie.AcceuilEcurie;
-import Gerant.AcceuilGerant;
+import Ecurie.AccueilEcurie;
+import Gerant.AccueilGerant;
 import code.Arbitre;
 import code.Connexion;
 import code.ErreurBD;
@@ -57,7 +57,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 
-public class AcceuilArbitre {
+public class AccueilArbitre {
 
 	private JFrame frame;
 	private JButtonYellow buttonInsertScore;
@@ -70,7 +70,7 @@ public class AcceuilArbitre {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AcceuilArbitre window = new AcceuilArbitre();
+					AccueilArbitre window = new AccueilArbitre();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -82,7 +82,7 @@ public class AcceuilArbitre {
 	/**
 	 * Create the application.
 	 */
-	public AcceuilArbitre() {
+	public AccueilArbitre() {
 		initialize();
 	}
 
@@ -95,7 +95,7 @@ public class AcceuilArbitre {
 		frame.setBounds(100, 100, 643, 408);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
-	    frame.setTitle("E-Sporter | Acceuil");
+	    frame.setTitle("E-Sporter | Accueil");
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		
