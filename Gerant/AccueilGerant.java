@@ -43,7 +43,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class AcceuilGerant {
+public class AccueilGerant {
 
 	private JFrame frame;
 	private JPanelBackground panelMenuRight;
@@ -51,7 +51,7 @@ public class AcceuilGerant {
 	private JPanelBackground panelListTournoi;
 	private Tournoi t;
 	private JScrollPane scrollTournoi;
-	private AcceuilGerant thisInstance;
+	private AccueilGerant thisInstance;
 
 	/**
 	 * Launch the application.
@@ -60,7 +60,7 @@ public class AcceuilGerant {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AcceuilGerant window = new AcceuilGerant();
+					AccueilGerant window = new AccueilGerant();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -73,7 +73,7 @@ public class AcceuilGerant {
 	 * Create the application.
 	 * @throws ErreurBD 
 	 */
-	public AcceuilGerant() throws ErreurBD {
+	public AccueilGerant() throws ErreurBD {
 		initialize();
 	}
 
@@ -86,7 +86,7 @@ public class AcceuilGerant {
 		frame = new JFrame();
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setTitle("E-Sporter | Acceuil");
+		frame.setTitle("E-Sporter | Accueil");
 		frame.setLocationRelativeTo(null);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
@@ -158,7 +158,7 @@ public class AcceuilGerant {
 		
 		setListTournois();
 		
-		JButtonDark buttonRefreshTournois = new JButtonDark("refresh");
+		JButtonDark buttonRefreshTournois = new JButtonDark("rafraîchir");
 		buttonRefreshTournois.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {

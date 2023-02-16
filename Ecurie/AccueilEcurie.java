@@ -41,7 +41,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 
-public class AcceuilEcurie {
+public class AccueilEcurie {
 
 	private JFrame frame;
 	private JPanelBackground panelRight;
@@ -52,7 +52,7 @@ public class AcceuilEcurie {
 	private JPanelBackground panelListTournoi;
 	private JScrollPane scrollTournois;
 	private JScrollPane scrollEquipe;
-	private AcceuilEcurie thisInstance;
+	private AccueilEcurie thisInstance;
 	
 	/**
 	 * Launch the application.
@@ -61,7 +61,7 @@ public class AcceuilEcurie {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AcceuilEcurie window = new AcceuilEcurie();
+					AccueilEcurie window = new AccueilEcurie();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -74,7 +74,7 @@ public class AcceuilEcurie {
 	 * Create the application.
 	 * @throws ErreurBD 
 	 */
-	public AcceuilEcurie() throws ErreurBD {
+	public AccueilEcurie() throws ErreurBD {
 		initialize();
 	}
 
@@ -87,7 +87,7 @@ public class AcceuilEcurie {
 		frame = new JFrame();
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setTitle("E-Sporter | Acceuil");
+		frame.setTitle("E-Sporter | Accueil");
 		frame.setLocationRelativeTo(null);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		

@@ -24,9 +24,9 @@ import java.sql.SQLException;
 
 import code.Connexion;
 import code.Ecurie;
-import Gerant.AcceuilGerant;
-import Ecurie.AcceuilEcurie;
-import Arbitre.AcceuilArbitre;
+import Gerant.AccueilGerant;
+import Ecurie.AccueilEcurie;
+import Arbitre.AccueilArbitre;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -91,17 +91,17 @@ public class ConnexionWindow{
 						switch (Connexion.connexion(inputUserName.getText(), String.valueOf(inputPassword.getPassword()))) {
 							case 0 : //Owner
 								Header.header = "M. le Owner";
-								AcceuilGerant.main(null);
+								AccueilGerant.main(null);
 								frmConnexion.dispose();
 								break;
 							case 1 : //Ecurie
 								Header.header = inputUserName.getText();
-								AcceuilEcurie.main(null);
+								AccueilEcurie.main(null);
 								frmConnexion.dispose();
 								break;
 							case 2 : //Arbitre
 								Header.header = inputUserName.getText();
-								AcceuilArbitre.main(null);
+								AccueilArbitre.main(null);
 								frmConnexion.dispose();
 								break;
 							case -1 : //Wrong Password;
@@ -267,17 +267,17 @@ public class ConnexionWindow{
 			switch (Connexion.connexion(inputUserName.getText(), String.valueOf(inputPassword.getPassword()))) {
 				case 0 : //Owner
 					Header.header = "M. le Owner";
-					AcceuilGerant.main(null);
+					AccueilGerant.main(null);
 					frmConnexion.dispose();
 					break;
 				case 1 : //Ecurie
 					Header.header = inputUserName.getText();
-					AcceuilEcurie.main(null);
+					AccueilEcurie.main(null);
 					frmConnexion.dispose();
 					break;
 				case 2 : //Arbitre
 					Header.header = inputUserName.getText();
-					AcceuilArbitre.main(null);
+					AccueilArbitre.main(null);
 					frmConnexion.dispose();
 					break;
 				case -1 : //Wrong Password;

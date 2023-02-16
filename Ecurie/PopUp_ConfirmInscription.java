@@ -30,7 +30,7 @@ import java.awt.event.KeyEvent;
 public class PopUp_ConfirmInscription {
 
 	private JFrame frame;
-	private AcceuilEcurie parent;
+	private AccueilEcurie parent;
 
 	/**
 	 * Launch the application.
@@ -39,7 +39,7 @@ public class PopUp_ConfirmInscription {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					PopUp_ConfirmInscription window = new PopUp_ConfirmInscription(new Equipe("Best OF The Best"),new Tournoi("Esport world convention",new Date(2023-01-15),1), new AcceuilEcurie());
+					PopUp_ConfirmInscription window = new PopUp_ConfirmInscription(new Equipe("Best OF The Best"),new Tournoi("Esport world convention",new Date(2023-01-15),1), new AccueilEcurie());
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -47,7 +47,7 @@ public class PopUp_ConfirmInscription {
 			}
 		});
 	}
-	public static void mainWithValues(Equipe eq, Tournoi t, AcceuilEcurie p) {
+	public static void mainWithValues(Equipe eq, Tournoi t, AccueilEcurie p) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -62,14 +62,14 @@ public class PopUp_ConfirmInscription {
 	/**
 	 * Create the application.
 	 */
-	public PopUp_ConfirmInscription(Equipe equipe,Tournoi tournoi,AcceuilEcurie parent) {
+	public PopUp_ConfirmInscription(Equipe equipe,Tournoi tournoi,AccueilEcurie parent) {
 		initialize(equipe,tournoi,parent);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize(Equipe equipe,Tournoi tournoi, AcceuilEcurie parent) {
+	private void initialize(Equipe equipe,Tournoi tournoi, AccueilEcurie parent) {
 		this.parent = parent;
 		frame = new JFrame();
 		frame.setBounds(100, 100, 250, 250);

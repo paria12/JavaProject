@@ -47,7 +47,7 @@ public class CreerEquipe {
 	private JButtonDark buttonAddPlayer;
 	private JComboBox<String> comboGame;
 	private int Ecurie;
-	private AcceuilEcurie parent;
+	private AccueilEcurie parent;
 
 	/**
 	 * Launch the application.
@@ -56,7 +56,7 @@ public class CreerEquipe {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					CreerEquipe window = new CreerEquipe(1, new AcceuilEcurie());
+					CreerEquipe window = new CreerEquipe(1, new AccueilEcurie());
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -65,7 +65,7 @@ public class CreerEquipe {
 		});
 	}
 	
-	public static void MainWithValue(int IdEcurie, AcceuilEcurie parent) {
+	public static void MainWithValue(int IdEcurie, AccueilEcurie parent) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -81,14 +81,14 @@ public class CreerEquipe {
 	/**
 	 * Create the application.
 	 */
-	public CreerEquipe(int Ecurie, AcceuilEcurie parent) {
+	public CreerEquipe(int Ecurie, AccueilEcurie parent) {
 		initialize(Ecurie, parent);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize(int Ecurie, AcceuilEcurie parent) {
+	private void initialize(int Ecurie, AccueilEcurie parent) {
 		this.parent = parent;
 		this.Ecurie = Ecurie;
 		frame = new JFrame();
