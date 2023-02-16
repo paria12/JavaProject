@@ -43,7 +43,7 @@ public class TestJeu {
 	@Test
 	public void testGetNom() {
 		Jeu t = new Jeu("test");
-		assertEquals(t.getNom(),"test");
+		assertEquals("test",t.getNom());
 	}
 	
 	@Test
@@ -67,7 +67,7 @@ public class TestJeu {
 			fail("erreur bd");
 		}
 		Jeu t2 = new Jeu("test");
-		assertEquals(t2.getDuree(),10000);
+		assertEquals(10000,t2.getDuree());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -89,7 +89,7 @@ public class TestJeu {
 	@Test
 	public void testGetAll() {
 		try {
-			assertEquals(Jeu.getAll()[0],"Call of Duty");
+			assertEquals("Call of Duty",Jeu.getAll()[0]);
 		} catch (ErreurBD e) {
 			fail("erreur bd");
 		}
@@ -99,7 +99,7 @@ public class TestJeu {
     public void testGetId() {
         Jeu t = new Jeu("Overwatch");
         try {
-            assertEquals(Jeu.getID(t),1);
+            assertEquals(1,Jeu.getID(t));
         }catch(ErreurBD e) {
             fail("erreur BD");
         }
@@ -110,7 +110,7 @@ public class TestJeu {
         Jeu t = new Jeu("test1",2000);
         try {
             t.insert();
-            assertEquals(Jeu.getNomFromID(Jeu.getID(t)),"test1");
+            assertEquals("test1",Jeu.getNomFromID(Jeu.getID(t)));
         }catch (ErreurBD e){
             fail("erreurBD");
         }
@@ -120,7 +120,7 @@ public class TestJeu {
     public void testGetTimeFromId() {
         Jeu t = new Jeu("Overwatch");
         try {
-            assertEquals(Jeu.getTimeFromID(Jeu.getID(t)),25);
+            assertEquals(25,Jeu.getTimeFromID(Jeu.getID(t)));
         }catch(ErreurBD e) {
             
         }

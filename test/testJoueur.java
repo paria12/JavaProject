@@ -57,13 +57,13 @@ public class TestJoueur {
 	@Test
 	public void testJoueurStringString() {
 		Joueur t = new Joueur("Dylan","Bob");
-		assertEquals(this.j,t);
+		assertEquals(t,this.j);
 	}
 
 	@Test
 	public void testJoueurStringStringDateCharIntString() {
 		Joueur t = new Joueur("Muru","Jean-Batiste",new Date(1075503600000L), 'M', "0685588528", "jb.muru@gmail.com");
-		assertEquals(this.j2,t);
+		assertEquals(t,this.j2);
 	}
 
 	@Test
@@ -115,7 +115,7 @@ public class TestJoueur {
 		
 		Joueur t2 = new Joueur("test","test");
 		try {
-			assertEquals(t2.getTel(),"0000000000");
+			assertEquals("0000000000",t2.getTel());
 		} catch (ErreurBD e) {
 			fail("erreur bd get");
 		}

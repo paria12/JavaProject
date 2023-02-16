@@ -63,30 +63,30 @@ public class TestTournoi {
 	@Test
 	public void testTournoiStringDateInt() {
 		Tournoi test = new Tournoi("Esport world convention",new Date(1673737200000L),1);
-		assertEquals(test,t1);
+		assertEquals(t1,test);
 	}
 
 	@Test
 	public void testTournoiStringStringStringStringStringDateStringInt() {
 		Tournoi test = new Tournoi("test","test","test","test","test",new Date(1673775400000L),"INTERNATIONAL",3);
-		assertEquals(test,t2);
+		assertEquals(t2,test);
 	}
 
 	@Test
 	public void testGetNom() {
-		assertEquals(t1.getNom(),"Esport world convention");
-		assertEquals(t2.getNom(),"test");
+		assertEquals("Esport world convention",t1.getNom());
+		assertEquals("test",t2.getNom());
 	}
 
 	@Test
 	public void testGetAdresse() {
 		try {
-			assertEquals(t1.getAdresse(),"123 rue du chemin");
+			assertEquals("123 rue du chemin",t1.getAdresse());
 		} catch (ErreurBD e) {
 			fail("Ereur t1 : "+e.getMessage());
 		}
 		try {
-			assertEquals(t2.getAdresse(),"test");
+			assertEquals("test",t2.getAdresse());
 		} catch (ErreurBD e) {
 			fail("Ereur t2 : "+e.getMessage());
 		}
@@ -95,12 +95,12 @@ public class TestTournoi {
 	@Test
 	public void testGetVille() {
 		try {
-			assertEquals(t1.getVille(),"Paris");
+			assertEquals("Paris",t1.getVille());
 		} catch (ErreurBD e) {
 			fail("Ereur t1 : "+e.getMessage());
 		}
 		try {
-			assertEquals(t2.getVille(),"test");
+			assertEquals("test",t2.getVille());
 		} catch (ErreurBD e) {
 			fail("Ereur t2 : "+e.getMessage());
 		}
@@ -109,12 +109,12 @@ public class TestTournoi {
 	@Test
 	public void testGetPays() {
 		try {
-			assertEquals(t1.getPays(),"France");
+			assertEquals("France",t1.getPays());
 		} catch (ErreurBD e) {
 			fail("Ereur t1 : "+e.getMessage());
 		}
 		try {
-			assertEquals(t2.getPays(),"test");
+			assertEquals("test",t2.getPays());
 		} catch (ErreurBD e) {
 			fail("Ereur t2 : "+e.getMessage());
 		}
@@ -123,12 +123,12 @@ public class TestTournoi {
 	@Test
 	public void testGetCodePostal() {
 		try {
-			assertEquals(t1.getCodePostal(),"75000");
+			assertEquals("75000",t1.getCodePostal());
 		} catch (ErreurBD e) {
 			fail("Ereur t1 : "+e.getMessage());
 		}
 		try {
-			assertEquals(t2.getCodePostal(),"test");
+			assertEquals("test",t2.getCodePostal());
 		} catch (ErreurBD e) {
 			fail("Ereur t2 : "+e.getMessage());
 		}
@@ -136,19 +136,19 @@ public class TestTournoi {
 
 	@Test
 	public void testGetDate() {
-		assertEquals(0,t1.getDate().compareTo(new Date(1673737200000L)));
-		assertEquals(t2.getDate(),new Date(1673775400000L));
+		assertEquals(new Date(1673737200000L),t1.getDate());
+		assertEquals(new Date(1673775400000L),t2.getDate());
 	}
 
 	@Test
 	public void testGetNotoriete() {
 		try {
-			assertEquals(t1.getNotoriete(),"INTERNATIONAL");
+			assertEquals("INTERNATIONAL",t1.getNotoriete());
 		} catch (ErreurBD e) {
 			fail("Ereur t1 : "+e.getMessage());
 		}
 		try {
-			assertEquals(t2.getNotoriete(),"INTERNATIONAL");
+			assertEquals("INTERNATIONAL",t2.getNotoriete());
 		} catch (ErreurBD e) {
 			fail("Ereur t2 : "+e.getMessage());
 		}
@@ -156,8 +156,8 @@ public class TestTournoi {
 
 	@Test
 	public void testGetJeu() {
-		assertEquals(t1.getJeu(),1);
-		assertEquals(t2.getJeu(),3);
+		assertEquals(1,t1.getJeu());
+		assertEquals(3,t2.getJeu());
 	}
 
 	@Test
@@ -171,7 +171,7 @@ public class TestTournoi {
 		}
 		Tournoi verif = new Tournoi("test",new Date(1673775400000L),3);
 		try {
-			assertEquals(verif.getAdresse(),"test");
+			assertEquals("test",verif.getAdresse());
 		} catch (ErreurBD e) {
 			fail("Ereur BD : "+e.getMessage());
 		}
@@ -180,7 +180,7 @@ public class TestTournoi {
 	@Test
 	public void testGetAll() {
 		try {
-			assertEquals(Tournoi.getAll()[0].getNom(),"Esport world convention");
+			assertEquals("Esport world convention",Tournoi.getAll()[0].getNom());
 		} catch (ErreurBD e) {
 			fail("Ereur : "+e.getMessage());
 		}
