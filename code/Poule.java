@@ -1,12 +1,8 @@
 package code;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Timestamp;
-
-import javax.sql.DataSource;
 
 public class Poule {
 
@@ -76,16 +72,11 @@ public class Poule {
 	 */
 	public void insert(int tournoi) throws ErreurBD {
 		try {
-			DataSource bd = new ConnexionBD();
-
-			Connection connx = bd.getConnection();
-
-			Statement st = connx.createStatement();
-			st.executeQuery("Insert into Poule values(seq_poule.nextVal, "+tournoi+")");
+			ConnexionBD.Query("Insert into Poule values(seq_poule.nextVal, "+tournoi+")");
 			for (Equipe e : this.equipes) {
-				st.executeQuery("Insert into Participer values ( "+e.getID()+ ", seq_poule.currval)");
+				ConnexionBD.Query("Insert into Participer values ( "+e.getID()+ ", seq_poule.currval)");
 			}
-			ResultSet rs = st.executeQuery("select seq_poule.currval from poule");
+			ResultSet rs = ConnexionBD.Query("select seq_poule.currval from poule");
 			if (rs.next()) {
 				this.id = rs.getInt(1);
 			}
@@ -93,8 +84,6 @@ public class Poule {
 			for (Match m : this.matchs) { 
 				m.insert(this.id);
 			}
-			
-			connx.close();
 		}catch (SQLException e){ 
 			switch(e.getErrorCode()) {
             case 1 : 
@@ -125,23 +114,13 @@ public class Poule {
 	public String[][] getClassement() throws ErreurBD {
 		String[][] classement = null;
 		try {
-			classement = new String[2][4];
-			
-			DataSource bd = new ConnexionBD();
-
-			Connection connx = bd.getConnection();
-
-			Statement st = connx.createStatement();
-			
 			int i = 0;
-			ResultSet rs =st.executeQuery("SELECT equipe.nom, count(*) from equipe, matchs where matchs.gagnant=equipe.id_equipe and matchs.id_poule="+this.id+" group by equipe.nom order by 2 desc");
+			ResultSet rs = ConnexionBD.Query("SELECT equipe.nom, count(*) from equipe, matchs where matchs.gagnant=equipe.id_equipe and matchs.id_poule="+this.id+" group by equipe.nom order by 2 desc");
 			while (rs.next()) {
 				classement[0][i] = rs.getString(1);
 				classement[1][i] = rs.getString(2);
 				i++;
 			}
-			
-			connx.close();
 		} catch (SQLException e){ 
 			switch(e.getErrorCode()) {
             case 1 : 

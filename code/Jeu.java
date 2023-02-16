@@ -1,12 +1,8 @@
 package code;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.sql.DataSource;
 
 
 public class Jeu {
@@ -47,18 +43,10 @@ public class Jeu {
 			return this.duree;
 		} else {
 			try {
-				DataSource bd = new ConnexionBD();
-				
-				Connection connx = bd.getConnection();
-
-				Statement st = connx.createStatement();
-
-				ResultSet rese = st.executeQuery("select temps_partie from jeu where nom='"+this.nom+"'");
+				ResultSet rese = ConnexionBD.Query("select temps_partie from jeu where nom='"+this.nom+"'");
 
 				rese.next();
 				this.duree = rese.getInt(1);
-				
-				connx.close();
 			} catch (SQLException e) {
 				switch(e.getErrorCode()) {
 	            case 1 : 
@@ -92,15 +80,7 @@ public class Jeu {
 			throw new IllegalArgumentException("La duree du jeu ne doit pas etre inférieur à 0 minutes");
 		} else {
 			try {
-				DataSource bd = new ConnexionBD();
-				
-				Connection connx = bd.getConnection();
-
-				Statement st = connx.createStatement();
-
-				st.executeQuery("INSERT INTO jeu values(seq_jeu.nextVal,'"+this.nom+"',"+this.duree+")");
-
-				connx.close();
+				ConnexionBD.Query("INSERT INTO jeu values(seq_jeu.nextVal,'"+this.nom+"',"+this.duree+")");
 			} catch (SQLException e) {
 				switch(e.getErrorCode()) {
 	            case 1 : 
@@ -132,19 +112,11 @@ public class Jeu {
 		List<String> l = new ArrayList<String>();
 
 		try {
-			DataSource bd = new ConnexionBD();
-			
-			Connection connx = bd.getConnection();
-
-			Statement st = connx.createStatement();
-
-			ResultSet rs = st.executeQuery("select nom from jeu order by 1");
+			ResultSet rs = ConnexionBD.Query("select nom from jeu order by 1");
 			
 			while(rs.next()) {
 				l.add(rs.getString(1));
 			}
-
-			connx.close();
 		} catch (SQLException e) {
 			switch(e.getErrorCode()) {
             case 1 : 
@@ -176,19 +148,11 @@ public class Jeu {
 	public static int getID(Jeu j) throws ErreurBD {
 		int retour = 0;
 		try {
-			DataSource bd = new ConnexionBD();
-			
-			Connection connx = bd.getConnection();
-
-			Statement st = connx.createStatement();
-
-			ResultSet rs = st.executeQuery("select id_jeu from jeu where nom='"+j.getNom()+"'");
+			ResultSet rs = ConnexionBD.Query("select id_jeu from jeu where nom='"+j.getNom()+"'");
 			
 			while(rs.next()) {
 				retour=rs.getInt(1);
 			}
-
-			connx.close();
 		} catch (SQLException e) {
 			switch(e.getErrorCode()) {
             case 1 : 
@@ -221,19 +185,11 @@ public class Jeu {
 	public static String getNomFromID(int j) throws ErreurBD {
 		String retour = null;
 		try {
-			DataSource bd = new ConnexionBD();
-			
-			Connection connx = bd.getConnection();
-
-			Statement st = connx.createStatement();
-
-			ResultSet rs = st.executeQuery("select nom from jeu where id_jeu="+j);
+			ResultSet rs = ConnexionBD.Query("select nom from jeu where id_jeu="+j);
 			
 			while(rs.next()) {
 				retour=rs.getString(1);
 			}
-
-			connx.close();
 		} catch (SQLException e) {
 			switch(e.getErrorCode()) {
             case 1 : 
@@ -265,19 +221,11 @@ public class Jeu {
 	public static int getTimeFromID(int id) throws ErreurBD {
 		int retour = 0;
 		try {
-			DataSource bd = new ConnexionBD();
-			
-			Connection connx = bd.getConnection();
-
-			Statement st = connx.createStatement();
-
-			ResultSet rs = st.executeQuery("select temps_partie from jeu where id_jeu="+id);
+			ResultSet rs = ConnexionBD.Query("select temps_partie from jeu where id_jeu="+id);
 			
 			while(rs.next()) {
 				retour=rs.getInt(1);
 			}
-
-			connx.close();
 		} catch (SQLException e) {
 			switch(e.getErrorCode()) {
             case 1 : 

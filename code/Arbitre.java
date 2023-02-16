@@ -1,13 +1,9 @@
 package code;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Objects;
-
-import javax.sql.DataSource;
 
 public class Arbitre {
 	private String login;
@@ -28,17 +24,10 @@ public class Arbitre {
 	public int getID() throws ErreurBD {
 		int ID = -1;
 		try {
-			DataSource bd = new ConnexionBD();
-
-			Connection connx = bd.getConnection();
-
-			Statement st = connx.createStatement();
-
-			ResultSet rs = st.executeQuery("select id_arbitre from arbitre where login ='"+this.login+"'");
+			ResultSet rs = ConnexionBD.Query("select id_arbitre from arbitre where login ='"+this.login+"'");
+			
 			rs.next();
 			ID = rs.getInt(1);
-
-			connx.close();
 		} catch (SQLException e) {
 			switch(e.getErrorCode()) {
 			case 1 : 
@@ -71,13 +60,7 @@ public class Arbitre {
 		ArrayList<Match> result = new ArrayList<Match>();
 		Match[] t = null;
 		try {
-			DataSource bd = new ConnexionBD();
-
-			Connection connx = bd.getConnection();
-
-			Statement st = connx.createStatement();
-
-			ResultSet rs = st.executeQuery("select e1.nom,e2.nom,heuredebut,heurefin from matchs, equipe e1, equipe e2, poule, tournoi, arbitre "
+			ResultSet rs = ConnexionBD.Query("select e1.nom,e2.nom,heuredebut,heurefin from matchs, equipe e1, equipe e2, poule, tournoi, arbitre "
 					+ "where e1.id_equipe=matchs.id_equipe and e2.id_equipe=matchs.id_equipe1 "
 					+ "and matchs.id_poule=poule.id_poule and poule.id_tournoi=tournoi.id_tournoi "
 					+ "and tournoi.id_arbitre=arbitre.id_arbitre and arbitre.login='"+this.login+"'");
@@ -85,9 +68,7 @@ public class Arbitre {
 			while(rs.next()) {
 				result.add(new Match(new Equipe(rs.getString(1)),new Equipe(rs.getString(2)),rs.getTimestamp(3),rs.getTimestamp(4)));
 			}
-
-			connx.close();
-
+			
 			t = new Match[result.size()];
 			t = result.toArray(t);
 		} catch (SQLException e) {
@@ -123,19 +104,11 @@ public class Arbitre {
 		ArrayList<String> result = new ArrayList<String>();
 		String[] t = null;
 		try {
-			DataSource bd = new ConnexionBD();
-
-			Connection connx = bd.getConnection();
-
-			Statement st = connx.createStatement();
-
-			ResultSet rs = st.executeQuery("select login from arbitre order by 1");
+			ResultSet rs = ConnexionBD.Query("select login from arbitre order by 1");
 
 			while(rs.next()) {
 				result.add(rs.getString(1));
 			}
-
-			connx.close();
 
 			t = new String[result.size()];
 			t = result.toArray(t);
@@ -171,14 +144,7 @@ public class Arbitre {
 	public void insert(String pwd) throws ErreurBD {
 
 		try {
-			DataSource bd = new ConnexionBD();
-
-			Connection connx = bd.getConnection();
-
-			Statement st = connx.createStatement();
-
-			st.executeQuery("INSERT INTO arbitre values(seq_arbitre.nextVal,'"+this.login+"','"+Connexion.sta256(pwd)+"')");
-
+			ConnexionBD.Query("INSERT INTO arbitre values(seq_arbitre.nextVal,'"+this.login+"','"+Connexion.sta256(pwd)+"')");
 		} catch (SQLException e) {
 			switch(e.getErrorCode()) {
 			case 1 : 

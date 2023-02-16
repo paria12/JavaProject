@@ -1,13 +1,9 @@
 package code;
 
-import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Objects;
-
-import javax.sql.DataSource;
 
 
 
@@ -139,13 +135,7 @@ public class Joueur {
 	 */
 	public void select() throws ErreurBD {
 		try {
-			DataSource bd = new ConnexionBD();
-			
-			Connection connx = bd.getConnection();
-
-			Statement st = connx.createStatement();
-
-			ResultSet rese = st.executeQuery("select date_naissance, sexe, numero_de_telephone, email from joueur where nom='"+this.nom+"' and prenom='"+this.prenom+"'");
+			ResultSet rese = ConnexionBD.Query("select date_naissance, sexe, numero_de_telephone, email from joueur where nom='"+this.nom+"' and prenom='"+this.prenom+"'");
 
 			rese.next();
 			if (this.dateN == null) {
@@ -160,8 +150,6 @@ public class Joueur {
 			if (this.email == null) {
 				this.email = rese.getString(4);
 			}
-
-			connx.close();
 		} catch (SQLException e) {
 			switch(e.getErrorCode()) {
             case 1 : 
@@ -191,16 +179,8 @@ public class Joueur {
 	public void insert(int equipe) throws ErreurBD {
 		if (this.dateN != null && (this.sexe == 'M' || this.sexe == 'F' || this.sexe == 'X') && this.numTel != null && this.email != null && equipe>=0) {
 			try {
-				DataSource bd = new ConnexionBD();
-				
-				Connection connx = bd.getConnection();
-
-				Statement st = connx.createStatement();
-
-				st.executeQuery("INSERT INTO joueur values(seq_joueur.nextVal,'"+this.nom+"','"+this.prenom+"',to_date('"+this.dateN.toString()+"','YYYY-MM-DD'),'"
+				ConnexionBD.Query("INSERT INTO joueur values(seq_joueur.nextVal,'"+this.nom+"','"+this.prenom+"',to_date('"+this.dateN.toString()+"','YYYY-MM-DD'),'"
 						+this.sexe+"','"+this.numTel+"','"+this.email+"',"+equipe+")");
-
-				connx.close();
 			} catch (SQLException e) {
 				switch(e.getErrorCode()) {
 	            case 1 : 

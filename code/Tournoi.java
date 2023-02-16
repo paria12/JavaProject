@@ -160,15 +160,7 @@ public class Tournoi {
 	public int getId() throws ErreurBD {
 		int retour = 0;
 		try {
-			DataSource bd = new ConnexionBD();
-
-			Connection connx = bd.getConnection();
-
-			Statement st = connx.createStatement();
-
-			ResultSet rs =st.executeQuery("select id_tournoi from tournoi where nomtournoi = '"+this.nom+"'");
-			
-			rs.next();
+			ResultSet rs = ConnexionBD.Query("select id_tournoi from tournoi where nomtournoi = '"+this.nom+"'");
 			retour = rs.getInt(1);
 		} catch (SQLException ex){ 
 			switch(ex.getErrorCode()) {
@@ -200,14 +192,7 @@ public class Tournoi {
 	 */
 	public void addEquipe(Equipe e) throws ErreurBD {
 		try {
-			DataSource bd = new ConnexionBD();
-
-			Connection connx = bd.getConnection();
-
-			Statement st = connx.createStatement();
-
-			st.executeUpdate("insert into participation values("+e.getID()+","+this.getId()+")");
-			
+			ConnexionBD.Query("insert into participation values("+e.getID()+","+this.getId()+")");
 		} catch (SQLException ex){ 
 			switch(ex.getErrorCode()) {
             case 1 : 
@@ -241,13 +226,7 @@ public class Tournoi {
 	 */
 	public List<Equipe> selectEquipe() throws ErreurBD {
 		try {
-			DataSource bd = new ConnexionBD();
-
-			Connection connx = bd.getConnection();
-
-			Statement st = connx.createStatement();
-
-			ResultSet rs =st.executeQuery("select nom from equipe e, participation p where e.id_equipe=p.id_equipe and p.id_tournoi="+this.getId());
+			ResultSet rs = ConnexionBD.Query("select nom from equipe e, participation p where e.id_equipe=p.id_equipe and p.id_tournoi="+this.getId());
 			
 			while(rs.next()) {
 				 this.equipes.add(new Equipe(rs.getString(1)));
@@ -322,13 +301,7 @@ public class Tournoi {
 			}
 		}
 		try {
-			DataSource bd = new ConnexionBD();
-
-			Connection connx = bd.getConnection();
-
-			Statement st = connx.createStatement();
-
-			ResultSet rese = st.executeQuery("SELECT COUNT(matchs.id_poule) from Matchs, Poule, Tournoi where matchs.id_poule = poule.id_poule AND poule.id_tournoi = tournoi.id_tournoi AND tournoi.id_tournoi = "+this.getId()+" AND matchs.gagnant is not null");
+			ResultSet rese = ConnexionBD.Query("SELECT COUNT(matchs.id_poule) from Matchs, Poule, Tournoi where matchs.id_poule = poule.id_poule AND poule.id_tournoi = tournoi.id_tournoi AND tournoi.id_tournoi = "+this.getId()+" AND matchs.gagnant is not null");
 
 			rese.next();
 			if (rese.getInt(1)==24) {
@@ -337,8 +310,6 @@ public class Tournoi {
 					this.poules[4].insererEquipe(new Equipe(this.poules[i].getClassement()[0][0]));
 				}
 			}
-
-			connx.close();
 		} catch (SQLException e) {
 			switch(e.getErrorCode()) {
             case 1 : 

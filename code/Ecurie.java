@@ -1,14 +1,10 @@
 package code;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import javax.sql.DataSource;
 
 public class Ecurie {
     private String nom;
@@ -69,18 +65,10 @@ public class Ecurie {
     		return this.type;
     	} else {
     		try {
-    			DataSource bd = new ConnexionBD();
-    			
-    			Connection connx = bd.getConnection();
-
-				Statement st = connx.createStatement();
-
-				ResultSet rese = st.executeQuery("select type from ecurie where nom='"+this.nom+"'");
+    			ResultSet rese = ConnexionBD.Query("select type from ecurie where nom='"+this.nom+"'");
 
 				rese.next();
 				this.type = rese.getString(1);
-				
-				connx.close();
 			} catch (SQLException e) {
 				switch(e.getErrorCode()) {
 	            case 1 : 
@@ -125,18 +113,11 @@ public class Ecurie {
      */
     public void selectEquipe() throws ErreurBD {
     	try {
-			DataSource bd = new ConnexionBD();
+    		ResultSet rs = ConnexionBD.Query("select e.nom, e.nb_points, e.id_jeu from ecurie ee , equipe e where ee.nom ='"+this.nom+"' and e.id_ecurie = ee.id_ecurie");
 			
-			Connection connx = bd.getConnection();
-
-			Statement st = connx.createStatement();
-
-			ResultSet rs = st.executeQuery("select e.nom, e.nb_points, e.id_jeu from ecurie ee , equipe e where ee.nom ='"+this.nom+"' and e.id_ecurie = ee.id_ecurie");
-			while(rs.next()){
+    		while(rs.next()){
 				this.equipe.add(new Equipe(rs.getString(1),rs.getInt(2),rs.getInt(3)));
 			}
-			
-			connx.close();
 		} catch (SQLException e) {
 			switch(e.getErrorCode()) {
             case 1 : 
@@ -166,15 +147,8 @@ public class Ecurie {
     public void insert(String pwd) throws ErreurBD {
     	if (this.type != null) {
     		try {
-    			DataSource bd = new ConnexionBD();
-    			
-    			Connection connx = bd.getConnection();
-
-				Statement st = connx.createStatement();
-
-				st.executeQuery("INSERT INTO ecurie values(seq_ecurie.nextVal,'"+this.nom+"','"+this.type+"','"+Connexion.sta256(pwd)+"')");
-
-			} catch (SQLException e) {
+    			ConnexionBD.Query("INSERT INTO ecurie values(seq_ecurie.nextVal,'"+this.nom+"','"+this.type+"','"+Connexion.sta256(pwd)+"')");
+    		} catch (SQLException e) {
 				switch(e.getErrorCode()) {
 	            case 1 : 
 	                throw new ErreurBD("Un enregistrement similaire est deja present dans la base de donnees");
@@ -230,19 +204,11 @@ public class Ecurie {
 	public static int getID(Ecurie ec) throws ErreurBD {
 		int retour = 0;
 		try {
-			DataSource bd = new ConnexionBD();
-			
-			Connection connx = bd.getConnection();
-
-			Statement st = connx.createStatement();
-
-			ResultSet rs = st.executeQuery("select id_Ecurie from ecurie where nom='"+ec.getNom()+"'");
+			ResultSet rs = ConnexionBD.Query("select id_Ecurie from ecurie where nom='"+ec.getNom()+"'");
 			
 			while(rs.next()) {
 				retour=rs.getInt(1);
 			}
-
-			connx.close();
 		} catch (SQLException e) {
 			switch(e.getErrorCode()) {
             case 1 : 

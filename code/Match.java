@@ -1,13 +1,9 @@
 package code;
 
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Objects;
-
-import javax.sql.DataSource;
 
 public class Match {
 	private Timestamp Hdebut;
@@ -76,20 +72,12 @@ public class Match {
 			throw new IllegalArgumentException("L'equipe est invalide");
 		}
 		try {
-			DataSource bd = new ConnexionBD();
-
-			Connection connx = bd.getConnection();
-
-			Statement st = connx.createStatement();
-			
 			Calendar cal = Calendar.getInstance();
 	        cal.setTime(this.Hdebut);
 
-			st.executeUpdate("Update matchs set gagnant = "+e.getID()+" where ID_equipe ="+this.E1.getID()+" and ID_equipe1 ="+this.E2.getID()+"and heuredebut ="
+	        ConnexionBD.Query("Update matchs set gagnant = "+e.getID()+" where ID_equipe ="+this.E1.getID()+" and ID_equipe1 ="+this.E2.getID()+"and heuredebut ="
 					+cal.get(Calendar.DAY_OF_MONTH)+"/"+(cal.get(Calendar.MONTH)+1)+"/"+(cal.get(Calendar.YEAR))+" "
 					+cal.get(Calendar.HOUR_OF_DAY)+":"+cal.get(Calendar.MINUTE)+":"+cal.get(Calendar.SECOND)+"'");
-
-			connx.close();
 		} catch (SQLException exc) {
 			switch(exc.getErrorCode()) {
             case 1 : 
@@ -119,25 +107,17 @@ public class Match {
 	 */
 	public void insert(int poule) throws ErreurBD {
 		try {
-			DataSource bd = new ConnexionBD();
-
-			Connection connx = bd.getConnection();
-
-			Statement st = connx.createStatement();
-			
 			Calendar cal = Calendar.getInstance();
 	        cal.setTime(this.Hdebut);
 	        
 	        Calendar cal2 = Calendar.getInstance();
 	        cal2.setTime(this.Hfin);
 
-			st.executeQuery("INSERT INTO matchs values("+this.E1.getID()+","+this.E2.getID()+","+poule+",null,'"
+	        ConnexionBD.Query("INSERT INTO matchs values("+this.E1.getID()+","+this.E2.getID()+","+poule+",null,'"
 					+cal.get(Calendar.DAY_OF_MONTH)+"/"+(cal.get(Calendar.MONTH)+1)+"/"+(cal.get(Calendar.YEAR))+" "
 					+cal.get(Calendar.HOUR_OF_DAY)+":"+cal.get(Calendar.MINUTE)+":"+cal.get(Calendar.SECOND)+"','"
 					+cal2.get(Calendar.DAY_OF_MONTH)+"/"+(cal2.get(Calendar.MONTH)+1)+"/"+(cal2.get(Calendar.YEAR))+" "
 					+cal2.get(Calendar.HOUR_OF_DAY)+":"+cal2.get(Calendar.MINUTE)+":"+cal2.get(Calendar.SECOND)+"')");
-
-			connx.close();
 		} catch (SQLException e) {
 			switch(e.getErrorCode()) {
             case 1 : 
