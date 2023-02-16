@@ -27,6 +27,11 @@ public class Tournoi {
 	private List<Equipe> equipes;
 	private Poule[] poules;
 
+	/** Constructeur d'un tournoi a partir de son nom, sa date et son jeu assigne
+	 * @param nom
+	 * @param date
+	 * @param jeu
+	 */
 	public Tournoi(String nom, Date date, int jeu) {
 		this.nom = nom;
 		this.adresse = null;
@@ -39,7 +44,17 @@ public class Tournoi {
 		this.equipes = new ArrayList<Equipe>();
 		this.poules = new Poule[5];
 	}
-
+	
+	/** Constructeur d'un tournoi a partir de son nom, adresse, ville, pays, codePostal, date, notoriete et jeu associé
+	 * @param nom
+	 * @param adresse
+	 * @param ville
+	 * @param pays
+	 * @param codePostal
+	 * @param date
+	 * @param notoriete
+	 * @param jeu
+	 */
 	public Tournoi(String nom, String adresse, String ville, String pays, String codePostal, Date date, String notoriete, int jeu) {
 		this.nom = nom;
 		this.adresse = adresse;
@@ -53,10 +68,19 @@ public class Tournoi {
 		this.poules = new Poule[5];
 	}
 
+	/** Retourne le nom du tournoi
+	 * 
+	 * @return string : nom
+	 */
 	public String getNom() {
 		return nom;
 	}
 
+	/** Retourne l'adresse du tournoi
+	 * 
+	 * @return string : adresse
+	 * @throws ErreurBD lorsque l'adresse est null
+	 */
 	public String getAdresse() throws ErreurBD {
 		if (this.adresse == null) {
 			this.select();
@@ -64,6 +88,11 @@ public class Tournoi {
 		return adresse;
 	}
 
+	/**Retourne la ville ou se deroule le tournoi
+	 * 
+	 * @return string : ville
+	 * @throws ErreurBD lorsque la ville est null
+	 */
 	public String getVille() throws ErreurBD {
 		if (this.ville == null) {
 			this.select();
@@ -71,6 +100,11 @@ public class Tournoi {
 		return ville;
 	}
 
+	/**Retourne le pays ou se deroule le tournoi
+	 * 
+	 * @return string : pays
+	 * @throws ErreurBD lorsque le pays est null
+	 */
 	public String getPays() throws ErreurBD {
 		if (this.pays == null) {
 			this.select();
@@ -78,6 +112,11 @@ public class Tournoi {
 		return pays;
 	}
 
+	/** Retourne le code postal du tournoi
+	 * 
+	 * @return string : codePostal
+	 * @throws ErreurBD lorsque le code postal est null
+	 */
 	public String getCodePostal() throws ErreurBD {
 		if (this.codePostal == null) {
 			this.select();
@@ -85,10 +124,19 @@ public class Tournoi {
 		return codePostal;
 	}
 
+	/** Retourne la date du tournoi
+	 * 
+	 * @return Date : date
+	 */
 	public Date getDate() {
 		return date;
 	}
 
+	/** Retourne la notoriete du tournoi
+	 * 
+	 * @return string : notoriete
+	 * @throws ErreurBD
+	 */
 	public String getNotoriete() throws ErreurBD {
 		if (this.notoriete == null) {
 			this.select();
@@ -96,10 +144,19 @@ public class Tournoi {
 		return notoriete;
 	}
 
+	/** Retourne l'id du jeu associe au tournoi
+	 * 
+	 * @return int : idjeu
+	 */
 	public int getJeu() {
 		return idjeu;
 	}
 	
+	/** Retourne l'id du tournoi depuis la base de donnees
+	 * 
+	 * @return int : retour
+	 * @throws ErreurBD lorsqu'une erreur lie a la base de donnée est leve
+	 */
 	public int getId() throws ErreurBD {
 		int retour = 0;
 		try {
@@ -136,6 +193,11 @@ public class Tournoi {
 		return retour;
 	}
 
+	/** Rajoute l'equipe donne en parametre au tournoi
+	 * 
+	 * @param e : Equipe
+	 * @throws ErreurBD lorsque une erreur lie a la base de donnee sql est leve
+	 */
 	public void addEquipe(Equipe e) throws ErreurBD {
 		try {
 			DataSource bd = new ConnexionBD();
@@ -172,6 +234,11 @@ public class Tournoi {
 		}
 	}
 
+	/** Retourne la liste d'equipe deja inscrite au tournoi
+	 * 
+	 * @return une liste d'equipe : equipe
+	 * @throws ErreurBD lorsque une erreur lie a la base de donnee est leve
+	 */
 	public List<Equipe> selectEquipe() throws ErreurBD {
 		try {
 			DataSource bd = new ConnexionBD();
@@ -207,8 +274,13 @@ public class Tournoi {
 		}
 		return this.equipes;
 	}
-
-	public void GenererPoule() {
+	
+	
+	/** Genere les poules du tournoi en fonction des points des equipes
+	 * 
+	 * @throws IllegalArgumentException lorsque la liste d'equipe inscrite a un tournoi est pleine (16)
+	 */
+	public void GenererPoule() throws IllegalArgumentException{
 		if(this.equipes.size()!=16) {
 			throw new IllegalArgumentException("Impossible de genere les poule tant que toute les equipe ne sont pas inscrite");
 		} else {
@@ -238,6 +310,11 @@ public class Tournoi {
 		}
 	}
 
+	/** Genere la poule finale avec les premiers de chaque poule
+	 * 
+	 * @throws IllegalArgumentException lorsqu'il y a moins de 4 poules
+	 * @throws ErreurBD
+	 */
 	public void GenererPouleFinal() throws IllegalArgumentException, ErreurBD {
 		for(int k = 0; k < 4; k++) {
 			if (this.poules[k]==null) {
@@ -281,6 +358,11 @@ public class Tournoi {
 		}
 	}
 
+	/** Creer un classement des equipes en fonction de leurs scores
+	 * 
+	 * @return un tableau a deux dimension des equipes trie en fonction de leur point : string
+	 * @throws ErreurBD lorsque une erreur lie a la base de donnee est leve
+	 */
 	public String[][] getClassement() throws ErreurBD {
         try {
             this.selectEquipe();
@@ -322,7 +404,12 @@ public class Tournoi {
         }
     }
 
-	public void genererScore() throws ErreurBD {
+	/** Generation du score cumule par les equipes durant le tournoi
+	 * 
+	 * @throws ErreurBD lorsque une erreur lie a la base de donnee est lave
+	 * @throws IllegalArgumentException lorsque la poule finale n'a pas ete faites
+	 */
+	public void genererScore() throws ErreurBD, IllegalArgumentException {
 		if (this.poules[4]==null) {
 			throw new IllegalArgumentException("La poule finale n'a pas etait faite");
 		}
@@ -394,6 +481,10 @@ public class Tournoi {
 		}
 	}
 
+	/** Selectionne les informations secondaires du tournoi
+	 * 
+	 * @throws ErreurBD lorsque une erreur lie a la base de donnee est leve
+	 */
 	public void select() throws ErreurBD {
 		try {
 			DataSource bd = new ConnexionBD();
@@ -448,6 +539,12 @@ public class Tournoi {
 		}
 	}
 
+	/** Insert un tournoi dans la base de donnees
+	 * 
+	 * @param arbitre
+	 * @throws ErreurBD lorsque une erreur lie a la base de donnee est leve
+	 * @throws IllegalArgumentException lorsque l'un des argument du tournoi n'est pas renseigne
+	 */
 	public void insert(int arbitre) throws ErreurBD, IllegalArgumentException{
 		if (this.adresse == null || this.codePostal == null || this.notoriete == null || this.pays == null || this.ville == null) {
 			throw new IllegalArgumentException("Un des arguments n'est pas valide");
@@ -489,6 +586,10 @@ public class Tournoi {
 		}
 	}
 	
+	/** Supprime un tournoi
+	 * 
+	 * @throws ErreurBD lorsque une erreur lie a la base de donne est leve
+	 */
 	public void delete() throws ErreurBD{
         try {
             DataSource bd = new ConnexionBD();
@@ -526,6 +627,11 @@ public class Tournoi {
         }
     }
 
+	/** Retourne tous les tournois dans la base de donnees
+	 * 
+	 * @return tableau des tournois : tournoi
+	 * @throws ErreurBD lorsque une erreur lie a la base de donne est leve
+	 */
 	public static Tournoi[] getAll() throws ErreurBD {
 		List<Tournoi> l = new ArrayList<Tournoi>();
 
@@ -568,6 +674,12 @@ public class Tournoi {
 		return t;
 	}
 
+	/** Retourne les equipes non inscrites au tournoi
+	 * 
+	 * @param e
+	 * @return tableau des tournois disponibles : tournoi
+	 * @throws ErreurBD lorsque une erreur lie a la base de donnee est leve
+	 */
 	public static Tournoi[] getAvailableEquipe(Equipe e) throws ErreurBD {
 		List<Tournoi> l = new ArrayList<Tournoi>();
 
@@ -610,12 +722,18 @@ public class Tournoi {
         t = l.toArray(t);
         return t;
 	}
-
+	
+	/**redefinition hashCode
+	 * 
+	 */
 	@Override
 	public int hashCode() {
 		return Objects.hash(date, idjeu, nom);
 	}
 
+	/**redefinition equals
+	 * 
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -628,6 +746,9 @@ public class Tournoi {
 		return date.compareTo(other.date)==0 && idjeu == other.idjeu && Objects.equals(nom, other.nom);
 	}
 	
+	/** Methode toString
+	 * 
+	 */
 	@Override
 	public String toString() {
 		return this.date.toString()+" - "+this.nom;
