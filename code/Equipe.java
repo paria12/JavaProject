@@ -19,9 +19,9 @@ public class Equipe {
 	private List<Joueur> joueur = new ArrayList<Joueur> ();
 	private int id_jeu = -1;
 
-	/** Constructeur d'equipe et nom
+	/** Constructeur d'equipe en fontion de son nom
 	 * @param nom
-	 * @throws IllegalArgumentException
+	 * @throws IllegalArgumentException lorsque le nom est null
 	 */
 	public Equipe(String nom)throws IllegalArgumentException{
 		if(nom == null) {
@@ -34,7 +34,7 @@ public class Equipe {
 	 * @param nom
 	 * @param nbPoints
 	 * @param id_jeu
-	 * @throws IllegalArgumentException
+	 * @throws IllegalArgumentException lorsque le nom est null
 	 */
 	public Equipe(String nom, int nbPoints, int id_jeu)throws IllegalArgumentException {
 		if(nom == null) {
@@ -46,7 +46,7 @@ public class Equipe {
 	}
 
 	/** Renvoie le nom de l'equipe
-	 * @return string
+	 * @return string : nom
 	 */
 	public String getNom() {
 		return this.nom;
@@ -75,7 +75,7 @@ public class Equipe {
 	}
 
 	/** Renvoie la liste de joueur appartenant a cette equipe
-	 * @return une liste de joueur
+	 * @return une liste de joueur : joueur
 	 * @throws ErreurBD
 	 */
 	public List<Joueur> getJoueur() throws ErreurBD {
@@ -110,7 +110,7 @@ public class Equipe {
 
 	/** Renvoie l'id d'une equipe en fonction de son nom 
 	 * @return int : ID
-	 * @throws ErreurBD
+	 * @throws ErreurBD lorsque une erreur lie a la base de donnees est leve
 	 */
 	public int getID() throws ErreurBD{
 		int ID = -1;
@@ -151,10 +151,8 @@ public class Equipe {
 
 
 	/** Insert des joueurs dans une equipe
-	 * @param id_equipe
-	 * @return List de joueur
-	 * @throws ErreurBD
-	 * @exception erreur de connexion a la BD
+	 * @return Liste de joueur : joueur
+	 * @throws ErreurBD lorsque une erreur lie a la base de donnees est leve
 	 */
 	public List<Joueur> selectJoueur()throws ErreurBD{
 		try {
@@ -194,6 +192,12 @@ public class Equipe {
 
 	}
 
+	/** Retourne le classement des equipes d'un jeu donnees en fonction de leur nombre de points
+	 * 
+	 * @param jeu
+	 * @return tableau : string
+	 * @throws ErreurBD lorsque une erreur lie a la base de donnees est leve
+	 */
 	public static String[] getClassement(int jeu) throws ErreurBD {
         String [] classement = null;
         try {
@@ -237,7 +241,7 @@ public class Equipe {
     }
 
 	/** Importation des informations secondaires depuis la base de donnees
-	 * @throws ErreurBD 
+	 * @throws ErreurBD lorsque une erreur lie a la base de donnees est leve
 	 */
 	public void select() throws ErreurBD {
 		try {
@@ -281,8 +285,8 @@ public class Equipe {
 
 	}
 
-	/** Inserer toutes les informations dans la base de donnees
-	 * @throws ErreurBD 
+	/** Insert toutes les informations dans la base de donnees
+	 * @throws ErreurBD lorsque une erreur lie a la base de donnees est leve
 	 * 
 	 */
 	public void insert(int ecurie) throws ErreurBD{
@@ -322,6 +326,10 @@ public class Equipe {
 		}
 	}
 
+	/** Supprime une equipe et toutes les informations lie a cette derniere
+	 * 
+	 * @throws ErreurBD lorsque une erreur lie a la base de donnees est leve
+	 */
 	public void delete() throws ErreurBD{
 		try {
 			DataSource bd = new ConnexionBD();
@@ -384,8 +392,8 @@ public class Equipe {
 	}
 
 	/** Renvoie tous les noms d'equipes contenus dans la base de donnees appartenant a une ecurie
-	 * @return un tableau de string
-	 * @throws ErreurBD
+	 * @return un tableau de string : string
+	 * @throws ErreurBD lorsque une erreur lie a la base de donnees est leve
 	 */
 	public static String[] getNomEquipe(int IdEcurie) throws ErreurBD {
 		String[] r = null;
@@ -428,6 +436,9 @@ public class Equipe {
 		return r;
 	}
 	
+	/** Methode toString
+	 * 
+	 */
 	@Override
     public String toString() {
         return nom;

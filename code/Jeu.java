@@ -40,9 +40,7 @@ public class Jeu {
 
 	/** retourne la duree de la partie d'un jeu
 	 * @return int : duree
-	 * @throws ErreurBD
-	 * @exception mauvaise connexion a la BD
-	 * @exception mauvaise requete
+	 * @throws ErreurBD lorsque une erreur lie a la base de donne est leve
 	 */
 	public int getDuree() throws ErreurBD {
 		if (this.duree>0) {
@@ -86,11 +84,8 @@ public class Jeu {
 	}
 
 	/** Inserer toutes les informations dans la base de donnees
-	 * @throws ErreurBD
-	 * @exception mauvaise connexion a la BD
-	 * @exception mauvaise requete
-	 * @throws IllegalArgumentException
-	 * @exception la duree est inferieure a 0
+	 * @throws ErreurBD lorsque une erreur lie a la base de donnees est leve
+	 * @throws IllegalArgumentException la duree est inferieure a 0
 	 */
 	public void insert() throws ErreurBD, IllegalArgumentException{
 		if (this.duree < 0) {
@@ -130,10 +125,8 @@ public class Jeu {
 	}
 	
 	/** Renvoie tous les noms des jeux contenus dans la base de donnees
-	 * @return un tableau d'objet
-	 * @throws ErreurBD
-	 * @exception mauvaise connexion a la BD
-	 * @exception mauvaise requete
+	 * @return un tableau d'objet : object
+	 * @throws ErreurBD lorsque une erreur lie a la base de donnees est leve
 	 */
 	public static Object[] getAll() throws ErreurBD {
 		List<String> l = new ArrayList<String>();
@@ -178,9 +171,7 @@ public class Jeu {
 	/** Renvoie l'id d'un jeu en fonction de son nom
 	 * @param j
 	 * @return int
-	 * @throws ErreurBD
-	 * @exception mauvaise connexion a la BD
-	 * @exception mauvaise requete
+	 * @throws ErreurBD lorsque une erreur lie a la base de donnees est leve
 	 */
 	public static int getID(Jeu j) throws ErreurBD {
 		int retour = 0;
@@ -221,6 +212,12 @@ public class Jeu {
 		return retour;
 	}
 	
+	/** Recupere le nom d'un jeu a partir du parametre j donne
+	 * 
+	 * @param j
+	 * @return string
+	 * @throws ErreurBD lorsque une erreur lie a la base de donnees est leve
+	 */
 	public static String getNomFromID(int j) throws ErreurBD {
 		String retour = null;
 		try {
@@ -263,9 +260,7 @@ public class Jeu {
 	/** Renvoie la duree d'un jeu en fonction de son id
 	 * @param id
 	 * @return int
-	 * @throws ErreurBD
-	 * @exception mauvaise connexion � la BD
-	 * @exception mauvaise requ�te
+	 * @throws ErreurBD lorsque une erreur lie a la base donnees est leve
 	 */
 	public static int getTimeFromID(int id) throws ErreurBD {
 		int retour = 0;

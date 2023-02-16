@@ -27,7 +27,7 @@ public class Joueur {
 	 * @param nom
 	 * @param prenom
 	 * @throws IllegalArgumentException
-	 * @exception nom et prenom non null
+	 * @exception IllegalArgumentException nom et prenom non null
 	 */
 	public Joueur(String nom, String prenom) throws IllegalArgumentException{
 		if (nom == null || prenom == null) {
@@ -45,7 +45,7 @@ public class Joueur {
 	 * @param tel
 	 * @param email
 	 * @throws IllegalArgumentException
-	 * @exception nom et prenom non null
+	 * @exception IllegalArgumentException nom et prenom non null
 	 */
 	public Joueur(String nom, String prenom, Date date, char sexe, String tel, String email) throws IllegalArgumentException{
 		if (nom == null || prenom == null) {
@@ -135,9 +135,7 @@ public class Joueur {
 	}
 
 	/** Importation des informations secondaires d'un joueur depuis la base de donnees
-	 * @throws ErreurBD 
-	 * @exception mauvaise connexion a la BD
-	 * @exception mauvaise requete
+	 * @throws ErreurBD lorsque une erreur lie a la base de donne est leve
 	 */
 	public void select() throws ErreurBD {
 		try {
@@ -186,11 +184,9 @@ public class Joueur {
 		}
 	}
 
-	/** Inserer toutes les informations dans la base de donnees
-	 * @throws ErreurBD 
-	 * @exception mauvaise connexion a la BD
-	 * @exception mauvaise requete
-	 * @exception un des parametres n'est pas valide
+	/** Inserer toutes les informations du joueur dans la base de donnees pour une equipe donnee
+	 * @param equipe
+	 * @throws ErreurBD lorsque une erreur lie a la base de donnees est leve
 	 */
 	public void insert(int equipe) throws ErreurBD {
 		if (this.dateN != null && (this.sexe == 'M' || this.sexe == 'F' || this.sexe == 'X') && this.numTel != null && this.email != null && equipe>=0) {

@@ -15,6 +15,13 @@ public class Match {
 	private Equipe E1;
 	private Equipe E2;
 
+	/** Constructeur d'un match a partir de deux equipes, un timestamp pour l'heure de debut et un timestamp
+	 *  pour l'heure de fin
+	 * @param e1
+	 * @param e2
+	 * @param hd
+	 * @param hf
+	 */
 	public Match(Equipe e1, Equipe e2, Timestamp hd, Timestamp hf) {
 		if (e1 == null || e2 == null || hd == null || hf == null) {
 			throw new IllegalArgumentException("L'un des parametres est null");
@@ -27,22 +34,43 @@ public class Match {
 		this.Hfin = hf;
 	}
 
+	/** Retourne l'heure de debut du match
+	 * 
+	 * @return timestamp : hdebut
+	 */
 	public Timestamp getHDebut() {
 		return Hdebut;
 	}
 
+	/** Retourne l'heure de fin d'un match
+	 * 
+	 * @return timestamp : hfin
+	 */
 	public Timestamp getHFin() {
 		return Hfin;
 	}
 
+	/** Retourne la premiere equipe du match
+	 * 
+	 * @return equipe : e1
+	 */
 	public Equipe getEquipe1() {
 		return E1;
 	}
 
+	/** Retourne la seconde equipe du match
+	 * 
+	 * @return equipe : e2
+	 */
 	public Equipe getEquipe2() {
 		return E2;
 	}
 
+	/** Rajoute le gagnant du match dans la base de donnee
+	 * 
+	 * @param e
+	 * @throws ErreurBD lorsque une erreur lie a la base de donnee est leve
+	 */
 	public void setWinner(Equipe e) throws ErreurBD {
 		if (!e.equals(this.E1)&&!e.equals(this.E2)) {
 			throw new IllegalArgumentException("L'equipe est invalide");
@@ -84,7 +112,12 @@ public class Match {
 		}
 	}
 
-	public void insert(int poule) throws ErreurBD, IllegalArgumentException{
+	/** Insert le match dans une poule donnee dans la base de donnee
+	 * 
+	 * @param poule
+	 * @throws ErreurBD lorque une erreur lie a la base de donne est leve
+	 */
+	public void insert(int poule) throws ErreurBD {
 		try {
 			DataSource bd = new ConnexionBD();
 
@@ -127,11 +160,17 @@ public class Match {
 		}
 	}
 
+	/** Redefinition de la methode hashCode
+	 * 
+	 */
 	@Override
 	public int hashCode() {
 		return Objects.hash(E1, E2, Hdebut, Hfin);
 	}
-
+ 
+	/** Redefinition de la methode equals
+	 * 
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -145,6 +184,9 @@ public class Match {
 				&& Objects.equals(Hfin, other.Hfin);
 	}
 	
+	/** Methode toString
+	 * 
+	 */
 	@Override
     public String toString() {
         Calendar cal = Calendar.getInstance();
