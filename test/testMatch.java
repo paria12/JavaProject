@@ -33,7 +33,7 @@ public class TestMatch {
 	@Test
 	public void testMatch() {
 		Match test = new Match(new Equipe("test1"),new Equipe("test2"),new Timestamp(2383797600000L),new Timestamp(2383800000000L));
-		assertEquals(test, this.m);
+		assertEquals(this.m, test);
 	}
 
 	@Test
