@@ -151,24 +151,7 @@ public class Joueur {
 				this.email = rese.getString(4);
 			}
 		} catch (SQLException e) {
-			switch(e.getErrorCode()) {
-            case 1 : 
-                throw new ErreurBD("Un enregistrement similaire est deja present dans la base de donnees");
-            case 2291:
-                throw new ErreurBD("Il manque la cle etrangere");
-            case 2292:
-                throw new ErreurBD("Impossibilite de supprimer car l'enregistrement est present dans une autre table");
-            case 2290:
-                throw new ErreurBD("Vous ne pouvez pas renseigner cette valeur dans ce champ");
-            case 1400:
-                throw new ErreurBD("Une valeur n'a pas ete renseigne");
-            case 1407:
-                throw new ErreurBD("Une valeur n'a pas ete renseigne");
-                
-            }
-            if (200000<= e.getErrorCode() && e.getErrorCode() <=20999) {
-                throw new ErreurBD("Transgression de l'un des declencheurs de la base de donnees");
-            }
+			ErreurBD.excSQL(e);
 		}
 	}
 
@@ -182,24 +165,7 @@ public class Joueur {
 				ConnexionBD.Query("INSERT INTO joueur values(seq_joueur.nextVal,'"+this.nom+"','"+this.prenom+"',to_date('"+this.dateN.toString()+"','YYYY-MM-DD'),'"
 						+this.sexe+"','"+this.numTel+"','"+this.email+"',"+equipe+")");
 			} catch (SQLException e) {
-				switch(e.getErrorCode()) {
-	            case 1 : 
-	                throw new ErreurBD("Un enregistrement similaire est deja present dans la base de donnees");
-	            case 2291:
-	                throw new ErreurBD("Il manque la cle etrangere");
-	            case 2292:
-	                throw new ErreurBD("Impossibilite de supprimer car l'enregistrement est present dans une autre table");
-	            case 2290:
-	                throw new ErreurBD("Vous ne pouvez pas renseigner cette valeur dans ce champ");
-	            case 1400:
-	                throw new ErreurBD("Une valeur n'a pas ete renseigne");
-	            case 1407:
-	                throw new ErreurBD("Une valeur n'a pas ete renseigne");
-	                
-	            }
-	            if (200000<= e.getErrorCode() && e.getErrorCode() <=20999) {
-	                throw new ErreurBD("Transgression de l'un des declencheurs de la base de donnees");
-	            }
+				ErreurBD.excSQL(e);
 			}
 		} else {
 			throw new IllegalArgumentException("Au moins un des parametres n'est pas valide/defini");

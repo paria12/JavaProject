@@ -116,24 +116,7 @@ public class Equipe {
 			rs.next();
 			ID = rs.getInt(1);
 		} catch (SQLException e) {
-			switch(e.getErrorCode()) {
-			case 1 : 
-				throw new ErreurBD("Un enregistrement similaire est deja present dans la base de donnees");
-			case 2291:
-				throw new ErreurBD("Il manque la cle etrangere");
-			case 2292:
-				throw new ErreurBD("Impossibilite de supprimer car l'enregistrement est present dans une autre table");
-			case 2290:
-				throw new ErreurBD("Vous ne pouvez pas renseigner cette valeur dans ce champ");
-			case 1400:
-				throw new ErreurBD("Une valeur n'a pas ete renseigne");
-			case 1407:
-				throw new ErreurBD("Une valeur n'a pas ete renseigne");
-
-			}
-			if (200000<= e.getErrorCode() && e.getErrorCode() <=20999) {
-				throw new ErreurBD("Transgression de l'un des declencheurs de la base de donnees");
-			}
+			ErreurBD.excSQL(e);
 		}
 		return ID;
 	}
@@ -150,24 +133,7 @@ public class Equipe {
 				this.joueur.add(new Joueur(rs.getString(1),rs.getString(2),rs.getDate(3),rs.getString(4).charAt(0),rs.getString(5),rs.getString(6)));
 			}
 		} catch (SQLException e) {
-			switch(e.getErrorCode()) {
-			case 1 : 
-				throw new ErreurBD("Un enregistrement similaire est deja present dans la base de donnees");
-			case 2291:
-				throw new ErreurBD("Il manque la cle etrangere");
-			case 2292:
-				throw new ErreurBD("Impossibilite de supprimer car l'enregistrement est present dans une autre table");
-			case 2290:
-				throw new ErreurBD("Vous ne pouvez pas renseigner cette valeur dans ce champ");
-			case 1400:
-				throw new ErreurBD("Une valeur n'a pas ete renseigne");
-			case 1407:
-				throw new ErreurBD("Une valeur n'a pas ete renseigne");
-
-			}
-			if (200000<= e.getErrorCode() && e.getErrorCode() <=20999) {
-				throw new ErreurBD("Transgression de l'un des declencheurs de la base de donnees");
-			}
+			ErreurBD.excSQL(e);
 		}
 		return joueur;
 
@@ -192,24 +158,7 @@ public class Equipe {
             classement = Arrays.copyOf(equipe.toArray(), equipe.toArray().length,String[].class);
 
         } catch (SQLException e) {
-            switch(e.getErrorCode()) {
-            case 1 : 
-                throw new ErreurBD("Un enregistrement similaire est deja present dans la base de donn�es");
-            case 2291:
-                throw new ErreurBD("Il manque la cle etrangere");
-            case 2292:
-                throw new ErreurBD("Impossibilite de supprimer car l'enregistrement est present dans une autre table");
-            case 2290:
-                throw new ErreurBD("Vous ne pouvez pas renseigner cette valeur dans ce champ");
-            case 1400:
-                throw new ErreurBD("Une valeur n'a pas ete renseigne");
-            case 1407:
-                throw new ErreurBD("Une valeur n'a pas ete renseigne");
-
-            }
-            if (200000<= e.getErrorCode() && e.getErrorCode() <=20999) {
-                throw new ErreurBD("Transgression de l'un des declencheurs de la base de donnees");
-            }
+        	ErreurBD.excSQL(e);
         }
         return classement;
     }
@@ -229,24 +178,7 @@ public class Equipe {
 				this.id_jeu = rese.getInt(2);
 			}
 		} catch (SQLException e) {
-			switch(e.getErrorCode()) {
-			case 1 : 
-				throw new ErreurBD("Un enregistrement similaire est deja present dans la base de donnees");
-			case 2291:
-				throw new ErreurBD("Il manque la cle etrangere");
-			case 2292:
-				throw new ErreurBD("Impossibilite de supprimer car l'enregistrement est present dans une autre table");
-			case 2290:
-				throw new ErreurBD("Vous ne pouvez pas renseigner cette valeur dans ce champ");
-			case 1400:
-				throw new ErreurBD("Une valeur n'a pas ete renseigne");
-			case 1407:
-				throw new ErreurBD("Une valeur n'a pas ete renseigne");
-
-			}
-			if (200000<= e.getErrorCode() && e.getErrorCode() <=20999) {
-				throw new ErreurBD("Transgression de l'un des declencheurs de la base de donnees");
-			}
+			ErreurBD.excSQL(e);
 		}
 
 	}
@@ -260,24 +192,7 @@ public class Equipe {
 			try {
 				ConnexionBD.Query("INSERT INTO equipe values(seq_joueur.nextVal,'"+this.nom+"',"+this.nbPoints+","+this.id_jeu+","+ecurie+")");
 			} catch (SQLException e) {
-				switch(e.getErrorCode()) {
-				case 1 : 
-					throw new ErreurBD("Le nom de cette equipe est deja present dans la base de donnees");
-				case 2291:
-					throw new ErreurBD("Il manque la cle etrangere");
-				case 2292:
-					throw new ErreurBD("Impossibilite de supprimer car l'enregistrement est present dans une autre table");
-				case 2290:
-					throw new ErreurBD("Vous ne pouvez pas renseigner cette valeur dans ce champ");
-				case 1400:
-					throw new ErreurBD("Une valeur n'a pas ete renseigne");
-				case 1407:
-					throw new ErreurBD("Une valeur n'a pas ete renseigne");
-
-				}
-				if (200000<= e.getErrorCode() && e.getErrorCode() <=20999) {
-					throw new ErreurBD("Transgression de l'un des declencheurs de la base de donnees");
-				}
+				ErreurBD.excSQL(e);
 			}
 		} else {
 			throw new IllegalArgumentException("Au moins un des parametres n'est pas valide/defini");
@@ -296,24 +211,7 @@ public class Equipe {
 			ConnexionBD.Query("delete joueur where id_equipe = "+this.getID());
 			ConnexionBD.Query("delete equipe where nom = '"+this.nom+"'");
 		} catch (SQLException e) {
-			switch(e.getErrorCode()) {
-			case 1 : 
-				throw new ErreurBD("Le nom de cette equipe est deja present dans la base de donnees");
-			case 2291:
-				throw new ErreurBD("Il manque la cle etrangere");
-			case 2292:
-				throw new ErreurBD("Impossibilite de supprimer car l'enregistrement est present dans une autre table");
-			case 2290:
-				throw new ErreurBD("Vous ne pouvez pas renseigner cette valeur dans ce champ");
-			case 1400:
-				throw new ErreurBD("Une valeur n'a pas ete renseigne");
-			case 1407:
-				throw new ErreurBD("Une valeur n'a pas ete renseigne");
-
-			}
-			if (200000<= e.getErrorCode() && e.getErrorCode() <=20999) {
-				throw new ErreurBD("Transgression de l'un des declencheurs de la base de donnees");
-			}
+			ErreurBD.excSQL(e);
 		}
 	}
 
@@ -355,24 +253,7 @@ public class Equipe {
 			}
 			r = Arrays.copyOf(nom.toArray(), nom.toArray().length, String[].class);
 		} catch (SQLException e) {
-			switch(e.getErrorCode()) {
-			case 1 : 
-				throw new ErreurBD("Un enregistrement similaire est deja present dans la base de donnees");
-			case 2291:
-				throw new ErreurBD("Il manque la cle etrangere");
-			case 2292:
-				throw new ErreurBD("Impossibilite de supprimer car l'enregistrement est present dans une autre table");
-			case 2290:
-				throw new ErreurBD("Vous ne pouvez pas renseigner cette valeur dans ce champ");
-			case 1400:
-				throw new ErreurBD("Une valeur n'a pas ete renseigne");
-			case 1407:
-				throw new ErreurBD("Une valeur n'a pas ete renseigne");
-
-			}
-			if (200000<= e.getErrorCode() && e.getErrorCode() <=20999) {
-				throw new ErreurBD("Transgression de l'un des declencheurs de la base de donnees");
-			}
+			ErreurBD.excSQL(e);
 		}
 		return r;
 	}

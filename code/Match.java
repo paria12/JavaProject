@@ -79,24 +79,7 @@ public class Match {
 					+cal.get(Calendar.DAY_OF_MONTH)+"/"+(cal.get(Calendar.MONTH)+1)+"/"+(cal.get(Calendar.YEAR))+" "
 					+cal.get(Calendar.HOUR_OF_DAY)+":"+cal.get(Calendar.MINUTE)+":"+cal.get(Calendar.SECOND)+"'");
 		} catch (SQLException exc) {
-			switch(exc.getErrorCode()) {
-            case 1 : 
-                throw new ErreurBD("Un enregistrement similaire est deja present dans la base de donnees");
-            case 2291:
-                throw new ErreurBD("Il manque la cle etrangere");
-            case 2292:
-                throw new ErreurBD("Impossibilite de supprimer car l'enregistrement est present dans une autre table");
-            case 2290:
-                throw new ErreurBD("Vous ne pouvez pas renseigner cette valeur dans ce champ");
-            case 1400:
-                throw new ErreurBD("Une valeur n'a pas ete renseigne");
-            case 1407:
-                throw new ErreurBD("Une valeur n'a pas ete renseigne");
-                
-            }
-            if (200000<= exc.getErrorCode() && exc.getErrorCode() <=20999) {
-                throw new ErreurBD("Transgression de l'un des declencheurs de la base de donnees");
-            }
+			ErreurBD.excSQL(exc);
 		}
 	}
 
@@ -119,24 +102,7 @@ public class Match {
 					+cal2.get(Calendar.DAY_OF_MONTH)+"/"+(cal2.get(Calendar.MONTH)+1)+"/"+(cal2.get(Calendar.YEAR))+" "
 					+cal2.get(Calendar.HOUR_OF_DAY)+":"+cal2.get(Calendar.MINUTE)+":"+cal2.get(Calendar.SECOND)+"')");
 		} catch (SQLException e) {
-			switch(e.getErrorCode()) {
-            case 1 : 
-                throw new ErreurBD("Un enregistrement similaire est deja present dans la base de donnees");
-            case 2291:
-                throw new ErreurBD("Il manque la cle etrangere");
-            case 2292:
-                throw new ErreurBD("Impossibilite de supprimer car l'enregistrement est present dans une autre table");
-            case 2290:
-                throw new ErreurBD("Vous ne pouvez pas renseigner cette valeur dans ce champ");
-            case 1400:
-                throw new ErreurBD("Une valeur n'a pas ete renseigne");
-            case 1407:
-                throw new ErreurBD("Une valeur n'a pas ete renseigne");
-                
-            }
-            if (200000<= e.getErrorCode() && e.getErrorCode() <=20999) {
-                throw new ErreurBD("Transgression de l'un des declencheurs de la base de donnees");
-            }
+			ErreurBD.excSQL(e);
 		}
 	}
 
