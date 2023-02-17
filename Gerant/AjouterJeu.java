@@ -171,7 +171,7 @@ public class AjouterJeu {
 		flowLayout_1.setVgap(0);
 		panelInputGameLength.add(panelSpinnerGameLength);
 		
-		spinnerGamelength = new JSpinnerDark(0,0,300,5);
+		spinnerGamelength = new JSpinnerDark(5,5,300,5);
 		panelSpinnerGameLength.add(spinnerGamelength);
 		
 		
