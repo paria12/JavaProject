@@ -22,7 +22,11 @@ import code.ErreurBD;
 public class TestEcurie {
 	private Ecurie e;
 	private Ecurie e2;
-
+	
+	/**
+	 * Suppression de toutes les donnees ajoutes dans la base de donnees par le test
+	 * @throws Exception
+	 */
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 
@@ -42,30 +46,47 @@ public class TestEcurie {
 		}
 	}
 
+	/**
+	 * Creation de deux ecuries au debut des tests
+	 * @throws Exception
+	 */
 	@Before
 	public void setUp() throws Exception {
 		this.e = new Ecurie("KCorp");
 		this.e2 = new Ecurie("Vitality","Professionnelle");
 	}
 
+	/**
+	 * Les ecuries sont null a la fin des tests
+	 * @throws Exception
+	 */
 	@After
 	public void tearDown() throws Exception {
 		this.e = null;
 		this.e2 = null;
 	}
 
+	/**
+	 * Test contruction d'une ecurie a partir de son nom
+	 */
 	@Test
-	public void testEcurieString() {
+	public void testEcurieNom() {
 		Ecurie t = new Ecurie("KCorp");
 		assertEquals(t,this.e);
 	}
 
+	/**
+	 * Test constructeur ecurie a partir de son nom et son type
+	 */
 	@Test
-	public void testEcurieStringString() {
+	public void testEcurieNomType() {
 		Ecurie t = new Ecurie("Vitality","Professionnelle");
 		assertEquals(t,this.e2);
 	}
 
+	/**
+	 * Test ajout d'une equipe dans la liste d'equipe d'une ecurie
+	 */
 	@Test
 	public void testAddEquipe() {
 		this.e2.addEquipe(new Equipe("Dream Team", 100, 1));
@@ -76,6 +97,9 @@ public class TestEcurie {
 		}
 	}
 
+	/**
+	 * Test de la suppression d'une equipe de la liste des equipes appartenant a une ecurie
+	 */
 	@Test
 	public void testRemoveEquipe() {
 		Equipe e = new Equipe("Dream Team", 100, 1);
@@ -89,12 +113,18 @@ public class TestEcurie {
 		}
 	}
 
+	/**
+	 * Test de la recuperation du nom d'une ecurie
+	 */
 	@Test
 	public void testGetNom() {
 		assertEquals("KCorp",this.e.getNom());
 		assertEquals("Vitality",this.e2.getNom());
 	}
 
+	/**
+	 * Test de la recuperation du type de l'ecurie
+	 */
 	@Test
 	public void testGetType() {
 		try {
@@ -106,6 +136,9 @@ public class TestEcurie {
 		
 	}
 
+	/**
+	 * Test de la recuperation de toutes les equipes appartenant a une ecurie
+	 */
 	@Test
 	public void testGetEquipe() {
 		Ecurie t = new Ecurie("test","Professionnelle");
@@ -125,6 +158,9 @@ public class TestEcurie {
 		}
 	}
 
+	/**
+	 * Test de la bonne insertion d'une equipe dans la base de donnees
+	 */
 	@Test
 	public void testInsert() {
 		Ecurie t = new Ecurie("test2","Professionnelle");
