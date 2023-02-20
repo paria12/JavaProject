@@ -24,17 +24,31 @@ import code.Joueur;
 public class TestEquipe {
 	private Equipe e;
 	private Equipe e2;
-
+	
+	/**
+	 * Creation de deux equipes au debut des tests
+	 * @throws Exception
+	 */
 	@Before
 	public void setUp() throws Exception {
 		this.e = new Equipe("Dream Team");
 		this.e2 = new Equipe("Test",10,1);
 	}
+	
+	/**
+	 * Les deux equipes sont null a la fin
+	 * @throws Exception
+	 */
 	@After
 	public void tearDown() throws Exception {
 		this.e = null;
 		this.e2 = null;
 	}
+	
+	/**
+	 * Suppression de toutes les donnees inserer dans la base de donnees par les tests
+	 * @throws Exception
+	 */
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 
@@ -55,24 +69,36 @@ public class TestEquipe {
 	}
 
 
+	/**
+	 * Verification construction d'une equipe a partir de son nom
+	 */
 	@Test
-	public void testEquipeString() {
+	public void testCreationEquipeNom() {
 		Equipe t = new Equipe("Dream Team");
 		assertEquals(t,this.e);
 	}
 
+	/**
+	 * Verification construction d'une equipe a partir de son nom, de son nombre de point et l'id de son jeu
+	 */
 	@Test
-	public void testEquipeStringIntInt() {
+	public void testCreationEquipeNomPointEcurie() {
 		Equipe t = new Equipe("Test",10,1);
 		assertEquals(t,this.e2);
 	}
 
+	/**
+	 * Verification de la bonne recuperation du nom de l'equipe
+	 */
 	@Test
 	public void testGetNom() {
 		assertEquals("Dream Team",this.e.getNom());
 		assertEquals("Test",this.e2.getNom());
 	}
 
+	/**
+	 * Verification de la bonne recuperation du nombre de point de l'equipe
+	 */
 	@Test
 	public void testGetNbPoints() {
 		try {
@@ -83,6 +109,9 @@ public class TestEquipe {
 		}
 	}
 
+	/**
+	 * Verification de la bonne recuperation de l'id du jeu de l'equipe
+	 */
 	@Test
 	public void testGetIdJeu() {
 		try {
@@ -93,6 +122,9 @@ public class TestEquipe {
 		}
 	}
 
+	/**
+	 * Verification de la bonne recuperation des joueurs d'une equipe
+	 */
 	@Test
 	public void testGetjoueur(){
 		Joueur j = new Joueur("test","test");
@@ -120,6 +152,9 @@ public class TestEquipe {
 		}
 	}
 
+	/**
+	 * Test d'ajout de points a une equipe
+	 */
 	@Test
 	public void testAjoutDePoints() {
 		try {
@@ -132,6 +167,9 @@ public class TestEquipe {
 		}
 	}
 	
+	/**
+	 * Test du bon ajout d'un joueur dans une equipe
+	 */
 	@Test
 	public void testAddJoueur() {
 		Joueur j = new Joueur("Muru","Jean-Batiste");
@@ -143,6 +181,9 @@ public class TestEquipe {
 		}
 	}
 	
+	/**
+	 * Test de la bonne suppression d'un joueur d'une equipe
+	 */
 	@Test
 	public void testremoveJoueur() {
 		Joueur j = new Joueur("Muru","Jean-Batiste");
@@ -157,6 +198,10 @@ public class TestEquipe {
 			fail("Erreur bd : "+e.getMessage());
 		}
 	}
+	
+	/**
+	 * Test de la bonne insertion d'une equipe dans la base de donnees
+	 */
 	@Test
 	public void testInsert() {
 		Equipe e3 = new Equipe("Jeanne",50,1);

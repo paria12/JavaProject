@@ -24,16 +24,28 @@ public class TestPoule {
 
 	private Poule p;
 	 
+	/**
+	 * Creation d'une nouvelle poule au debut du test
+	 * @throws Exception
+	 */
 	@Before
 	public void setUp() throws Exception {
 		this.p = new Poule();
 	}
 
+	/**
+	 * p devient null a la fin du test
+	 * @throws Exception
+	 */
 	@After
 	public void tearDown() throws Exception {
 		this.p = null;
 	}
 	
+	/**
+	 * Supression de toutes les donnees inseres dans la base de donnees par le test
+	 * @throws Exception
+	 */
 	@AfterClass
 	public  static void tearDownAfterClass() throws Exception {
 		String loginBD = "ndf4080a";
@@ -67,6 +79,9 @@ public class TestPoule {
 	}
 
 	
+	/**
+	 * Test de la bonne insertion d'une equipe dans une poule
+	 */
 	@Test
 	public void testInsererEquipe() {
 		Equipe e = new Equipe("Test", 10,1);
@@ -74,6 +89,9 @@ public class TestPoule {
 		assertEquals(e,this.p.getEquipe()[0]);
 	}
 
+	/**
+	 * Test de la bonne recuperation des equipes d'une poule
+	 */
 	@Test
 	public void testGetEquipe() {
 		Equipe e = new Equipe("Test", 10,1);
@@ -84,6 +102,10 @@ public class TestPoule {
 		assertEquals(e2,this.p.getEquipe()[1]);
 	}
 	
+	/**
+	 * Test de la bonne insertion d'une poule dans la base de donnees
+	 * @throws ErreurBD
+	 */
 	@Test
 	public void testInsert() throws ErreurBD {
 		Poule p1 = new Poule();
@@ -150,6 +172,9 @@ public class TestPoule {
 		}
 	}
 	
+	/**
+	 * Test de la bonne generation des matchs
+	 */
 	@Test
 	public void testGenererMatch()  {
 		Equipe e = new Equipe("Toto",10,1);
