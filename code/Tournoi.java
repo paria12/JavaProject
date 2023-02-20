@@ -1,6 +1,7 @@
 package code;
 
 import java.sql.Date;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -430,7 +431,7 @@ public class Tournoi {
 		List<Tournoi> l = new ArrayList<Tournoi>();
 
 		try {
-			ResultSet rs = ConnexionBD.Query("select nomtournoi, datetournoi, id_jeu from tournoi");
+			ResultSet rs = ConnexionBD.Query("select nomtournoi, datetournoi, id_jeu from tournoi order by 1");
 
 			while(rs.next()) {
 				l.add(new Tournoi(rs.getString(1),rs.getDate(2),rs.getInt(3)));
@@ -497,4 +498,18 @@ public class Tournoi {
 	public String toString() {
 		return this.date.toString()+" - "+this.nom;
 	}	
+	/**Méthode compareTo
+     * @param anotherDate
+     * @return
+     */
+    public int compareTo(long anotherDate) {
+        if(this.getDate().getTime() < anotherDate) {
+            return -1;
+        }else if(this.getDate().getTime() > anotherDate) {
+            return 1;
+            
+        }else {
+            return 0;
+        }
+    }
 }

@@ -38,6 +38,7 @@ import code.Tournoi;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Date;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.ActionListener;
@@ -282,39 +283,40 @@ public class AccueilGerant {
 			sizeTournoi = Tournoi.getAll().length;
 			PanelPresentationTournoi[] panelsPresentationTournoi = new PanelPresentationTournoi[sizeTournoi];
 	        for (int i = 0; i < sizeTournoi; i++) {
-	        	t = Tournoi.getAll()[i];
-	            JLabel labelTournoi = new JLabel();
-	            labelTournoi.setText(t.getNom());
-	            PanelPresentationTournoi presentTournoi = new PanelPresentationTournoi(t, true);
-	            presentTournoi.getPanel().addMouseListener(new MouseAdapter() {
-	                @Override
-	                public void mouseClicked(MouseEvent e) {
-	                	panelMenuRight.setVisible(true);
-	                	t = presentTournoi.getTournoi();
-						try {
-							listClassement.setModel(new AbstractListModel() {
-								String[] values = t.getClassement()[0];
-								public int getSize() {
-									return values.length;
-								}
-								public Object getElementAt(int index) {
-									return values[index];
-								}
-							});
-						} catch (ErreurBD e1) {
-							// TODO Auto-generated catch block
-							ErrorMessage.ErrorMessage(e1.getMessage());
-						}
-						for (PanelPresentationTournoi pe : panelsPresentationTournoi) {
-	                		 pe.changeBorderColor(Color.black, 1);
-	                	 }
-	                	 presentTournoi.changeBorderColor(Colors.lightText, 2);
-	                }
-	            });
-	            panelsPresentationTournoi[i] = presentTournoi;
-	            panelListTournoi.add(presentTournoi.getPanel());
+	        	if(t.compareTo(System.currentTimeMillis() )==1) {
+		        t = Tournoi.getAll()[i];
+		            JLabel labelTournoi = new JLabel();
+		            labelTournoi.setText(t.getNom());
+		            PanelPresentationTournoi presentTournoi = new PanelPresentationTournoi(t, true);
+		            presentTournoi.getPanel().addMouseListener(new MouseAdapter() {
+		                @Override
+		                public void mouseClicked(MouseEvent e) {
+		                	panelMenuRight.setVisible(true);
+		                	t = presentTournoi.getTournoi();
+							try {
+								listClassement.setModel(new AbstractListModel() {
+									String[] values = t.getClassement()[0];
+									public int getSize() {
+										return values.length;
+									}
+									public Object getElementAt(int index) {
+										return values[index];
+									}
+								});
+							} catch (ErreurBD e1) {
+								// TODO Auto-generated catch block
+								ErrorMessage.ErrorMessage(e1.getMessage());
+							}
+							for (PanelPresentationTournoi pe : panelsPresentationTournoi) {
+		                		 pe.changeBorderColor(Color.black, 1);
+		                	 }
+		                	 presentTournoi.changeBorderColor(Colors.lightText, 2);
+		                }
+		            });
+		            panelsPresentationTournoi[i] = presentTournoi;
+		            panelListTournoi.add(presentTournoi.getPanel());
 	        }
-	
+	        }
 	        for (int i = sizeTournoi; i < 4; i++) {
 	            panelListTournoi.add(new JPanelDarkest());
 	        }
@@ -325,4 +327,5 @@ public class AccueilGerant {
         
         scrollTournoi.setViewportView(panelListTournoi);
 	}
+	
 }
