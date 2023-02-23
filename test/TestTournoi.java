@@ -155,6 +155,15 @@ public class TestTournoi {
 	}
 
 	@Test
+	public void testGetId() {
+		try {
+			System.out.println(t1.getId());
+			assertEquals(1,t1.getId());
+		} catch (ErreurBD e) {
+			fail("Ereur t1 : "+e.getMessage());
+		}
+	}
+	@Test
 	public void testGetJeu() {
 		assertEquals(1,t1.getJeu());
 		assertEquals(3,t2.getJeu());

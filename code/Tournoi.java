@@ -157,6 +157,7 @@ public class Tournoi {
 		int retour = 0;
 		try {
 			ResultSet rs = ConnexionBD.Query("select id_tournoi from tournoi where nomtournoi = '"+this.nom+"'");
+			rs.next();
 			retour = rs.getInt(1);
 		} catch (SQLException ex){ 
 			ErreurBD.excSQL(ex);
