@@ -498,18 +498,5 @@ public class Tournoi {
 	public String toString() {
 		return this.date.toString()+" - "+this.nom;
 	}	
-	/**Méthode compareTo
-     * @param anotherDate
-     * @return
-     */
-    public int compareTo(long anotherDate) {
-        if(this.getDate().getTime() < anotherDate) {
-            return -1;
-        }else if(this.getDate().getTime() > anotherDate) {
-            return 1;
-            
-        }else {
-            return 0;
-        }
-    }
+	
 }

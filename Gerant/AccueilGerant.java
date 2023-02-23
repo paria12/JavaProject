@@ -283,8 +283,8 @@ public class AccueilGerant {
 			sizeTournoi = Tournoi.getAll().length;
 			PanelPresentationTournoi[] panelsPresentationTournoi = new PanelPresentationTournoi[sizeTournoi];
 	        for (int i = 0; i < sizeTournoi; i++) {
-	        	if(t.compareTo(System.currentTimeMillis() )==1) {
 		        t = Tournoi.getAll()[i];
+		        if(t.getDate().getTime() > System.currentTimeMillis()) {
 		            JLabel labelTournoi = new JLabel();
 		            labelTournoi.setText(t.getNom());
 		            PanelPresentationTournoi presentTournoi = new PanelPresentationTournoi(t, true);
