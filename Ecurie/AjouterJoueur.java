@@ -564,7 +564,14 @@ public class AjouterJoueur {
         
         return ' ';
     }
-	
+	private Boolean isFormatGood() {
+        if((inputMail.getText().contains("@"))&& (inputPhone.getText().matches("[0-9]+") == true)&& (inputPhone.getText().length() == 10)){
+            return true;
+        }else {
+            return false;
+        }
+
+    }
 	private Boolean isFormFilled() {
 		if ((inputLastName.getText().length() != 0) 
 		&& (inputFirstName.getText().length() != 0) 
@@ -609,13 +616,15 @@ public class AjouterJoueur {
 			cal.set( Calendar.MONTH, month.getValue() - 1);
 			cal.set( Calendar.YEAR, year);
 			//Create and return player from inputs
-			equipe.setJoueur(new Joueur(inputLastName.getText(), 
-							 inputFirstName.getText(), 
-							 new Date(cal.getTimeInMillis()), 
-							 getSelectedButtonText(buttonGroup),
-							 inputPhone.getText(), 
-							 inputMail.getText()), nbJ, panelPlayerInner);
-			frmAjouterUnJoueur.dispose();
+			if(isFormatGood()) {
+				equipe.setJoueur(new Joueur(inputLastName.getText(), 
+								 inputFirstName.getText(), 
+								 new Date(cal.getTimeInMillis()), 
+								 getSelectedButtonText(buttonGroup),
+								 inputPhone.getText(), 
+								 inputMail.getText()), nbJ, panelPlayerInner);
+				frmAjouterUnJoueur.dispose();
+			}
 		}
 		
 	}

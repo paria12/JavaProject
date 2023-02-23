@@ -633,7 +633,12 @@ public class CreerTournoi {
 		flowLayout_5.setHgap(10);
 		frmCrerTournois.getContentPane().add(panelSpacing_Left_1, BorderLayout.EAST);
 	}
-	
+	public Boolean isFormatGood() {
+        if((inputPostalCode.getText().matches("[0-9]+")==true)&&(inputPostalCode.getText().length() == 5)) {
+            return true;
+        }
+        return false;
+    }
 	private Boolean isFormFilled() {
 		if ((inputCountry.getText().length() != 0) 
 		&& (inputCity.getText().length() != 0) 
@@ -692,23 +697,24 @@ public class CreerTournoi {
                     notoriete = button.getText().toUpperCase();
                 }
             }
-            
-			try {
-				Tournoi t = new Tournoi(inputTurnamentName.getText(), 
-										inputAdress.getText(), 
-										inputCity.getText(), 
-										inputCountry.getText(), 
-										inputPostalCode.getText(), 
-										new Date(cal.getTimeInMillis()), 
-										notoriete, 
-										Jeu.getID(new Jeu(comboGame.getSelectedItem().toString())));
-				t.insert(new Arbitre(comboArbitre.getSelectedItem().toString()).getID());
-			} catch (ErreurBD e1) {
-				// TODO Auto-generated catch block
-				ErrorMessage.ErrorMessage(e1.getMessage());
-			}
-			parent.setListTournois();
-            frmCrerTournois.dispose();
+            if(isFormatGood()) {
+				try {
+					Tournoi t = new Tournoi(inputTurnamentName.getText(), 
+											inputAdress.getText(), 
+											inputCity.getText(), 
+											inputCountry.getText(), 
+											inputPostalCode.getText(), 
+											new Date(cal.getTimeInMillis()), 
+											notoriete, 
+											Jeu.getID(new Jeu(comboGame.getSelectedItem().toString())));
+					t.insert(new Arbitre(comboArbitre.getSelectedItem().toString()).getID());
+				} catch (ErreurBD e1) {
+					// TODO Auto-generated catch block
+					ErrorMessage.ErrorMessage(e1.getMessage());
+				}
+				parent.setListTournois();
+	            frmCrerTournois.dispose();
+            }
         }
 	}
 	private void enterRadio() {
