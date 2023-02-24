@@ -30,6 +30,7 @@ import java.awt.event.KeyEvent;
 public class PopUp_ConfirmDeleteTeam {
 
 	private JFrame frame;
+	private AccueilEcurie parent;
 
 	/**
 	 * Launch the application.
@@ -38,7 +39,7 @@ public class PopUp_ConfirmDeleteTeam {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					PopUp_ConfirmDeleteTeam window = new PopUp_ConfirmDeleteTeam(new Equipe("Best OF The Best"));
+					PopUp_ConfirmDeleteTeam window = new PopUp_ConfirmDeleteTeam(new Equipe("Best OF The Best"), new AccueilEcurie());
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -46,11 +47,11 @@ public class PopUp_ConfirmDeleteTeam {
 			}
 		});
 	}
-	public static void mainWithValues(Equipe eq) {
+	public static void mainWithValues(Equipe eq, AccueilEcurie p) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					PopUp_ConfirmDeleteTeam window = new PopUp_ConfirmDeleteTeam(eq);
+					PopUp_ConfirmDeleteTeam window = new PopUp_ConfirmDeleteTeam(eq, p);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -61,14 +62,15 @@ public class PopUp_ConfirmDeleteTeam {
 	/**
 	 * Create the application.
 	 */
-	public PopUp_ConfirmDeleteTeam(Equipe equipe) {
-		initialize(equipe);
+	public PopUp_ConfirmDeleteTeam(Equipe equipe, AccueilEcurie p) {
+		initialize(equipe, p);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize(Equipe equipe) {
+	private void initialize(Equipe equipe, AccueilEcurie parent) {
+		this.parent = parent;
 		frame = new JFrame();
 		frame.setBounds(100, 100, 250, 175);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -159,6 +161,7 @@ public class PopUp_ConfirmDeleteTeam {
 			// TODO Auto-generated catch block
 			ErrorMessage.ErrorMessage(e.getMessage());
 		};
+		parent.setListEquipes();
 		frame.dispose();
 	}
 }

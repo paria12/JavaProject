@@ -53,6 +53,7 @@ public class AccueilEcurie {
 	private JScrollPane scrollTournois;
 	private JScrollPane scrollEquipe;
 	private AccueilEcurie thisInstance;
+	private JPanelBackground panelMenu;
 	
 	/**
 	 * Launch the application.
@@ -93,7 +94,7 @@ public class AccueilEcurie {
 		
 		Header headerEcurie = new Header(frame);
 		
-		JPanelBackground panelMenu = new JPanelBackground();
+		panelMenu = new JPanelBackground();
 		frame.getContentPane().add(panelMenu, BorderLayout.CENTER);
 		panelMenu.setLayout(new GridLayout(0, 2, 0, 0));
 		
@@ -125,11 +126,6 @@ public class AccueilEcurie {
 		panelMenuLeftHeader.add(panelButtonAddEquipe);
 		
 		JButtonDark buttonRefreshEquipes = new JButtonDark("rafraîchir");
-		buttonRefreshEquipes.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		
 		buttonRefreshEquipes.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -173,8 +169,10 @@ public class AccueilEcurie {
 		scrollEquipe.setBorder(new LineBorder(Color.BLACK));
 		panelScrollEquipe.add(scrollEquipe);
 		
+		//Initialize Equipe list
 		setListEquipes();
         
+		//Spacing
 		JPanelBackground panelSpacing_EquipeBottom = new JPanelBackground();
 		FlowLayout fl_panelSpacing_EquipeBottom = (FlowLayout) panelSpacing_EquipeBottom.getLayout();
 		fl_panelSpacing_EquipeBottom.setVgap(52);
@@ -188,79 +186,19 @@ public class AccueilEcurie {
 		JPanelBackground panelSpacing_EquipeRight = new JPanelBackground();
 		panelMenuLeft.add(panelSpacing_EquipeRight, BorderLayout.EAST);
 		
-		panelRight = new JPanelBackground();
+		//Initialize Tournois list in no team selected mode
+		eq = null;
+		setListTournois();
 		panelMenu.add(panelRight);
-		panelRight.setLayout(new BorderLayout(0, 0));
-		panelRight.setVisible(false);
 		
-		JPanelBackground panelRightHeader = new JPanelBackground();
-		panelRightHeader.setAlignmentY(0.0f);
-		panelRightHeader.setAlignmentX(1.0f);
-		panelRight.add(panelRightHeader, BorderLayout.NORTH);
-		panelRightHeader.setLayout(new GridLayout(0, 2, 0, 0));
-		
-		JPanelBackground panelLabelTournois = new JPanelBackground();
-		FlowLayout fl_panelLabelTournois = (FlowLayout) panelLabelTournois.getLayout();
-		fl_panelLabelTournois.setVgap(10);
-		fl_panelLabelTournois.setAlignment(FlowLayout.LEFT);
-		fl_panelLabelTournois.setHgap(10);
-		panelRightHeader.add(panelLabelTournois);
-		
-		JLabel labelTournois = new JLabel("Tournois disponibles :");
-		labelTournois.setForeground(Colors.lightText);
-		panelLabelTournois.add(labelTournois);
-		
-		JPanelBackground panelButtonInscriptionTournois = new JPanelBackground();
-		FlowLayout fl_panelButtonInscriptionTournois = (FlowLayout) panelButtonInscriptionTournois.getLayout();
-		fl_panelButtonInscriptionTournois.setHgap(25);
-		fl_panelButtonInscriptionTournois.setAlignment(FlowLayout.RIGHT);
-		panelRightHeader.add(panelButtonInscriptionTournois);
-		
-		buttonInscriptionTournois = new JButtonYellow("Inscrire");
-		buttonInscriptionTournois.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					submitInscrire();
-			}
-			}
-		});
-		buttonInscriptionTournois.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				submitInscrire();
-			}
-		});
-		buttonInscriptionTournois.setEnabled(false);
-		panelButtonInscriptionTournois.add(buttonInscriptionTournois);
-		
-		JPanelBackground panelScrollTournois = new JPanelBackground();
-		panelScrollTournois.setAlignmentY(0.0f);
-		panelScrollTournois.setAlignmentX(0.0f);
-		panelRight.add(panelScrollTournois);
-		panelScrollTournois.setLayout(new BorderLayout(0, 0));
-		
-		scrollTournois = new JScrollPane();
-		scrollTournois.setBorder(new LineBorder(Color.BLACK));
-		panelScrollTournois.add(scrollTournois);
-		
-		JPanelBackground panelSpacing_TournoisBottom = new JPanelBackground();
-		FlowLayout fl_panelSpacing_TournoisBottom = (FlowLayout) panelSpacing_TournoisBottom.getLayout();
-		fl_panelSpacing_TournoisBottom.setVgap(52);
-		panelRight.add(panelSpacing_TournoisBottom, BorderLayout.SOUTH);
-		
-		JPanelBackground panelSpacing_TournoisLeft = new JPanelBackground();
-		panelRight.add(panelSpacing_TournoisLeft, BorderLayout.WEST);
-		
-		JPanelBackground panelSpacing_TournoisRight = new JPanelBackground();
-		FlowLayout fl_panelSpacing_TournoisRight = (FlowLayout) panelSpacing_TournoisRight.getLayout();
-		fl_panelSpacing_TournoisRight.setHgap(12);
-		panelRight.add(panelSpacing_TournoisRight, BorderLayout.EAST);
 	}
 	
 	public void setListEquipes() {
-		panelRight = new JPanelBackground();
-		panelRight.setVisible(false);
+		//Reinitialize Tournois list in no team selected mode
+		eq = null;
+		thisInstance.setListTournois();
+
+		//Create list Equipe
 		JPanelBackground panelListEquipe = new JPanelBackground();
         panelListEquipe.setLayout(new GridLayout(0, 1, 0, 0));
         
@@ -273,7 +211,7 @@ public class AccueilEcurie {
         	eq = new Ecurie(Header.header).getEquipe().get(i);
             JLabel labelEquipe = new JLabel();
             labelEquipe.setText(eq.getNom());
-            PanelPresentationEquipe presentEquipe = new PanelPresentationEquipe(eq);
+            PanelPresentationEquipe presentEquipe = new PanelPresentationEquipe(eq, thisInstance);
             presentEquipe.getPanel().addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
@@ -283,7 +221,6 @@ public class AccueilEcurie {
                 		pe.changeBorderColor(Color.black, 1);
                 	}
                 	presentEquipe.changeBorderColor(Colors.lightText, 2);
-                	panelRight.setVisible(true);
                 }
             });
             panelsPresentationEquipe[i] = presentEquipe;
@@ -301,42 +238,118 @@ public class AccueilEcurie {
 	}
 	
 	private void setListTournois() {
-		buttonInscriptionTournois.setEnabled(false);
-		int sizeTournoi;
-		panelListTournoi = new JPanelBackground();
-        panelListTournoi.setLayout(new GridLayout(0, 1, 0, 0));
-		try {
-			sizeTournoi = Tournoi.getAvailableEquipe(eq).length;
-			PanelPresentationTournoi[] panelsPresentationTournoi = new PanelPresentationTournoi[sizeTournoi];
-	        for (int i = 0; i < sizeTournoi; i++) {
-	        	t = Tournoi.getAvailableEquipe(eq)[i];
-	            JLabel labelTournoi = new JLabel();
-	            labelTournoi.setText(t.getNom());
-	            PanelPresentationTournoi presentTournoi = new PanelPresentationTournoi(t, false);
-	            presentTournoi.getPanel().addMouseListener(new MouseAdapter() {
-	                @Override
-	                public void mouseClicked(MouseEvent e) {
-	                	 t = presentTournoi.getTournoi();
-	                	 for (PanelPresentationTournoi pe : panelsPresentationTournoi) {
-	                		 pe.changeBorderColor(Color.black, 1);
-	                	 }
-	                	 presentTournoi.changeBorderColor(Colors.lightText, 2);
-	                	 buttonInscriptionTournois.setEnabled(true);
-	                }
-	            });
-	            panelsPresentationTournoi[i] = presentTournoi;
-	            panelListTournoi.add(presentTournoi.getPanel());
-	        }
-	
-	        for (int i = sizeTournoi; i < 4; i++) {
-	            panelListTournoi.add(new JPanelDarkest());
-	        }
-		} catch (ErreurBD e1) {
-			// TODO Auto-generated catch block
-			ErrorMessage.ErrorMessage(e1.getMessage());
+		//If no equipe selected
+		if (eq == null) {
+			if (panelRight != null) {
+				//setVisibility to false
+				panelRight.setVisible(false);
+			} else {
+				//remove content from panelRight
+				panelRight = new JPanelBackground();
+				panelRight.setVisible(false);
+			}
+			panelRight.setLayout(new BorderLayout(0, 0));
+			JPanelBackground panelRightHeader = new JPanelBackground();
+			panelRightHeader.setAlignmentY(0.0f);
+			panelRightHeader.setAlignmentX(1.0f);
+			panelRight.add(panelRightHeader, BorderLayout.NORTH);
+			panelRightHeader.setLayout(new GridLayout(0, 2, 0, 0));
+			
+			JPanelBackground panelLabelTournois = new JPanelBackground();
+			FlowLayout fl_panelLabelTournois = (FlowLayout) panelLabelTournois.getLayout();
+			fl_panelLabelTournois.setVgap(10);
+			fl_panelLabelTournois.setAlignment(FlowLayout.LEFT);
+			fl_panelLabelTournois.setHgap(10);
+			panelRightHeader.add(panelLabelTournois);
+			
+			JLabel labelTournois = new JLabel("Tournois disponibles :");
+			labelTournois.setForeground(Colors.lightText);
+			panelLabelTournois.add(labelTournois);
+			
+			JPanelBackground panelButtonInscriptionTournois = new JPanelBackground();
+			FlowLayout fl_panelButtonInscriptionTournois = (FlowLayout) panelButtonInscriptionTournois.getLayout();
+			fl_panelButtonInscriptionTournois.setHgap(25);
+			fl_panelButtonInscriptionTournois.setAlignment(FlowLayout.RIGHT);
+			panelRightHeader.add(panelButtonInscriptionTournois);
+			
+			buttonInscriptionTournois = new JButtonYellow("Inscrire");
+			buttonInscriptionTournois.addKeyListener(new KeyAdapter() {
+				@Override
+				public void keyPressed(KeyEvent e) {
+					if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+						submitInscrire();
+				}
+				}
+			});
+			buttonInscriptionTournois.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					submitInscrire();
+				}
+			});
+			buttonInscriptionTournois.setEnabled(false);
+			panelButtonInscriptionTournois.add(buttonInscriptionTournois);
+			
+			JPanelBackground panelScrollTournois = new JPanelBackground();
+			panelScrollTournois.setAlignmentY(0.0f);
+			panelScrollTournois.setAlignmentX(0.0f);
+			panelRight.add(panelScrollTournois);
+			panelScrollTournois.setLayout(new BorderLayout(0, 0));
+			
+			scrollTournois = new JScrollPane();
+			scrollTournois.setBorder(new LineBorder(Color.BLACK));
+			panelScrollTournois.add(scrollTournois);
+			
+			JPanelBackground panelSpacing_TournoisBottom = new JPanelBackground();
+			FlowLayout fl_panelSpacing_TournoisBottom = (FlowLayout) panelSpacing_TournoisBottom.getLayout();
+			fl_panelSpacing_TournoisBottom.setVgap(52);
+			panelRight.add(panelSpacing_TournoisBottom, BorderLayout.SOUTH);
+			
+			JPanelBackground panelSpacing_TournoisLeft = new JPanelBackground();
+			panelRight.add(panelSpacing_TournoisLeft, BorderLayout.WEST);
+			
+			JPanelBackground panelSpacing_TournoisRight = new JPanelBackground();
+			FlowLayout fl_panelSpacing_TournoisRight = (FlowLayout) panelSpacing_TournoisRight.getLayout();
+			fl_panelSpacing_TournoisRight.setHgap(12);
+			panelRight.add(panelSpacing_TournoisRight, BorderLayout.EAST);
+		} else {
+			buttonInscriptionTournois.setEnabled(false);
+			int sizeTournoi;
+			panelListTournoi = new JPanelBackground();
+	        panelListTournoi.setLayout(new GridLayout(0, 1, 0, 0));
+			try {
+				sizeTournoi = Tournoi.getAvailableEquipe(eq).length;
+				PanelPresentationTournoi[] panelsPresentationTournoi = new PanelPresentationTournoi[sizeTournoi];
+		        for (int i = 0; i < sizeTournoi; i++) {
+		        	t = Tournoi.getAvailableEquipe(eq)[i];
+		            JLabel labelTournoi = new JLabel();
+		            labelTournoi.setText(t.getNom());
+		            PanelPresentationTournoi presentTournoi = new PanelPresentationTournoi(t, false);
+		            presentTournoi.getPanel().addMouseListener(new MouseAdapter() {
+		                @Override
+		                public void mouseClicked(MouseEvent e) {
+		                	 t = presentTournoi.getTournoi();
+		                	 for (PanelPresentationTournoi pe : panelsPresentationTournoi) {
+		                		 pe.changeBorderColor(Color.black, 1);
+		                	 }
+		                	 presentTournoi.changeBorderColor(Colors.lightText, 2);
+		                	 buttonInscriptionTournois.setEnabled(true);
+		                }
+		            });
+		            panelsPresentationTournoi[i] = presentTournoi;
+		            panelListTournoi.add(presentTournoi.getPanel());
+		        }
+		
+		        for (int i = sizeTournoi; i < 4; i++) {
+		            panelListTournoi.add(new JPanelDarkest());
+		        }
+			} catch (ErreurBD e1) {
+				// TODO Auto-generated catch block
+				ErrorMessage.ErrorMessage(e1.getMessage());
+			}
+        	panelRight.setVisible(true);
+	        scrollTournois.setViewportView(panelListTournoi);
 		}
-        
-        scrollTournois.setViewportView(panelListTournoi);
 	}
 	
 	private void submitNouvelleEquipe() {
