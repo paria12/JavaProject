@@ -12,6 +12,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 import Ecurie.PopUp_ConfirmDeleteTeam;
+import Gerant.AccueilGerant;
 import Gerant.PopUp_ConfirmDeleteTournoi;
 import code.ErreurBD;
 import code.Jeu;
@@ -50,7 +51,7 @@ public class PanelPresentationTournoi extends JPanel {
 	private JLabel labelNotoriete;
 	private JPanelDarkest panelLabelLieu;
 	private JLabel labelLieu;
-	
+	private AccueilGerant parent;
 	/**
 	 * Launch the application.
 	 */
@@ -58,8 +59,8 @@ public class PanelPresentationTournoi extends JPanel {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					PanelPresentationTournoi window1 = new PanelPresentationTournoi(Tournoi.getAll()[0], true);
-					PanelPresentationTournoi window2 = new PanelPresentationTournoi(Tournoi.getAll()[1], false);
+					PanelPresentationTournoi window1 = new PanelPresentationTournoi(Tournoi.getAll()[0], true, new AccueilGerant());
+					PanelPresentationTournoi window2 = new PanelPresentationTournoi(Tournoi.getAll()[1], false, new AccueilGerant());
 					frame = new JFrame();
 					frame.setBounds(100, 100, 600, 400);
 					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -79,7 +80,8 @@ public class PanelPresentationTournoi extends JPanel {
 	/**
 	 * Create the application.
 	 */
-	public PanelPresentationTournoi(Tournoi t, boolean authDelete) {
+	public PanelPresentationTournoi(Tournoi t, boolean authDelete, AccueilGerant parent) {
+		this.parent = parent;
 		this.t = t;
 		panelTournoi = new JPanelDarkest();
 		panelTournoi.addMouseListener(new MouseAdapter() {
@@ -216,7 +218,7 @@ public class PanelPresentationTournoi extends JPanel {
 			buttonDelete.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					PopUp_ConfirmDeleteTournoi.mainWithValues(t);
+					PopUp_ConfirmDeleteTournoi.mainWithValues(t, parent);
 				}
 			});
 			panelButtonDelete.add(buttonDelete);

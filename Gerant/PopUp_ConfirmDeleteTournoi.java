@@ -29,6 +29,7 @@ import java.awt.event.KeyEvent;
 public class PopUp_ConfirmDeleteTournoi {
 
 	private JFrame frame;
+	private AccueilGerant parent;
 
 	/**
 	 * Launch the application.
@@ -37,7 +38,7 @@ public class PopUp_ConfirmDeleteTournoi {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					PopUp_ConfirmDeleteTournoi window = new PopUp_ConfirmDeleteTournoi(Tournoi.getAll()[0]);
+					PopUp_ConfirmDeleteTournoi window = new PopUp_ConfirmDeleteTournoi(Tournoi.getAll()[0], new AccueilGerant());
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -45,11 +46,11 @@ public class PopUp_ConfirmDeleteTournoi {
 			}
 		});
 	}
-	public static void mainWithValues(Tournoi t) {
+	public static void mainWithValues(Tournoi t, AccueilGerant p) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					PopUp_ConfirmDeleteTournoi window = new PopUp_ConfirmDeleteTournoi(t);
+					PopUp_ConfirmDeleteTournoi window = new PopUp_ConfirmDeleteTournoi(t, p);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -60,14 +61,15 @@ public class PopUp_ConfirmDeleteTournoi {
 	/**
 	 * Create the application.
 	 */
-	public PopUp_ConfirmDeleteTournoi(Tournoi t) {
-		initialize(t);
+	public PopUp_ConfirmDeleteTournoi(Tournoi t, AccueilGerant p) {
+		initialize(t, p);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize(Tournoi t) {
+	private void initialize(Tournoi t, AccueilGerant parent) {
+		this.parent = parent;
 		frame = new JFrame();
 		frame.setBounds(100, 100, 250, 175);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -158,6 +160,7 @@ public class PopUp_ConfirmDeleteTournoi {
 			// TODO Auto-generated catch block
 			ErrorMessage.ErrorMessage(e.getMessage());
 		};
+		parent.setListTournois();
 		frame.dispose();
 	}
 }

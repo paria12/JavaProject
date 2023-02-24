@@ -284,7 +284,7 @@ public class AccueilGerant {
 		        t = Tournoi.getAll()[i];
 		            JLabel labelTournoi = new JLabel();
 		            labelTournoi.setText(t.getNom());
-		            PanelPresentationTournoi presentTournoi = new PanelPresentationTournoi(t, true);
+		            PanelPresentationTournoi presentTournoi = new PanelPresentationTournoi(t, true, thisInstance);
 		            presentTournoi.getPanel().addMouseListener(new MouseAdapter() {
 		                @Override
 		                public void mouseClicked(MouseEvent e) {

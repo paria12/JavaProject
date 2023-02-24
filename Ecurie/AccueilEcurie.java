@@ -31,6 +31,7 @@ import Commons.JPanelBackground;
 import Commons.JPanelDarkest;
 import Commons.PanelPresentationEquipe;
 import Commons.PanelPresentationTournoi;
+import Gerant.AccueilGerant;
 import code.Ecurie;
 import code.Equipe;
 import code.ErreurBD;
@@ -324,7 +325,7 @@ public class AccueilEcurie {
 		        	t = Tournoi.getAvailableEquipe(eq)[i];
 		            JLabel labelTournoi = new JLabel();
 		            labelTournoi.setText(t.getNom());
-		            PanelPresentationTournoi presentTournoi = new PanelPresentationTournoi(t, false);
+		            PanelPresentationTournoi presentTournoi = new PanelPresentationTournoi(t, false, new AccueilGerant());
 		            presentTournoi.getPanel().addMouseListener(new MouseAdapter() {
 		                @Override
 		                public void mouseClicked(MouseEvent e) {
