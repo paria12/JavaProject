@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
+import Ecurie.AccueilEcurie;
 import Ecurie.PopUp_ConfirmDeleteTeam;
 import code.Equipe;
 import code.ErreurBD;
@@ -38,6 +39,7 @@ public class PanelPresentationEquipe extends JPanel {
 	private JTextFieldDark[] textFieldsJoueur;
 	private JLabel labelNomEquipe;
 	private JButtonDark buttonDelete;
+	private AccueilEcurie parent;
 	
 	/**
 	 * Launch the application.
@@ -46,8 +48,8 @@ public class PanelPresentationEquipe extends JPanel {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					PanelPresentationEquipe window = new PanelPresentationEquipe(new Equipe(Equipe.getNomEquipe(1)[0]));
-					PanelPresentationEquipe window2 = new PanelPresentationEquipe(new Equipe(Equipe.getNomEquipe(1)[1]));
+					PanelPresentationEquipe window = new PanelPresentationEquipe(new Equipe(Equipe.getNomEquipe(1)[0]), new AccueilEcurie());
+					PanelPresentationEquipe window2 = new PanelPresentationEquipe(new Equipe(Equipe.getNomEquipe(1)[1]), new AccueilEcurie());
 					frame = new JFrame();
 					frame.setBounds(100, 100, 600, 400);
 					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -67,7 +69,8 @@ public class PanelPresentationEquipe extends JPanel {
 	/**
 	 * Create the application.
 	 */
-	public PanelPresentationEquipe(Equipe e) {
+	public PanelPresentationEquipe(Equipe e, AccueilEcurie parent) {
+		this.parent = parent;
 		this.e = e;
 		panelEquipe = new JPanelDarkest();
 		panelEquipe.addMouseListener(new MouseAdapter() {
@@ -177,7 +180,7 @@ public class PanelPresentationEquipe extends JPanel {
 		buttonDelete.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				PopUp_ConfirmDeleteTeam.mainWithValues(getEquipe());
+				PopUp_ConfirmDeleteTeam.mainWithValues(getEquipe(), parent);
 			}
 		});
 		buttonDelete.setBackground(Colors.backBlue);
