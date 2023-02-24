@@ -53,6 +53,7 @@ public class AccueilGerant {
 	private Tournoi t;
 	private JScrollPane scrollTournoi;
 	private AccueilGerant thisInstance;
+	private JLabel labelClassement;
 
 	/**
 	 * Launch the application.
@@ -200,10 +201,7 @@ public class AccueilGerant {
 		
 		panelMenuRight = new JPanelBackground();
 		panelMenu.add(panelMenuRight);
-		
-		JLabel labelClassement = new JLabel("Classement");
-		labelClassement.setForeground(Colors.lightText);
-		
+		labelClassement = new JLabel("");
 		JPanelBackground panelListClassment = new JPanelBackground();
 		
 		JPanelBackground panelButtonTournoi_1 = new JPanelBackground();
@@ -293,6 +291,14 @@ public class AccueilGerant {
 		                	panelMenuRight.setVisible(true);
 		                	t = presentTournoi.getTournoi();
 							try {
+								if(t.getDate().getTime() > System.currentTimeMillis()) {
+			            			System.out.println(t.selectEquipe().size());
+			            			labelClassement.setText("Liste des équipes inscrites");
+			            			labelClassement.setForeground(Colors.lightText);
+			            		}else{
+			            			labelClassement.setText("Classement");
+			            			labelClassement.setForeground(Colors.lightText);
+			            		}
 								listClassement.setModel(new AbstractListModel() {
 									String[] values = t.getClassement()[0];
 									public int getSize() {
