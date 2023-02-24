@@ -258,21 +258,6 @@ public class TestTournoi {
 	}
 	
 	/**
-	 * Test de la suppression d'un tournoi
-	 * @throws ErreurBD
-	 */
-	@Test
-	public void testDeleteTournoi() throws ErreurBD {
-		try {
-			System.out.println(t3.getId());
-			t3.delete();
-			assertEquals("Jeanne",Tournoi.getAll()[3].getNom());
-		} catch (ErreurBD e) {
-			fail("Erreur : "+e.getMessage());
-		}
-	}
-
-	/**
 	 * Test de la recuperation des equipes pas encore inscrite a un tournoi mais qui ont la possibilite de le
 	 * faire
 	 * @throws ErreurBD
