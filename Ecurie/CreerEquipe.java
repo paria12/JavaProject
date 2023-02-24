@@ -274,6 +274,7 @@ public class CreerEquipe {
 			break;
 		case "3" :
 			J3 = newJ;
+			break;
 		case "4" :
 			J4 = newJ;
 			break;
