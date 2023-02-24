@@ -413,11 +413,11 @@ public class Tournoi {
 	 */
 	public void delete() throws ErreurBD{
         try {
-        	ConnexionBD.Query("delete matchs where id_poule in (select id_poule from poule where id_tounoi = "+this.getId()+")");
-        	ConnexionBD.Query("delete participer where id_poule in (select id_poule from poule where id_tounoi = "+this.getId()+")");
+        	ConnexionBD.Query("delete matchs where id_poule in (select id_poule from poule where id_tournoi = "+this.getId()+")");
+        	ConnexionBD.Query("delete participer where id_poule in (select id_poule from poule where id_tournoi = "+this.getId()+")");
             ConnexionBD.Query("delete poule where id_tournoi = "+this.getId());
             ConnexionBD.Query("delete participation where id_tournoi = "+this.getId());
-            ConnexionBD.Query("delete tournoi where nom = '"+this.nom+"'");
+            ConnexionBD.Query("delete tournoi where nomtournoi = '"+this.nom+"'");
         } catch (SQLException e) {
         	ErreurBD.excSQL(e);
         }

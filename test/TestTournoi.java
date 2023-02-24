@@ -24,6 +24,7 @@ import code.Tournoi;
 public class TestTournoi {
 	private Tournoi t1;
 	private Tournoi t2;
+	private Tournoi t3;
 
 	/**
 	 * Suppression des donnees inserer dans la base de donnees par les tests
@@ -57,8 +58,13 @@ public class TestTournoi {
 		cal.set( Calendar.DAY_OF_MONTH, 15);
 		cal.set( Calendar.MONTH, 0);
 		cal.set( Calendar.YEAR, 2023);
+		Calendar cal1 = Calendar.getInstance();
+		cal1.set(Calendar.DAY_OF_MONTH,04);
+		cal1.set(Calendar.MONTH, 3);
+		cal1.set(Calendar.YEAR, 2065);
 		this.t1 = new Tournoi("Esport world convention",new Date(cal.getTimeInMillis()),1);
 		this.t2 = new Tournoi("test","test","test","test","test",new Date(1673775400000L),"INTERNATIONAL",3);
+		this.t3 = new Tournoi("Gamer gamer",new Date(cal1.getTimeInMillis()),2);
 	}
 
 	/**
@@ -245,9 +251,24 @@ public class TestTournoi {
 	@Test
 	public void testGetAll() throws ErreurBD{
 		try {
-			assertEquals("Esport world convention",Tournoi.getAll()[0].getNom());
+			assertEquals("Esport world convention",Tournoi.getAll()[2].getNom());
 		} catch (ErreurBD e) {
-			fail("Ereur : "+e.getMessage());
+			fail("Erreur : "+e.getMessage());
+		}
+	}
+	
+	/**
+	 * Test de la suppression d'un tournoi
+	 * @throws ErreurBD
+	 */
+	@Test
+	public void testDeleteTournoi() throws ErreurBD {
+		try {
+			System.out.println(t3.getId());
+			t3.delete();
+			assertEquals("Jeanne",Tournoi.getAll()[3].getNom());
+		} catch (ErreurBD e) {
+			fail("Erreur : "+e.getMessage());
 		}
 	}
 
