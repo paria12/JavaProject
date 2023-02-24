@@ -284,7 +284,6 @@ public class AccueilGerant {
 			PanelPresentationTournoi[] panelsPresentationTournoi = new PanelPresentationTournoi[sizeTournoi];
 	        for (int i = 0; i < sizeTournoi; i++) {
 		        t = Tournoi.getAll()[i];
-		        if(t.getDate().getTime() > System.currentTimeMillis()) {
 		            JLabel labelTournoi = new JLabel();
 		            labelTournoi.setText(t.getNom());
 		            PanelPresentationTournoi presentTournoi = new PanelPresentationTournoi(t, true);
@@ -315,7 +314,6 @@ public class AccueilGerant {
 		            });
 		            panelsPresentationTournoi[i] = presentTournoi;
 		            panelListTournoi.add(presentTournoi.getPanel());
-	        }
 	        }
 	        for (int i = sizeTournoi; i < 4; i++) {
 	            panelListTournoi.add(new JPanelDarkest());
