@@ -24,7 +24,6 @@ import code.Tournoi;
 public class TestTournoi {
 	private Tournoi t1;
 	private Tournoi t2;
-	private Tournoi t3;
 
 	/**
 	 * Suppression des donnees inserer dans la base de donnees par les tests
@@ -64,7 +63,7 @@ public class TestTournoi {
 		cal1.set(Calendar.YEAR, 2065);
 		this.t1 = new Tournoi("Esport world convention",new Date(cal.getTimeInMillis()),1);
 		this.t2 = new Tournoi("test","test","test","test","test",new Date(1673775400000L),"INTERNATIONAL",3);
-		this.t3 = new Tournoi("Gamer gamer",new Date(cal1.getTimeInMillis()),2);
+
 	}
 
 	/**
