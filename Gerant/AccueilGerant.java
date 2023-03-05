@@ -158,6 +158,20 @@ public class AccueilGerant {
 		scrollTournoi.setBorder(new LineBorder(Color.BLACK));
 		panelListTournoi.add(scrollTournoi, BorderLayout.CENTER);
 		
+		listClassement = new JList<String>();
+		listClassement.setBackground(Colors.darkestBlue);
+		listClassement.setForeground(Colors.lightText);
+		listClassement.setEnabled(false);
+		listClassement.setModel(new AbstractListModel() {
+			String[] values = new String[] {};
+			public int getSize() {
+				return values.length;
+			}
+			public Object getElementAt(int index) {
+				return values[index];
+			}
+		});
+		
 		setListTournois();
 		
 		JButtonDark buttonRefreshTournois = new JButtonDark("rafra√Æchir");
@@ -248,22 +262,9 @@ public class AccueilGerant {
 		scrollClassement.setBorder(new LineBorder(Color.BLACK));
 		panelListClassment.add(scrollClassement, BorderLayout.CENTER);
 		
-		listClassement = new JList<String>();
-		listClassement.setBackground(Colors.darkestBlue);
-		listClassement.setForeground(Colors.lightText);
-		listClassement.setEnabled(false);
 		scrollClassement.setViewportView(listClassement);
-		listClassement.setModel(new AbstractListModel() {
-			String[] values = new String[] {};
-			public int getSize() {
-				return values.length;
-			}
-			public Object getElementAt(int index) {
-				return values[index];
-			}
-		});
+		
 		panelMenuRight.setLayout(gl_panelMenuRight);
-		panelMenuRight.setVisible(false);
 		
 		Header headerGerant = new Header(frame);
 	}
@@ -274,6 +275,15 @@ public class AccueilGerant {
 		AjouterJeu.main(null);
 	}
 	public void setListTournois() {
+		listClassement.setModel(new AbstractListModel() {
+			String[] values = {"Veuillez sÈlectionner un tournois pour en obtenir le classement spÈcifique."};
+			public int getSize() {
+				return values.length;
+			}
+			public Object getElementAt(int index) {
+				return values[index];
+			}
+		});
 		int sizeTournoi;
 		panelListTournoi = new JPanelBackground();
         panelListTournoi.setLayout(new GridLayout(0, 1, 0, 0));
@@ -288,11 +298,9 @@ public class AccueilGerant {
 		            presentTournoi.getPanel().addMouseListener(new MouseAdapter() {
 		                @Override
 		                public void mouseClicked(MouseEvent e) {
-		                	panelMenuRight.setVisible(true);
 		                	t = presentTournoi.getTournoi();
 							try {
 								if(t.getDate().getTime() > System.currentTimeMillis()) {
-			            			System.out.println(t.selectEquipe().size());
 			            			labelClassement.setText("Liste des √©quipes inscrites");
 			            			labelClassement.setForeground(Colors.lightText);
 			            		}else{
