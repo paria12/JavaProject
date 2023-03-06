@@ -165,8 +165,15 @@ public class ClassementAnnuel {
 	public void setClassement() {
 		scrollClassement.setViewportView(listClassement);
 		try {
+			String[] v = Equipe.getClassement(Jeu.getID(new Jeu(comboGame.getSelectedItem().toString())));
+			for (int i = 0; i < v.length; i++) {
+				if (v[i] != null) {
+					Equipe e = new Equipe(v[i]);
+					v[i] = v[i]+" ("+e.getNbPoints()+")";
+				}
+			}
 			listClassement.setModel(new AbstractListModel() {
-				String[] values = Equipe.getClassement(Jeu.getID(new Jeu(comboGame.getSelectedItem().toString())));
+				String[] values = v;
 				public int getSize() {
 					return values.length;
 				}

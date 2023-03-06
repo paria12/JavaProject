@@ -33,6 +33,7 @@ import Commons.JButtonYellow;
 import Commons.JPanelBackground;
 import Commons.JPanelDarkest;
 import Commons.PanelPresentationTournoi;
+import code.Equipe;
 import code.ErreurBD;
 import code.Tournoi;
 
@@ -54,6 +55,7 @@ public class AccueilGerant {
 	private JScrollPane scrollTournoi;
 	private AccueilGerant thisInstance;
 	private JLabel labelClassement;
+	private Equipe eq;
 
 	/**
 	 * Launch the application.
@@ -276,7 +278,7 @@ public class AccueilGerant {
 	}
 	public void setListTournois() {
 		listClassement.setModel(new AbstractListModel() {
-			String[] values = {"Veuillez sélectionner un tournois pour en obtenir le classement spécifique."};
+			String[] values = {"Veuillez sÃ©lectionner un tournoi pour en obtenir le classement spÃ©cifique."};
 			public int getSize() {
 				return values.length;
 			}
@@ -307,8 +309,14 @@ public class AccueilGerant {
 			            			labelClassement.setText("Classement");
 			            			labelClassement.setForeground(Colors.lightText);
 			            		}
+								String[] v = t.getClassement()[0];
+								for (int i = 0; i < v.length; i++) {
+									if (v[i] != null) {
+										v[i] = v[i]+" ("+t.getClassement()[1][i]+")";
+									}
+								}
 								listClassement.setModel(new AbstractListModel() {
-									String[] values = t.getClassement()[0];
+									String[] values = v;
 									public int getSize() {
 										return values.length;
 									}
