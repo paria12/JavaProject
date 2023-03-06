@@ -46,7 +46,9 @@ public class Arbitre {
 			ResultSet rs = ConnexionBD.Query("select e1.nom,e2.nom,heuredebut,heurefin from matchs, equipe e1, equipe e2, poule, tournoi, arbitre "
 					+ "where e1.id_equipe=matchs.id_equipe and e2.id_equipe=matchs.id_equipe1 "
 					+ "and matchs.id_poule=poule.id_poule and poule.id_tournoi=tournoi.id_tournoi "
-					+ "and tournoi.id_arbitre=arbitre.id_arbitre and arbitre.login='"+this.login+"'");
+					+ "and tournoi.id_arbitre=arbitre.id_arbitre "
+					+ "and matchs.gagnant is null"
+					+ "and arbitre.login='"+this.login+"'");
 
 			while(rs.next()) {
 				result.add(new Match(new Equipe(rs.getString(1)),new Equipe(rs.getString(2)),rs.getTimestamp(3),rs.getTimestamp(4)));
@@ -57,6 +59,7 @@ public class Arbitre {
 		} catch (SQLException e) {
 			ErreurBD.excSQL(e);
 		}
+		
 		return t;
 
 	}

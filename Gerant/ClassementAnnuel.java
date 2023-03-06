@@ -2,6 +2,7 @@ package Gerant;
 
 import java.awt.EventQueue;
 
+
 import javax.swing.AbstractListModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;

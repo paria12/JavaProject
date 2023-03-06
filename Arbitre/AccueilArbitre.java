@@ -200,15 +200,32 @@ public class AccueilArbitre {
 			}
 		});
 		try {
-			listTournoi.setModel(new AbstractListModel() {
-				Match[] values = new Arbitre(Header.header).getMatch();
-				public int getSize() {
-					return values.length;
-				}
-				public Object getElementAt(int index) {
-					return values[index];
-				}
-			});
+			Match[] v = new Arbitre(Header.header).getMatch();
+			if (v != null) {
+				listTournoi.setModel(new AbstractListModel() {
+					Match[] values = v;
+					public int getSize() {
+						return values.length;
+					}
+					public Object getElementAt(int index) {
+						return values[index];
+					}
+				});
+				listTournoi.setEnabled(true);
+			} else {
+				listTournoi.setModel(new AbstractListModel() {
+					String[] values = {"Aucun match à arbitrer."};
+					public int getSize() {
+						return values.length;
+					}
+					public Object getElementAt(int index) {
+						return values[index];
+					}
+				});
+				listTournoi.setEnabled(false);
+			}
+			
+			
 		} catch (ErreurBD e1) {
 			// TODO Auto-generated catch block
 			ErrorMessage.ErrorMessage(e1.getMessage());
