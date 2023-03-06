@@ -42,6 +42,7 @@ public class SaisirScore {
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JButtonYellow buttonValidation;
 	private Match match;
+	private AccueilArbitre parent;
 	
 	/**
 	 * Launch the application.
@@ -50,7 +51,7 @@ public class SaisirScore {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					SaisirScore window = new SaisirScore(new Match(new Equipe("Best Of The Best"), new Equipe("Vit O"), Timestamp.valueOf("2023-01-18 16:05:16"), Timestamp.valueOf("2023-01-18 16:30:16")));
+					SaisirScore window = new SaisirScore(new Match(new Equipe("Best Of The Best"), new Equipe("Vit O"), Timestamp.valueOf("2023-01-18 16:05:16"), Timestamp.valueOf("2023-01-18 16:30:16")), new AccueilArbitre());
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					ErrorMessage.ErrorMessage(e.getMessage());
@@ -59,11 +60,11 @@ public class SaisirScore {
 		});
 	}
 	
-	public static void mainWithValues(Match match) {
+	public static void mainWithValues(Match match, AccueilArbitre parent) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					SaisirScore window = new SaisirScore(match);
+					SaisirScore window = new SaisirScore(match, parent);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -75,14 +76,15 @@ public class SaisirScore {
 	/**
 	 * Create the application.
 	 */
-	public SaisirScore(Match match) {
-		initialize(match);
+	public SaisirScore(Match match, AccueilArbitre parent) {
+		initialize(match, parent);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize(Match match) {
+	private void initialize(Match match, AccueilArbitre parent) {
+		this.parent = parent;
 		this.match = match;
 		frame = new JFrame();
 		frame.setBounds(100, 100, 350, 350);
@@ -256,6 +258,7 @@ public class SaisirScore {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			parent.setListMatch();
 			frame.dispose();
 		}
 	}

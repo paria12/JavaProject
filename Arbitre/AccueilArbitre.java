@@ -62,7 +62,9 @@ public class AccueilArbitre {
 	private JFrame frame;
 	private JButtonYellow buttonInsertScore;
 	private JList<String> listTournoi;
-
+	private JScrollPane scrollTournoi;
+	private AccueilArbitre thisInstance;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -90,6 +92,7 @@ public class AccueilArbitre {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {	
+		thisInstance = this;
 		frame = new JFrame();
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		frame.setBounds(100, 100, 643, 408);
@@ -126,37 +129,11 @@ public class AccueilArbitre {
 		panelScrollTournoi.add(panelSpacing_ScrollTop, BorderLayout.NORTH);
 		panelSpacing_ScrollTop.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		JScrollPane scrollTournoi = new JScrollPane();
+		scrollTournoi = new JScrollPane();
 		scrollTournoi.setBorder(new LineBorder(Color.black));
 		panelScrollTournoi.add(scrollTournoi);
 		
-		this.listTournoi = new JList<String>();
-		listTournoi.setBackground(Colors.darkestBlue);
-		listTournoi.setForeground(Colors.lightText);
-		listTournoi.addListSelectionListener(new ListSelectionListener() {
-			public void valueChanged(ListSelectionEvent e) {
-				if (listTournoi.getSelectedValue() != null) {
-					buttonInsertScore.setEnabled(true);
-				} else {
-					buttonInsertScore.setEnabled(false);
-				}
-			}
-		});
-		try {
-			listTournoi.setModel(new AbstractListModel() {
-				Match[] values = new Arbitre(Header.header).getMatch();
-				public int getSize() {
-					return values.length;
-				}
-				public Object getElementAt(int index) {
-					return values[index];
-				}
-			});
-		} catch (ErreurBD e1) {
-			// TODO Auto-generated catch block
-			ErrorMessage.ErrorMessage(e1.getMessage());
-		}
-		scrollTournoi.setViewportView(listTournoi);
+		setListMatch();
 		
 		JPanelBackground panelSpacing_ScrollBottom = new JPanelBackground();
 		panelScrollTournoi.add(panelSpacing_ScrollBottom, BorderLayout.SOUTH);
@@ -208,10 +185,41 @@ public class AccueilArbitre {
 		JPanelBackground panelSpacing_ButtonRight = new JPanelBackground();
 		panelButtonInsertScore.add(panelSpacing_ButtonRight);
 	}
+	
+	public void setListMatch() {
+		this.listTournoi = new JList<String>();
+		listTournoi.setBackground(Colors.darkestBlue);
+		listTournoi.setForeground(Colors.lightText);
+		listTournoi.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				if (listTournoi.getSelectedValue() != null) {
+					buttonInsertScore.setEnabled(true);
+				} else {
+					buttonInsertScore.setEnabled(false);
+				}
+			}
+		});
+		try {
+			listTournoi.setModel(new AbstractListModel() {
+				Match[] values = new Arbitre(Header.header).getMatch();
+				public int getSize() {
+					return values.length;
+				}
+				public Object getElementAt(int index) {
+					return values[index];
+				}
+			});
+		} catch (ErreurBD e1) {
+			// TODO Auto-generated catch block
+			ErrorMessage.ErrorMessage(e1.getMessage());
+		}
+		scrollTournoi.setViewportView(listTournoi);
+	}
+	
 	private void ouvrirSaisirScore() {
 		if (buttonInsertScore.isEnabled()) {
 			try {
-				SaisirScore.mainWithValues(new Arbitre(Header.header).getMatch()[this.listTournoi.getSelectedIndex()]);
+				SaisirScore.mainWithValues(new Arbitre(Header.header).getMatch()[this.listTournoi.getSelectedIndex()], thisInstance);
 			} catch (ErreurBD e) {
 				// TODO Auto-generated catch block
 				ErrorMessage.ErrorMessage(e.getMessage());
