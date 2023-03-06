@@ -24,10 +24,10 @@ import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.Enumeration;
 
-import code.Arbitre;
-import code.Ecurie;
-import code.ErreurBD;
 import Gerant.AccueilGerant;
+import modele.Arbitre;
+import modele.Ecurie;
+import modele.ErreurBD;
 import Ecurie.AccueilEcurie;
 import Arbitre.AccueilArbitre;
 import java.awt.event.KeyAdapter;

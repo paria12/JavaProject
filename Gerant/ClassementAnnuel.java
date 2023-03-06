@@ -11,9 +11,9 @@ import javax.swing.JScrollPane;
 
 import java.awt.BorderLayout;
 import Commons.JPanelBackground;
-import code.Equipe;
-import code.ErreurBD;
-import code.Jeu;
+import modele.Equipe;
+import modele.ErreurBD;
+import modele.Jeu;
 
 import javax.swing.JLabel;
 import javax.swing.JList;

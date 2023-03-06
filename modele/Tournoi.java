@@ -1,4 +1,4 @@
-package code;
+package modele;
 
 import java.sql.Date;
 

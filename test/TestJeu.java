@@ -11,8 +11,8 @@ import java.sql.Statement;
 import org.junit.AfterClass;
 import org.junit.Test;
 
-import code.ErreurBD;
-import code.Jeu;
+import modele.ErreurBD;
+import modele.Jeu;
 
 public class TestJeu {
 

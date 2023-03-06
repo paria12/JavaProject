@@ -1,4 +1,4 @@
-package code;
+package modele;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

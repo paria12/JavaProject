@@ -13,9 +13,9 @@ import javax.swing.border.LineBorder;
 
 import Ecurie.AccueilEcurie;
 import Ecurie.PopUp_ConfirmDeleteTeam;
-import code.Equipe;
-import code.ErreurBD;
-import code.Joueur;
+import modele.Equipe;
+import modele.ErreurBD;
+import modele.Joueur;
 
 import java.awt.FlowLayout;
 import java.awt.GridLayout;

@@ -9,8 +9,8 @@ import Commons.Colors;
 import Commons.ErrorMessage;
 import Commons.JButtonYellow;
 import Commons.JPanelBackground;
-import code.ErreurBD;
-import code.Tournoi;
+import modele.ErreurBD;
+import modele.Tournoi;
 
 import javax.swing.JLabel;
 import java.awt.GridLayout;

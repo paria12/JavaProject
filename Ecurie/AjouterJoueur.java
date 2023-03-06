@@ -8,8 +8,6 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
-import code.ErreurBD;
-import code.Joueur;
 import Commons.Colors;
 import Commons.JButtonDark;
 import Commons.JButtonYellow;
@@ -18,6 +16,8 @@ import Commons.JRadioDark;
 import Commons.JSpinnerDark;
 import Commons.JTextFieldDark;
 import Commons.StaticValues;
+import modele.ErreurBD;
+import modele.Joueur;
 
 import java.awt.GridLayout;
 import java.awt.FlowLayout;

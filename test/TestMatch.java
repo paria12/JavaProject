@@ -8,8 +8,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import code.Equipe;
-import code.Match;
+import modele.Equipe;
+import modele.Match;
 
 public class TestMatch {
 	private Match m;

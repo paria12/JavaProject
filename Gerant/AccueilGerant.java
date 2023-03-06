@@ -34,9 +34,9 @@ import Commons.JButtonYellow;
 import Commons.JPanelBackground;
 import Commons.JPanelDarkest;
 import Commons.PanelPresentationTournoi;
-import code.Equipe;
-import code.ErreurBD;
-import code.Tournoi;
+import modele.Equipe;
+import modele.ErreurBD;
+import modele.Tournoi;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

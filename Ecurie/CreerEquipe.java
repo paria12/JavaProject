@@ -28,10 +28,10 @@ import Commons.JButtonDark;
 import Commons.JButtonYellow;
 import Commons.JPanelBackground;
 import Commons.JTextFieldDark;
-import code.Equipe;
-import code.ErreurBD;
-import code.Jeu;
-import code.Joueur;
+import modele.Equipe;
+import modele.ErreurBD;
+import modele.Jeu;
+import modele.Joueur;
 
 public class CreerEquipe {
 

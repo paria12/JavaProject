@@ -22,9 +22,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 
-import code.Connexion;
-import code.Ecurie;
 import Gerant.AccueilGerant;
+import modele.Connexion;
+import modele.Ecurie;
 import Ecurie.AccueilEcurie;
 import Arbitre.AccueilArbitre;
 import java.awt.event.KeyAdapter;

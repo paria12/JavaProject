@@ -14,10 +14,10 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
-import code.ConnexionBD;
-import code.Ecurie;
-import code.Equipe;
-import code.ErreurBD;
+import modele.ConnexionBD;
+import modele.Ecurie;
+import modele.Equipe;
+import modele.ErreurBD;
 
 public class TestEcurie {
 	private Ecurie e;

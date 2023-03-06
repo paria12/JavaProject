@@ -16,10 +16,10 @@ import Commons.ErrorMessage;
 import Commons.JButtonYellow;
 import Commons.JPanelBackground;
 import Commons.JTextFieldDark;
-import code.Equipe;
-import code.ErreurBD;
-import code.Match;
-import code.Tournoi;
+import modele.Equipe;
+import modele.ErreurBD;
+import modele.Match;
+import modele.Tournoi;
 
 import javax.swing.JButton;
 import java.awt.FlowLayout;

@@ -8,8 +8,8 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
-import code.Arbitre;
-import code.ErreurBD;
+import modele.Arbitre;
+import modele.ErreurBD;
 
 public class TestArbitre {
 	private Arbitre t;

@@ -18,6 +18,8 @@ import Commons.JButtonYellow;
 import Commons.JPanelBackground;
 import Commons.JSpinnerDark;
 import Commons.JTextFieldDark;
+import modele.ErreurBD;
+import modele.Jeu;
 
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
@@ -27,9 +29,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import code.ErreurBD;
-import code.Jeu;
 
 public class AjouterJeu {
 

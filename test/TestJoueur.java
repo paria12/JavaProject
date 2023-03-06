@@ -15,10 +15,10 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
-import code.ConnexionBD;
-import code.Equipe;
-import code.ErreurBD;
-import code.Joueur;
+import modele.ConnexionBD;
+import modele.Equipe;
+import modele.ErreurBD;
+import modele.Joueur;
 
 public class TestJoueur {
 	private Joueur j;

@@ -5,7 +5,7 @@ import java.sql.SQLException;
 
 import org.junit.Test;
 
-import code.Connexion;
+import modele.Connexion;
 
 public class TestConnexion {
 

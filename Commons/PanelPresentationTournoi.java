@@ -14,10 +14,10 @@ import javax.swing.border.LineBorder;
 import Ecurie.PopUp_ConfirmDeleteTeam;
 import Gerant.AccueilGerant;
 import Gerant.PopUp_ConfirmDeleteTournoi;
-import code.ErreurBD;
-import code.Jeu;
-import code.Joueur;
-import code.Tournoi;
+import modele.ErreurBD;
+import modele.Jeu;
+import modele.Joueur;
+import modele.Tournoi;
 
 import java.awt.FlowLayout;
 import java.awt.GridLayout;

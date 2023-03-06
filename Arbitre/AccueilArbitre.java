@@ -36,11 +36,11 @@ import Commons.JPanelDarkest;
 import Commons.StaticValues;
 import Ecurie.AccueilEcurie;
 import Gerant.AccueilGerant;
-import code.Arbitre;
-import code.Connexion;
-import code.ErreurBD;
-import code.Match;
-import code.Poule;
+import modele.Arbitre;
+import modele.Connexion;
+import modele.ErreurBD;
+import modele.Match;
+import modele.Poule;
 
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;

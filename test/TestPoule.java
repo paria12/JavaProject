@@ -15,10 +15,10 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
-import code.Equipe;
-import code.ErreurBD;
-import code.Joueur;
-import code.Poule;
+import modele.Equipe;
+import modele.ErreurBD;
+import modele.Joueur;
+import modele.Poule;
 
 public class TestPoule {
 

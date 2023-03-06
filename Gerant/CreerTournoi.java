@@ -28,10 +28,10 @@ import Commons.JComboBoxDark;
 import Commons.JTextFieldDark;
 import Commons.StaticValues;
 import Ecurie.AjouterJoueur;
-import code.Arbitre;
-import code.ErreurBD;
-import code.Jeu;
-import code.Tournoi;
+import modele.Arbitre;
+import modele.ErreurBD;
+import modele.Jeu;
+import modele.Tournoi;
 import Commons.JPanelBackground;
 import Commons.JRadioDark;
 

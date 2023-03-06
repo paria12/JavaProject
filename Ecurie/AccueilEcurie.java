@@ -32,10 +32,11 @@ import Commons.JPanelDarkest;
 import Commons.PanelPresentationEquipe;
 import Commons.PanelPresentationTournoi;
 import Gerant.AccueilGerant;
-import code.Ecurie;
-import code.Equipe;
-import code.ErreurBD;
-import code.Tournoi;
+import modele.Ecurie;
+import modele.Equipe;
+import modele.ErreurBD;
+import modele.Tournoi;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.ActionListener;
