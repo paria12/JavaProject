@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
+import controleur.ControleurEcurie;
 import modele.Equipe;
 import modele.ErreurBD;
 import modele.Joueur;
@@ -177,12 +178,7 @@ public class PanelPresentationEquipe extends JPanel {
 		panelEquipe.add(panelOperationsOnPlayer, BorderLayout.EAST);
 		
 		buttonDelete = new JButtonDark("Supprimer");
-		buttonDelete.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				PopUp_ConfirmDeleteTeam.mainWithValues(getEquipe(), parent);
-			}
-		});
+		buttonDelete.addActionListener(new ControleurEcurie());
 		buttonDelete.setBackground(Colors.backBlue);
 		panelOperationsOnPlayer.add(buttonDelete);
 		

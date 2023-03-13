@@ -30,47 +30,20 @@ import java.awt.event.KeyEvent;
 public class PopUp_ConfirmInscription {
 
 	private JFrame frame;
-	private AccueilEcurie parent;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					PopUp_ConfirmInscription window = new PopUp_ConfirmInscription(new Equipe("Best OF The Best"),new Tournoi("Esport world convention",new Date(2023-01-15),1), new AccueilEcurie());
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-	public static void mainWithValues(Equipe eq, Tournoi t, AccueilEcurie p) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					PopUp_ConfirmInscription window = new PopUp_ConfirmInscription(eq,t,p);
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	
 	/**
 	 * Create the application.
 	 */
-	public PopUp_ConfirmInscription(Equipe equipe,Tournoi tournoi,AccueilEcurie parent) {
-		initialize(equipe,tournoi,parent);
+	public PopUp_ConfirmInscription(Equipe equipe,Tournoi tournoi) {
+		initialize(equipe,tournoi);
+		this.frame.setVisible(true);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize(Equipe equipe,Tournoi tournoi, AccueilEcurie parent) {
-		this.parent = parent;
+	private void initialize(Equipe equipe,Tournoi tournoi) {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 250, 250);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -127,24 +100,6 @@ public class PopUp_ConfirmInscription {
 		panelMenu.add(panelButtonNo);
 		
 		JButtonYellow buttonNo = new JButtonYellow("Non");
-		buttonNo.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode()==KeyEvent.VK_ENTER) {
-					submitNon();
-				}
-			}
-		});
-		buttonNo.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				submitNon();
-			}
-		});
-		buttonNo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		panelButtonNo.add(buttonNo);
 		
 		JPanelBackground panelButtonYes = new JPanelBackground();
@@ -153,33 +108,11 @@ public class PopUp_ConfirmInscription {
 		panelMenu.add(panelButtonYes);
 		
 		JButtonYellow buttonYes = new JButtonYellow("Oui");
-		buttonYes.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode()==KeyEvent.VK_ENTER) {
-					submitOui(tournoi,equipe);
-				}
-			}
-		});
-		buttonYes.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				submitOui(tournoi,equipe);
-			}
-		});
 		panelButtonYes.add(buttonYes);
 	}
-	private void submitNon() {
+	
+	public void dispose() {
 		frame.dispose();
 	}
-	private void submitOui(Tournoi tournoi, Equipe equipe) {
-		try {
-			tournoi.addEquipe(equipe);
-		} catch (ErreurBD e) {
-			// TODO Auto-generated catch block
-			ErrorMessage.ErrorMessage(e.getMessage());
-		}
-		parent.setListEquipes();
-		frame.dispose();
-	}
+	
 }

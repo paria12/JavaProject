@@ -44,7 +44,7 @@ import javax.swing.event.ChangeEvent;
 
 public class AjouterJoueur {
 
-	private JFrame frmAjouterUnJoueur;
+	private JFrame frame;
 	private JTextFieldDark inputLastName;
 	private JTextFieldDark inputFirstName;
 	private JTextFieldDark inputMail;
@@ -62,61 +62,27 @@ public class AjouterJoueur {
 	private JSpinnerDark spinnerBirthDateDay;
 	private JSpinnerDark spinnerBirthDateMonth;
 	private AjouterJoueur currentInstance = this;
-	private CreerEquipe equipe;
-	private String nbJ;
-	private JPanelBackground panelPlayerInner;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AjouterJoueur window = new AjouterJoueur("", "", null, ' ', "", "", null, null, null);
-					window.frmAjouterUnJoueur.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-	
-	public static void MainWithValues(String nom, String prenom, Date date, char sexe, String tel, String email, CreerEquipe equipe, String nbJ, JPanelBackground panelPlayerInner) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AjouterJoueur window = new AjouterJoueur(nom, prenom, date, sexe, tel, email, equipe, nbJ, panelPlayerInner);
-					window.frmAjouterUnJoueur.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the application.
 	 */
-	public AjouterJoueur(String nom, String prenom, Date date, char sexe, String tel, String email, CreerEquipe equipe, String nbJ, JPanelBackground panelPlayerInner) {
-		initialize(nom, prenom, date, sexe, tel, email, equipe, nbJ, panelPlayerInner);
+	public AjouterJoueur(String nom, String prenom, Date date, char sexe, String tel, String email) {
+		initialize(nom, prenom, date, sexe, tel, email);
+		this.frame.setVisible(true);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize(String nom, String prenom, Date date, char sexe, String tel, String email, CreerEquipe equipe, String nbJ, JPanelBackground panelPlayerInner) {
-		this.equipe = equipe;
-		this.nbJ = nbJ;
-		this.panelPlayerInner = panelPlayerInner;
-		frmAjouterUnJoueur = new JFrame();
-		frmAjouterUnJoueur.setTitle("E-Sporter | Ajouter un joueur");
-		frmAjouterUnJoueur.setLocationRelativeTo(null);
-		frmAjouterUnJoueur.setBounds(100, 100, 400, 400);
-		frmAjouterUnJoueur.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	private void initialize(String nom, String prenom, Date date, char sexe, String tel, String email) {
+		frame = new JFrame();
+		frame.setTitle("E-Sporter | Ajouter un joueur");
+		frame.setLocationRelativeTo(null);
+		frame.setBounds(100, 100, 400, 400);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		JPanelBackground panelTitle = new JPanelBackground();
-		frmAjouterUnJoueur.getContentPane().add(panelTitle, BorderLayout.NORTH);
+		frame.getContentPane().add(panelTitle, BorderLayout.NORTH);
 		panelTitle.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		JPanelBackground panelSpacing_TopTitle = new JPanelBackground();
@@ -131,7 +97,7 @@ public class AjouterJoueur {
 		JPanelBackground panelForm = new JPanelBackground();
 		FlowLayout fl_panelForm = (FlowLayout) panelForm.getLayout();
 		fl_panelForm.setVgap(0);
-		frmAjouterUnJoueur.getContentPane().add(panelForm, BorderLayout.CENTER);
+		frame.getContentPane().add(panelForm, BorderLayout.CENTER);
 		
 		JPanelBackground panelFormInner = new JPanelBackground();
 		panelForm.add(panelFormInner);
@@ -509,41 +475,15 @@ public class AjouterJoueur {
 		FlowLayout fl_panelFormButtons = (FlowLayout) panelFormButtons.getLayout();
 		fl_panelFormButtons.setHgap(20);
 		fl_panelFormButtons.setAlignment(FlowLayout.RIGHT);
-		frmAjouterUnJoueur.getContentPane().add(panelFormButtons, BorderLayout.SOUTH);
+		frame.getContentPane().add(panelFormButtons, BorderLayout.SOUTH);
 		
 		JPanelBackground panelFormButtonsInner = new JPanelBackground();
 		panelFormButtons.add(panelFormButtonsInner);
 		
 		JButtonDark buttonCancel = new JButtonDark("Annuler");
-		buttonCancel.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode()==KeyEvent.VK_ENTER) {
-					submitAnnuler();
-				}
-			}
-		});
-		buttonCancel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				submitAnnuler();
-			}
-		});
 		panelFormButtonsInner.add(buttonCancel);
 		
 		buttonValidation = new JButtonYellow("Ajouter");
-		buttonValidation.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				submitValider();
-			}
-		});
-		buttonValidation.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				submitValider();
-			}
-		});
 		buttonValidation.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		if (isFormFilled()) { 
 			buttonValidation.setEnabled(true);
@@ -564,7 +504,8 @@ public class AjouterJoueur {
         
         return ' ';
     }
-	private Boolean isFormatGood() {
+	
+	public Boolean isFormatGood() {
         if((inputMail.getText().contains("@"))&& (inputPhone.getText().matches("[0-9]+") == true)&& (inputPhone.getText().length() == 10)){
             return true;
         }else {
@@ -605,28 +546,44 @@ public class AjouterJoueur {
 		spinnerBirthDateDay.setModel(new SpinnerNumberModel(day, 1, maxDay, 1));
 		spinnerBirthDateMonth.setModel(new SpinnerNumberModel(month.getValue(), 1, maxMonth, 1));
 	}
-	private void submitAnnuler() {
-		frmAjouterUnJoueur.dispose();
+	
+	public void dispose() {
+		frame.dispose();
 	}
-	private void submitValider() {
-		if (buttonValidation.isEnabled()) {
-			//Create calandar from inputs
-			Calendar cal = Calendar.getInstance();
-			cal.set( Calendar.DAY_OF_MONTH, day);
-			cal.set( Calendar.MONTH, month.getValue() - 1);
-			cal.set( Calendar.YEAR, year);
-			//Create and return player from inputs
-			if(isFormatGood()) {
-				equipe.setJoueur(new Joueur(inputLastName.getText(), 
-								 inputFirstName.getText(), 
-								 new Date(cal.getTimeInMillis()), 
-								 getSelectedButtonText(buttonGroup),
-								 inputPhone.getText(), 
-								 inputMail.getText()), nbJ, panelPlayerInner);
-				frmAjouterUnJoueur.dispose();
-			}
-		}
-		
+	
+	public boolean isValidationEnabled() {
+		return buttonValidation.isEnabled();
 	}
-
+	
+	public int getDay() {
+		return day;
+	}
+	
+	public int getMonth() {
+		return month.getValue() - 1;
+	}
+	
+	public int getYear() {
+		return year;
+	}
+	
+	public String getLastName() {
+		return inputLastName.getText();
+	}
+	
+	public String getFirstName() {
+		return inputFirstName.getText();
+	}
+	
+	public char getSexe() {
+		return getSelectedButtonText(buttonGroup);
+	}
+	
+	public String getPhoneNumber() {
+		return inputPhone.getText();
+	}
+	
+	public String getEMail() {
+		return inputMail.getText();
+	}
 }
