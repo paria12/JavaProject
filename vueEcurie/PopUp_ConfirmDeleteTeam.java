@@ -1,31 +1,17 @@
 package vueEcurie;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import java.awt.BorderLayout;
 
 import modele.Equipe;
-import modele.ErreurBD;
-import modele.Tournoi;
 import vue.Colors;
-import vue.ErrorMessage;
 import vue.JButtonYellow;
 import vue.JPanelBackground;
 
 import javax.swing.JLabel;
 import java.awt.GridLayout;
-import javax.swing.JButton;
 import java.awt.FlowLayout;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.awt.Font;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 public class PopUp_ConfirmDeleteTeam {
 

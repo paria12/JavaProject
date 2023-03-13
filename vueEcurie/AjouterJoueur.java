@@ -1,6 +1,5 @@
 package vueEcurie;
 
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import java.awt.BorderLayout;
@@ -8,8 +7,6 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
-import modele.ErreurBD;
-import modele.Joueur;
 import vue.Colors;
 import vue.JButtonDark;
 import vue.JButtonYellow;
@@ -21,8 +18,6 @@ import vue.StaticValues;
 
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
-import javax.swing.JRadioButton;
-import javax.swing.JSpinner;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;

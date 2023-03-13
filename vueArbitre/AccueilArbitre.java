@@ -3,56 +3,31 @@ package vueArbitre;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.awt.SystemColor;
 
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import java.awt.Color;
-import javax.swing.JButton;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JLabel;
-import java.awt.Font;
 import java.awt.FlowLayout;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
 import javax.swing.AbstractListModel;
-import javax.swing.BorderFactory;
-import javax.swing.ListSelectionModel;
-import javax.swing.UIDefaults;
-import javax.swing.UIManager;
-import javax.swing.border.TitledBorder;
-import javax.swing.BoxLayout;
 
 import modele.Arbitre;
-import modele.Connexion;
 import modele.ErreurBD;
 import modele.Match;
-import modele.Poule;
 import vue.Colors;
 import vue.ErrorMessage;
 import vue.Header;
 import vue.JButtonYellow;
 import vue.JPanelBackground;
-import vue.JPanelDarkest;
-import vue.StaticValues;
-import vueEcurie.AccueilEcurie;
-import vueGerant.AccueilGerant;
 
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.SQLException;
 
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.border.LineBorder;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 

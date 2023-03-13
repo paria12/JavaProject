@@ -5,22 +5,16 @@ import java.awt.BorderLayout;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.Date;
-import java.util.Calendar;
 
-import javax.swing.AbstractListModel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.border.LineBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import modele.Ecurie;
 import modele.Equipe;
@@ -36,11 +30,6 @@ import vue.JPanelDarkest;
 import vue.PanelPresentationEquipe;
 import vue.PanelPresentationTournoi;
 import vueGerant.AccueilGerant;
-
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 
 public class AccueilEcurie {
@@ -169,7 +158,7 @@ public class AccueilEcurie {
         	eq = new Ecurie(Header.header).getEquipe().get(i);
             JLabel labelEquipe = new JLabel();
             labelEquipe.setText(eq.getNom());
-            PanelPresentationEquipe presentEquipe = new PanelPresentationEquipe(eq, thisInstance);
+            PanelPresentationEquipe presentEquipe = new PanelPresentationEquipe(eq);
             panelsPresentationEquipe[i] = presentEquipe;
             panelListEquipe.add(presentEquipe.getPanel());
         }

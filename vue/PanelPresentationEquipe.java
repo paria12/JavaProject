@@ -1,8 +1,6 @@
 package vue;
 
-import java.awt.EventQueue;
 
-import javax.swing.JFrame;
 import java.awt.BorderLayout;
 import java.awt.Color;
 
@@ -15,11 +13,8 @@ import controleur.ControleurEcurie;
 import modele.Equipe;
 import modele.ErreurBD;
 import modele.Joueur;
-import vueEcurie.AccueilEcurie;
-import vueEcurie.PopUp_ConfirmDeleteTeam;
 
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -28,7 +23,6 @@ public class PanelPresentationEquipe extends JPanel {
 
 	private Equipe e;
 	
-	private static JFrame frame;
 	private JPanelDarkest panelEquipe;
 	private JTextFieldDark textFieldPoints;
 	private JPanelDarkest panelLabelJoueurs;
@@ -40,38 +34,12 @@ public class PanelPresentationEquipe extends JPanel {
 	private JTextFieldDark[] textFieldsJoueur;
 	private JLabel labelNomEquipe;
 	private JButtonDark buttonDelete;
-	private AccueilEcurie parent;
 	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					PanelPresentationEquipe window = new PanelPresentationEquipe(new Equipe(Equipe.getNomEquipe(1)[0]), new AccueilEcurie());
-					PanelPresentationEquipe window2 = new PanelPresentationEquipe(new Equipe(Equipe.getNomEquipe(1)[1]), new AccueilEcurie());
-					frame = new JFrame();
-					frame.setBounds(100, 100, 600, 400);
-					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-					JPanelDarkest panel1 = new JPanelDarkest();
-					panel1.setLayout(new GridLayout(0, 1, 0, 0));
-					panel1.add(window.getPanel());
-					panel1.add(window2.getPanel());
-					frame.getContentPane().add(panel1, BorderLayout.CENTER);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the application.
 	 */
-	public PanelPresentationEquipe(Equipe e, AccueilEcurie parent) {
-		this.parent = parent;
+	public PanelPresentationEquipe(Equipe e) {
 		this.e = e;
 		panelEquipe = new JPanelDarkest();
 		panelEquipe.addMouseListener(new MouseAdapter() {

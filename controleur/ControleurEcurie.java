@@ -1,45 +1,23 @@
 package controleur;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.sql.Date;
 import java.util.Calendar;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.border.LineBorder;
 
-import modele.Ecurie;
 import modele.Equipe;
 import modele.ErreurBD;
 import modele.Jeu;
 import modele.Joueur;
 import modele.Tournoi;
-import vue.Colors;
 import vue.ErrorMessage;
-import vue.Header;
-import vue.JButtonYellow;
-import vue.JPanelBackground;
-import vue.JPanelDarkest;
-import vue.JTextFieldDark;
-import vue.PanelPresentationEquipe;
-import vue.PanelPresentationTournoi;
 import vueEcurie.AccueilEcurie;
 import vueEcurie.AjouterJoueur;
 import vueEcurie.CreerEquipe;
 import vueEcurie.PopUp_ConfirmDeleteTeam;
 import vueEcurie.PopUp_ConfirmInscription;
-import vueGerant.AccueilGerant;
 
 public class ControleurEcurie implements ActionListener {
 
