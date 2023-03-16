@@ -11,6 +11,7 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
+import controleur.ControleurArbitre;
 import modele.Equipe;
 import modele.ErreurBD;
 import modele.Match;
@@ -43,6 +44,7 @@ public class SaisirScore {
 	private JButtonYellow buttonValidation;
 	private Match match;
 	private AccueilArbitre parent;
+	private ControleurArbitre controleur = new ControleurArbitre();
 
 	/**
 	 * Launch the application.
@@ -87,6 +89,7 @@ public class SaisirScore {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(Match match, AccueilArbitre parent) {
+		controleur.setFenetreSaisir(this);
 		this.parent = parent;
 		this.match = match;
 		frame = new JFrame();
@@ -159,16 +162,7 @@ public class SaisirScore {
 		JRadioButton radioTeam1 = new JRadioButton(String.valueOf(match.getEquipe1()));
 		radioTeam1.setBackground(Colors.backBlue);
 		radioTeam1.setForeground(Colors.lightText);
-		radioTeam1.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (buttonGroup.getSelection() != null) {
-					buttonValidation.setEnabled(true);
-				} else {
-					buttonValidation.setEnabled(false);
-				}
-			}
-		});
+		radioTeam1.addActionListener(ControleurArbitre.getInstance());
 		buttonGroup.add(radioTeam1);
 		panelRadioTeam1.add(radioTeam1);
 
@@ -181,16 +175,7 @@ public class SaisirScore {
 		JRadioButton radioTeam2 = new JRadioButton(String.valueOf(match.getEquipe2()));
 		radioTeam2.setBackground(Colors.backBlue);
 		radioTeam2.setForeground(Colors.lightText);
-		radioTeam2.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (buttonGroup.getSelection() != null) {
-					buttonValidation.setEnabled(true);
-				} else {
-					buttonValidation.setEnabled(false);
-				}
-			}
-		});
+		radioTeam2.addActionListener(ControleurArbitre.getInstance());
 		buttonGroup.add(radioTeam2);
 		panelRadioTeam2.add(radioTeam2);
 
@@ -206,47 +191,21 @@ public class SaisirScore {
 		panelFormButtons.add(panelFormButtonsInner);
 
 		JButton buttonCancel = new JButtonYellow("Annuler");
-		buttonCancel.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					submitAnnuler();
-				}
-			}
-		});
-		buttonCancel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				submitAnnuler();
-			}
-		});
+		buttonCancel.addActionListener(ControleurArbitre.getInstance());
 		panelFormButtonsInner.add(buttonCancel);
 
 		buttonValidation = new JButtonYellow("Valider");
-		buttonValidation.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					submitValider();
-				}
-			}
-		});
-		buttonValidation.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				submitValider();
-			}
-		});
+		buttonValidation.addActionListener(ControleurArbitre.getInstance());
 		buttonValidation.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		panelFormButtonsInner.add(buttonValidation);
 		buttonValidation.setEnabled(false);
 	}
 
-	private void submitAnnuler() {
+	public void submitAnnuler() {
 		frame.dispose();
 	}
 
-	private void submitValider() {
+	public void submitValider() {
 		String winner = null;
 		if (buttonValidation.isEnabled()) {
 			for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
@@ -265,5 +224,15 @@ public class SaisirScore {
 			parent.setListMatch();
 			frame.dispose();
 		}
+	}
+	public String getEquipe1EnString() {
+		return String.valueOf(match.getEquipe1());
+	}
+	public String getEquipe2EnString() {
+		return String.valueOf(match.getEquipe2());
+	}
+	
+	public void EnabledButton(boolean bool) {
+		buttonValidation.setEnabled(bool);
 	}
 }
