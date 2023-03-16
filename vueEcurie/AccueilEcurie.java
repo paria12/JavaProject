@@ -5,22 +5,16 @@ import java.awt.BorderLayout;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.Date;
-import java.util.Calendar;
 
-import javax.swing.AbstractListModel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.border.LineBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import modele.Ecurie;
 import modele.Equipe;
@@ -37,11 +31,6 @@ import vue.PanelPresentationEquipe;
 import vue.PanelPresentationTournoi;
 import vueGerant.AccueilGerant;
 
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
 
 public class AccueilEcurie {
 
@@ -57,22 +46,6 @@ public class AccueilEcurie {
 	private AccueilEcurie thisInstance;
 	private JPanelBackground panelMenu;
 	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AccueilEcurie window = new AccueilEcurie();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
 	/**
 	 * Create the application.
 	 * @throws ErreurBD 
@@ -128,37 +101,9 @@ public class AccueilEcurie {
 		panelMenuLeftHeader.add(panelButtonAddEquipe);
 		
 		JButtonDark buttonRefreshEquipes = new JButtonDark("rafraîchir");
-		buttonRefreshEquipes.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					setListEquipes();
-			}
-			}
-		});
-		buttonRefreshEquipes.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				setListEquipes();
-			}
-		});
 		panelButtonAddEquipe.add(buttonRefreshEquipes);
 		
 		JButtonYellow buttonAddEquipe = new JButtonYellow("Nouvelle Equipe");
-		buttonAddEquipe.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					submitNouvelleEquipe();
-			}
-			}
-		});
-		buttonAddEquipe.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				submitNouvelleEquipe();
-			}
-		});
 		panelButtonAddEquipe.add(buttonAddEquipe);
 		
 		JPanelBackground panelScrollEquipe = new JPanelBackground();
@@ -213,18 +158,7 @@ public class AccueilEcurie {
         	eq = new Ecurie(Header.header).getEquipe().get(i);
             JLabel labelEquipe = new JLabel();
             labelEquipe.setText(eq.getNom());
-            PanelPresentationEquipe presentEquipe = new PanelPresentationEquipe(eq, thisInstance);
-            presentEquipe.getPanel().addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                	eq = presentEquipe.getEquipe();
-                	setListTournois();
-                	for (PanelPresentationEquipe pe : panelsPresentationEquipe) {
-                		pe.changeBorderColor(Color.black, 1);
-                	}
-                	presentEquipe.changeBorderColor(Colors.lightText, 2);
-                }
-            });
+            PanelPresentationEquipe presentEquipe = new PanelPresentationEquipe(eq);
             panelsPresentationEquipe[i] = presentEquipe;
             panelListEquipe.add(presentEquipe.getPanel());
         }
@@ -275,20 +209,6 @@ public class AccueilEcurie {
 			panelRightHeader.add(panelButtonInscriptionTournois);
 			
 			buttonInscriptionTournois = new JButtonYellow("Inscrire");
-			buttonInscriptionTournois.addKeyListener(new KeyAdapter() {
-				@Override
-				public void keyPressed(KeyEvent e) {
-					if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-						submitInscrire();
-				}
-				}
-			});
-			buttonInscriptionTournois.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					submitInscrire();
-				}
-			});
 			buttonInscriptionTournois.setEnabled(false);
 			panelButtonInscriptionTournois.add(buttonInscriptionTournois);
 			
@@ -354,18 +274,5 @@ public class AccueilEcurie {
 		}
 	}
 	
-	private void submitNouvelleEquipe() {
-		try {
-			CreerEquipe.MainWithValue(Ecurie.getID(new Ecurie(Header.header)), thisInstance);
-		} catch (ErreurBD e1) {
-			// TODO Auto-generated catch block
-			ErrorMessage.ErrorMessage(e1.getMessage());
-		};
-	}
-	private void submitInscrire() {
-		if (buttonInscriptionTournois.isEnabled()) {
-			PopUp_ConfirmInscription.mainWithValues(eq,t,thisInstance);
-		}
-	}
 }
 

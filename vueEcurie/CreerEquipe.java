@@ -46,51 +46,19 @@ public class CreerEquipe {
 	private CreerEquipe teamWindow = this;
 	private JButtonDark buttonAddPlayer;
 	private JComboBox<String> comboGame;
-	private int Ecurie;
-	private AccueilEcurie parent;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					CreerEquipe window = new CreerEquipe(1, new AccueilEcurie());
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-	
-	public static void MainWithValue(int IdEcurie, AccueilEcurie parent) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					CreerEquipe window = new CreerEquipe(IdEcurie, parent);
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the application.
 	 */
-	public CreerEquipe(int Ecurie, AccueilEcurie parent) {
-		initialize(Ecurie, parent);
+	public CreerEquipe() {
+		initialize();
+		this.frame.setVisible(true);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize(int Ecurie, AccueilEcurie parent) {
-		this.parent = parent;
-		this.Ecurie = Ecurie;
+	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 400, 400);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -120,12 +88,6 @@ public class CreerEquipe {
 		panelInputTeamName.add(labelInputTeamName);
 		
 		inputTeamName = new JTextFieldDark();
-		inputTeamName.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				buttonValidation.setEnabled(teamWindow.isFilled());
-			}
-		});
 		inputTeamName.setHorizontalAlignment(SwingConstants.CENTER);
 		panelInputTeamName.add(inputTeamName);
 		inputTeamName.setColumns(15);
@@ -219,37 +181,9 @@ public class CreerEquipe {
 		panelFormButtons.add(panelFormButtonsInner);
 		
 		JButtonDark buttonCancel = new JButtonDark("Annuler");
-		buttonCancel.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-					submitAnnuler();
-				}
-			}
-		});
-		buttonCancel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				submitAnnuler();
-			}
-		});
 		panelFormButtonsInner.add(buttonCancel);
 		
-		buttonValidation = new JButtonYellow("Cr\u00E9er");
-		buttonValidation.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-					submitCreer();
-				}
-			}
-		});
-		buttonValidation.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				submitCreer();
-			}
-		});
+		buttonValidation = new JButtonYellow("Créer");
 		buttonValidation.setEnabled(isFilled());
 		buttonValidation.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		panelFormButtonsInner.add(buttonValidation);
@@ -302,20 +236,6 @@ public class CreerEquipe {
 			
 			
 			JButtonDark buttonChangePlayer = new JButtonDark("Changer");
-			buttonChangePlayer.addKeyListener(new KeyAdapter(){
-				@Override
-				public void keyPressed(KeyEvent e) {
-					if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-						submitChanger(J, nbJ, panelPlayerInner);
-					}
-				}
-			});
-			buttonChangePlayer.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					submitChanger(J,nbJ,panelPlayerInner);
-				}
-			});
 			buttonChangePlayer.setFont(new Font("Tahoma", Font.PLAIN, 10));
 			panelPlayerInner.add(buttonChangePlayer);
 			frame.revalidate();
@@ -326,51 +246,28 @@ public class CreerEquipe {
 			labelPlayer.setForeground(Colors.lightText);
 			panelPlayerInner.add(labelPlayer);
 			buttonAddPlayer = new JButtonDark("Nouveau Joueur");
-			buttonAddPlayer.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					AjouterJoueur.MainWithValues(null, null, null, ' ', null, null, teamWindow, nbJ, panelPlayerInner);
-				}
-			});
 			panelPlayerInner.add(buttonAddPlayer);
 		}
 	}
-	private void submitAnnuler() {
+	
+	public void setValidationButtonEnabled() {
+		buttonValidation.setEnabled(teamWindow.isFilled());
+	}
+	
+	public void dispose() {
 		frame.dispose();
 	}
-	private void submitCreer() {
-		if (buttonValidation.isEnabled()) {
-			Equipe equipe;
-			try {
-				equipe = new Equipe(inputTeamName.getText(), 0, Jeu.getID(new Jeu(comboGame.getSelectedItem().toString())));
-				equipe.addJoueur(J1);
-				equipe.addJoueur(J2);
-				equipe.addJoueur(J3);
-				equipe.addJoueur(J4);
-				equipe.insert(Ecurie);
-				J1.insert(equipe.getID());
-				J2.insert(equipe.getID());
-				J3.insert(equipe.getID());
-				J4.insert(equipe.getID());
-				parent.setListEquipes();
-				frame.dispose();
-			} catch (IllegalArgumentException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			} catch (ErreurBD e2) {
-				// TODO Auto-generated catch block
-				ErrorMessage.ErrorMessage(e2.getMessage());
-			}
-			
-			
-		}
+	
+	public boolean getEnabled() {
+		return buttonValidation.isEnabled();
 	}
-	private void submitChanger(Joueur J, String nbJ, JPanelBackground panelPlayerInner){
-		try {
-			AjouterJoueur.MainWithValues(J.getNom(), J.getPrenom(), J.getDateNaissance(), J.getSexe(), J.getTel(), J.getEmail(), teamWindow, nbJ, panelPlayerInner);
-		} catch (ErreurBD e1) {
-			// TODO Auto-generated catch block
-			ErrorMessage.ErrorMessage(e1.getMessage());
-		}
+	
+	public String getInputTeamName() {
+		return inputTeamName.getText();
 	}
+	
+	public String getGameID() {
+		return comboGame.getSelectedItem().toString();
+	}
+
 }
