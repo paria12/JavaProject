@@ -159,7 +159,7 @@ public class AccueilArbitre {
 		this.listTournoi = new JList<String>();
 		listTournoi.setBackground(Colors.darkestBlue);
 		listTournoi.setForeground(Colors.lightText);
-		listTournoi.addListSelectionListener(controleur.getInstance());
+		listTournoi.addListSelectionListener(ControleurArbitre.getInstance());
 		try {
 			Match[] v = new Arbitre(Header.header).getMatch();
 			if (v != null) {
@@ -213,5 +213,8 @@ public class AccueilArbitre {
 		} else {
 			buttonInsertScore.setEnabled(false);
 		}
+	}
+	public void dispose() {
+		frame.dispose();
 	}
 }

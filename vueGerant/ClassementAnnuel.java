@@ -28,6 +28,9 @@ import java.awt.Color;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
+import controleur.ControleurArbitre;
+import controleur.ControleurGerant;
+
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -41,6 +44,7 @@ public class ClassementAnnuel {
 	private JScrollPane scrollClassement;
 	private JPanelBackground panelScrollClassement;
 	private JComboBoxDark<String> comboGame;
+	public ControleurGerant controleur = new ControleurGerant();
 
 	/**
 	 * Launch the application.
@@ -69,6 +73,7 @@ public class ClassementAnnuel {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		controleur.setFenetreClassementAnnuel(this);
 		frmClassementAnnuel = new JFrame();
 		frmClassementAnnuel.setTitle("E-Sporter | Classement annuel");
 		frmClassementAnnuel.setLocationRelativeTo(null);
@@ -113,15 +118,8 @@ public class ClassementAnnuel {
 		}
 		panelComboGame.add(comboGame);
 		
-		JButtonDark buttonChooseGame = new JButtonDark("+");
-		buttonChooseGame.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				setClassement();
-				panelScrollClassement.setVisible(true);
-			}
-		});
-		buttonChooseGame.setText("Choisir");
+		JButtonDark buttonChooseGame = new JButtonDark("Choisir");
+		buttonChooseGame.addActionListener(ControleurArbitre.getInstance());
 		buttonChooseGame.setFont(new Font("Tahoma", Font.BOLD, 11));
 		panelComboGame.add(buttonChooseGame);
 		
@@ -187,6 +185,10 @@ public class ClassementAnnuel {
 			// TODO Auto-generated catch block
 			ErrorMessage.ErrorMessage(e.getMessage());
 		}
+	}
+	public void setVisibleClassementAnnuel() {
+		setClassement();
+		panelScrollClassement.setVisible(true);
 	}
 
 }

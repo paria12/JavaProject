@@ -1,6 +1,7 @@
 package controleur;
 
 import java.awt.event.ActionEvent;
+
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -14,6 +15,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import modele.Match;
+import vue.ConnexionWindow;
 import vueArbitre.AccueilArbitre;
 import vueArbitre.SaisirScore;
 
@@ -46,14 +48,29 @@ public class ControleurArbitre implements ActionListener, ListSelectionListener 
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		//KeyEvent a = (KeyEvent) e.getSource();
 		switch(this.etat) {
+		case ACCUEIL:
+			JButton jbu = (JButton) e.getSource();
+			if(jbu.getText().equals("Déconnexion")) {
+				accueilArbitre.dispose();
+				ConnexionWindow.main(null);
+			}
+			break;
 		case MATCH_SELEC:
 			JButton b = (JButton) e.getSource();
-			if(b.getText().equals("Saisir Score")) {
-				accueilArbitre.ouvrirSaisirScore();
-				etat=Etats.CHOIX_EQUIPE;
+			switch(b.getText()) {
+				case "Saisir Score":
+					accueilArbitre.ouvrirSaisirScore();
+					etat=Etats.CHOIX_EQUIPE;
+					break;
+					
+				case "Déconnexion":
+					accueilArbitre.dispose();
+					ConnexionWindow.main(null);
+					break;
 			}
+			
+			
 			break;
 		case CHOIX_EQUIPE:
 			if(e.getSource() instanceof JRadioButton) {
@@ -79,13 +96,16 @@ public class ControleurArbitre implements ActionListener, ListSelectionListener 
 				}
 				}else if(e.getSource() instanceof JButton){
 					JButton jb = (JButton) e.getSource();
-					if(jb.getText().equals("Valider")) {
-						saisirScore.submitValider();
-						etat=Etats.ACCUEIL;
-					}
-					if(jb.getText().equals("Annuler")) {
-						saisirScore.submitAnnuler();
-						etat=Etats.ACCUEIL;
+					switch(jb.getText()) {
+						case "Valider":
+							saisirScore.submitValider();
+							etat=Etats.ACCUEIL;
+							break;
+							
+						case"Annuler":
+							saisirScore.submitAnnuler();
+							etat=Etats.ACCUEIL;
+							break;
 					}
 				}
 			

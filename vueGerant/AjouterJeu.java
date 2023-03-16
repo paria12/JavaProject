@@ -12,6 +12,7 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
+import controleur.ControleurGerant;
 import modele.ErreurBD;
 import modele.Jeu;
 import vue.Colors;
@@ -37,6 +38,7 @@ public class AjouterJeu {
 	private JButtonYellow buttonValidation;
 	private JSpinnerDark spinnerGamelength;
 	private CreerTournoi parent;
+	private ControleurGerant controleur = new ControleurGerant();
 
 	/**
 	 * Launch the application.
@@ -78,6 +80,7 @@ public class AjouterJeu {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize(CreerTournoi parent) {
+		controleur.setFenetreAjouterJeu(this);
 		this.parent = parent;
 		frmAjouterUnJeu = new JFrame();
 		frmAjouterUnJeu.setTitle("E-Sporter | Ajouter un jeu");
@@ -196,6 +199,7 @@ public class AjouterJeu {
 		flowLayout.setAlignment(FlowLayout.RIGHT);
 		panelFormButtons.add(panelFormButtonsInner);
 		JButtonYellow buttonCancel = new JButtonYellow("Annuler");
+		buttonCancel.addActionListener(ControleurGerant.getInstance());
 		buttonCancel.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -212,29 +216,16 @@ public class AjouterJeu {
 		});
 		panelFormButtonsInner.add(buttonCancel);
 		
-		buttonValidation = new JButtonYellow("Cr\u00E9er");
-		buttonValidation.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-					submitCreer();
-				}
-			}
-		});
-		buttonValidation.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				submitCreer();
-			}
-		});
+		buttonValidation = new JButtonYellow("Créer");
+		buttonValidation.addActionListener(ControleurGerant.getInstance());
 		buttonValidation.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		buttonValidation.setEnabled(false);
 		panelFormButtonsInner.add(buttonValidation);
 	}
-	private void submitAnnuler() {
+	public void submitAnnuler() {
 		frmAjouterUnJeu.dispose();
 	}
-	private void submitCreer() {
+	public void submitCreer() {
 		if (buttonValidation.isEnabled()) {
 			Jeu gameAdded = new Jeu(inputGameName.getText(), Integer.valueOf(spinnerGamelength.getValue().toString()));
 			try {
@@ -247,4 +238,6 @@ public class AjouterJeu {
 			frmAjouterUnJeu.dispose();
 		}
 	}
+
+	
 }

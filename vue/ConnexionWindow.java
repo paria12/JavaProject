@@ -97,7 +97,7 @@ public class ConnexionWindow{
 								break;
 							case 1 : //Ecurie
 								Header.header = inputUserName.getText();
-								AccueilEcurie.main(null);
+								//AccueilEcurie.main(null);
 								frmConnexion.dispose();
 								break;
 							case 2 : //Arbitre
@@ -273,7 +273,7 @@ public class ConnexionWindow{
 					break;
 				case 1 : //Ecurie
 					Header.header = inputUserName.getText();
-					AccueilEcurie.main(null);
+					//AccueilEcurie.main(null);
 					frmConnexion.dispose();
 					break;
 				case 2 : //Arbitre

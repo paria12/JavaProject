@@ -16,6 +16,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+
+import controleur.ControleurArbitre;
+import controleur.ControleurEcurie;
+import controleur.ControleurGerant;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -76,14 +81,11 @@ public class Header {
 		flowLayout.setVgap(15);
 		flowLayout.setHgap(10);
 		
-		JButtonYellow DisconnectButton = new JButtonYellow("D\u00E9connexion");
-		DisconnectButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				frame.dispose();
-				ConnexionWindow.main(null);
-			}
-		});
+		JButtonYellow DisconnectButton = new JButtonYellow("Déconnexion");
+		DisconnectButton.addActionListener(ControleurArbitre.getInstance());
+		DisconnectButton.addActionListener(ControleurGerant.getInstance());
+		//DisconnectButton.addActionListener(ControleurEcurie.getInstance());
+		
 		DisconnectButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		panelButton.add(DisconnectButton);
 		GroupLayout gl_panelHeaderTop = new GroupLayout(panelHeaderTop);

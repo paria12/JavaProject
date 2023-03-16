@@ -26,6 +26,8 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import controleur.ControleurArbitre;
+import controleur.ControleurGerant;
 import modele.Equipe;
 import modele.ErreurBD;
 import modele.Tournoi;
@@ -57,6 +59,7 @@ public class AccueilGerant {
 	private AccueilGerant thisInstance;
 	private JLabel labelClassement;
 	private Equipe eq;
+	private ControleurGerant controleur = new ControleurGerant();
 
 	/**
 	 * Launch the application.
@@ -87,6 +90,7 @@ public class AccueilGerant {
 	 * @throws ErreurBD 
 	 */
 	private void initialize() throws ErreurBD {
+		controleur.setFenetreAccueil(this);
 		thisInstance = this;
 		frame = new JFrame();
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
@@ -111,20 +115,9 @@ public class AccueilGerant {
 		JPanelBackground panelButtonTournoi = new JPanelBackground();
 		
 		JButtonYellow buttonAjouterJeu = new JButtonYellow("Ajouter jeu");
-		buttonAjouterJeu.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode()==KeyEvent.VK_ENTER) {
-					submitAjouterJeu();
-				}
-			}
-		});
-		buttonAjouterJeu.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				submitAjouterJeu();
-			}
-		});
+		buttonAjouterJeu.addActionListener(ControleurGerant.getInstance());
+
+		
 		buttonAjouterJeu.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GroupLayout gl_panelMenuLeft = new GroupLayout(panelMenuLeft);
 		gl_panelMenuLeft.setHorizontalGroup(
@@ -165,6 +158,7 @@ public class AccueilGerant {
 		listClassement.setBackground(Colors.darkestBlue);
 		listClassement.setForeground(Colors.lightText);
 		listClassement.setEnabled(false);
+		//listClassement.addListSelectionListener(ControleurGerant.getInstance());
 		listClassement.setModel(new AbstractListModel() {
 			String[] values = new String[] {};
 			public int getSize() {
@@ -178,41 +172,12 @@ public class AccueilGerant {
 		setListTournois();
 		
 		JButtonDark buttonRefreshTournois = new JButtonDark("rafraîchir");
-		buttonRefreshTournois.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-					setListTournois();
-				}
-			}
-		});
-		buttonRefreshTournois.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				setListTournois();
-			}
-		});
+		buttonRefreshTournois.addActionListener(ControleurGerant.getInstance());
+		
 		panelButtonTournoi.add(buttonRefreshTournois);
 		
 		JButtonYellow buttonTournoi = new JButtonYellow("Nouveau Tournoi");
-		buttonTournoi.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		buttonTournoi.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-					submitNouveauTournoi();
-				}
-			}
-		});
-		buttonTournoi.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				submitNouveauTournoi();
-			}
-		});
+		buttonTournoi.addActionListener(ControleurGerant.getInstance());
 		panelButtonTournoi.add(buttonTournoi);
 		panelMenuLeft.setLayout(gl_panelMenuLeft);
 		
@@ -223,14 +188,9 @@ public class AccueilGerant {
 		
 		JPanelBackground panelButtonTournoi_1 = new JPanelBackground();
 		
-		JButtonYellow buttonGeneralClassement = new JButtonYellow("Nouveau Tournoi");
-		buttonGeneralClassement.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				ClassementAnnuel.main(null);
-			}
-		});
-		buttonGeneralClassement.setText("Classement Annuel");
+		JButtonYellow buttonGeneralClassement = new JButtonYellow("Classement Annuel");
+		buttonGeneralClassement.addActionListener(ControleurGerant.getInstance());
+		
 		panelButtonTournoi_1.add(buttonGeneralClassement);
 		GroupLayout gl_panelMenuRight = new GroupLayout(panelMenuRight);
 		gl_panelMenuRight.setHorizontalGroup(
@@ -271,10 +231,10 @@ public class AccueilGerant {
 		
 		Header headerGerant = new Header(frame);
 	}
-	private void submitNouveauTournoi() {
+	public void submitNouveauTournoi() {
 		CreerTournoi.mainWithValues(thisInstance);
 	}
-	private void submitAjouterJeu() {
+	public void submitAjouterJeu() {
 		AjouterJeu.main(null);
 	}
 	public void setListTournois() {
@@ -347,6 +307,9 @@ public class AccueilGerant {
 		}
         
         scrollTournoi.setViewportView(panelListTournoi);
+	}
+	public void dispose() {
+		frame.dispose();
 	}
 	
 }

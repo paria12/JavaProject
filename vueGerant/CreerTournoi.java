@@ -2,6 +2,7 @@ package vueGerant;
 
 import java.awt.EventQueue;
 
+
 import javax.swing.JFrame;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -20,6 +21,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import controleur.ControleurGerant;
 import modele.Arbitre;
 import modele.ErreurBD;
 import modele.Jeu;
@@ -85,6 +87,7 @@ public class CreerTournoi {
 	private String notoriete;
 	private AccueilGerant parent;
 	private JPanelBackground panelComboGame;
+	public ControleurGerant controleur = new ControleurGerant();
 
 	/**
 	 * Launch the application.
@@ -128,6 +131,7 @@ public class CreerTournoi {
 	 * @throws ErreurBD 
 	 */
 	private void initialize(AccueilGerant parent) throws ErreurBD {
+		controleur.setFenetreCreerTournoi(this);
 		this.parent = parent;
 		frmCrerTournois = new JFrame();
 		frmCrerTournois.setTitle("E-Sporter | Créer Tournoi");
@@ -144,7 +148,7 @@ public class CreerTournoi {
 		JPanelBackground panelSpacing_TopTitle = new JPanelBackground();
 		panelTitle.add(panelSpacing_TopTitle);
 		
-		JLabel lblCrerUnTournoi = new JLabel("Cr\u00E9er un nouveau tournoi");
+		JLabel lblCrerUnTournoi = new JLabel("Créer un nouveau tournoi");
 		lblCrerUnTournoi.setForeground(Colors.lightText);
 		lblCrerUnTournoi.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCrerUnTournoi.setFont(new Font("Tahoma", Font.PLAIN, 25));
@@ -566,10 +570,11 @@ public class CreerTournoi {
 		panelComboArbitre.add(comboArbitre);
 		
 		JButtonDark buttonAddGame = new JButtonDark("+");
+		buttonAddGame.addActionListener(ControleurGerant.getInstance());
 		buttonAddGame.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				AjouterJeu.mainWithValues(currentInstance);
+				
 			}
 		});
 		buttonAddGame.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -587,37 +592,11 @@ public class CreerTournoi {
 		panelFormButtons.add(panelFormButtonsInner);
 		
 		JButtonDark buttonCancel = new JButtonDark("Annuler");
-		buttonCancel.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode()==KeyEvent.VK_ENTER) {
-					submitAnnuler();
-				}
-			}
-		});
-		buttonCancel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				submitAnnuler();
-			}
-		});
+		buttonCancel.addActionListener(ControleurGerant.getInstance());
 		panelFormButtonsInner.add(buttonCancel);
 		
-		buttonValidation = new JButtonYellow("Cr\u00E9er");
-		buttonValidation.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-					submitCreer();
-				}
-			}
-		});
-		buttonValidation.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                submitCreer();
-            }
-        });
+		buttonValidation = new JButtonYellow("Créer");
+		buttonValidation.addActionListener(ControleurGerant.getInstance());
 		buttonValidation.setEnabled(false);
 		panelFormButtonsInner.add(buttonValidation);
 		buttonValidation.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -680,10 +659,10 @@ public class CreerTournoi {
 		spinnerDay.changeModel(day, minDay, maxDay, 1);
 		spinnerMonth.changeModel(month.getValue(), minMonth, maxMonth, 1);
 	}
-	private void submitAnnuler() {
+	public void submitAnnuler() {
 		frmCrerTournois.dispose();
 	}
-	private void submitCreer() {
+	public void submitCreer() {
 		if (buttonValidation.isEnabled()) {
             Calendar cal = Calendar.getInstance();
             cal.set( Calendar.DAY_OF_MONTH, day);
@@ -716,7 +695,7 @@ public class CreerTournoi {
             }
         }
 	}
-	private void enterRadio() {
+	public void enterRadio() {
 		if (isFormFilled()) {
 			buttonValidation.setEnabled(true);
 		} else {
@@ -731,5 +710,8 @@ public class CreerTournoi {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	public void ouvrirAjouterJeu() {
+		AjouterJeu.mainWithValues(currentInstance);
 	}
 }
