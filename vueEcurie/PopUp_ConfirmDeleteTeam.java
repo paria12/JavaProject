@@ -9,6 +9,9 @@ import vue.JButtonYellow;
 import vue.JPanelBackground;
 
 import javax.swing.JLabel;
+
+import controleur.ControleurEcurie;
+
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -16,19 +19,21 @@ import java.awt.Font;
 public class PopUp_ConfirmDeleteTeam {
 
 	private JFrame frame;
+	private String equipeName;
 
 	/**
 	 * Create the application.
 	 */
-	public PopUp_ConfirmDeleteTeam(Equipe equipe) {
-		initialize(equipe);
+	public PopUp_ConfirmDeleteTeam(String equipeName) {
+		initialize(equipeName);
 		this.frame.setVisible(true);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize(Equipe equipe) {
+	private void initialize(String equipeName) {
+		this.equipeName = equipeName;
 		frame = new JFrame();
 		frame.setBounds(100, 100, 250, 175);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -51,7 +56,7 @@ public class PopUp_ConfirmDeleteTeam {
 		JPanelBackground panelLabelEquipe = new JPanelBackground();
 		panelHeader.add(panelLabelEquipe);
 		
-		JLabel labelEquipe = new JLabel("Supprimer "+equipe.getNom());
+		JLabel labelEquipe = new JLabel("Supprimer "+equipeName);
 		labelEquipe.setForeground(Colors.lightText);
 		labelEquipe.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		panelLabelEquipe.add(labelEquipe);
@@ -68,6 +73,7 @@ public class PopUp_ConfirmDeleteTeam {
 		panelMenu.add(panelButtonNo);
 		
 		JButtonYellow buttonNo = new JButtonYellow("Non");
+		buttonNo.addActionListener(ControleurEcurie.getInstance());
 		panelButtonNo.add(buttonNo);
 		
 		JPanelBackground panelButtonYes = new JPanelBackground();
@@ -75,11 +81,17 @@ public class PopUp_ConfirmDeleteTeam {
 		panelMenu.add(panelButtonYes);
 		
 		JButtonYellow buttonYes = new JButtonYellow("Oui");
+		buttonYes.addActionListener(ControleurEcurie.getInstance());
 		panelButtonYes.add(buttonYes);
 	}
 	
 	public void dispose() {
+		System.out.println("dispose");
 		frame.dispose();
+		System.out.println("disposed");
 	}
 	
+	public String getEquipeName() {
+		return equipeName;
+	}
 }

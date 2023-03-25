@@ -22,6 +22,7 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 
+import controleur.ControleurEcurie;
 import modele.Equipe;
 import modele.ErreurBD;
 import modele.Jeu;
@@ -46,6 +47,7 @@ public class CreerEquipe {
 	private CreerEquipe teamWindow = this;
 	private JButtonDark buttonAddPlayer;
 	private JComboBox<String> comboGame;
+	private JPanelBackground[] panelPlayerInners;
 
 	/**
 	 * Create the application.
@@ -99,6 +101,8 @@ public class CreerEquipe {
 		frame.getContentPane().add(panelForm, BorderLayout.CENTER);
 		panelForm.setLayout(new GridLayout(0, 1, 0, 0));
 		
+		panelPlayerInners = new JPanelBackground[5];
+		
 		JPanelBackground panelPlayer1 = new JPanelBackground();
 		FlowLayout fl_panelPlayer1 = (FlowLayout) panelPlayer1.getLayout();
 		fl_panelPlayer1.setAlignment(FlowLayout.LEFT);
@@ -106,6 +110,7 @@ public class CreerEquipe {
 		panelForm.add(panelPlayer1);
 		
 		JPanelBackground panelPlayer1Inner = new JPanelBackground();
+		panelPlayerInners[1] = panelPlayer1Inner;
 		panelPlayer1.add(panelPlayer1Inner);
 		
 		this.setJoueurWindow(J1, "1", panelPlayer1Inner);
@@ -117,6 +122,7 @@ public class CreerEquipe {
 		panelForm.add(panelPlayer2);
 		
 		JPanelBackground panelPlayer2Inner = new JPanelBackground();
+		panelPlayerInners[2] = panelPlayer2Inner;
 		panelPlayer2.add(panelPlayer2Inner);
 		
 		this.setJoueurWindow(J2, "2", panelPlayer2Inner);
@@ -128,6 +134,7 @@ public class CreerEquipe {
 		panelForm.add(panelPlayer3);
 		
 		JPanelBackground panelPlayer3Inner = new JPanelBackground();
+		panelPlayerInners[3] = panelPlayer3Inner;
 		panelPlayer3.add(panelPlayer3Inner);
 		
 		this.setJoueurWindow(J3, "3", panelPlayer3Inner);
@@ -139,6 +146,7 @@ public class CreerEquipe {
 		panelForm.add(panelPlayer4);
 		
 		JPanelBackground panelPlayer4Inner = new JPanelBackground();
+		panelPlayerInners[4] = panelPlayer4Inner;
 		panelPlayer4.add(panelPlayer4Inner);
 		
 		this.setJoueurWindow(J4, "4", panelPlayer4Inner);
@@ -181,9 +189,11 @@ public class CreerEquipe {
 		panelFormButtons.add(panelFormButtonsInner);
 		
 		JButtonDark buttonCancel = new JButtonDark("Annuler");
+		buttonCancel.addActionListener(ControleurEcurie.getInstance());
 		panelFormButtonsInner.add(buttonCancel);
 		
 		buttonValidation = new JButtonYellow("Créer");
+		buttonValidation.addActionListener(ControleurEcurie.getInstance());
 		buttonValidation.setEnabled(isFilled());
 		buttonValidation.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		panelFormButtonsInner.add(buttonValidation);
@@ -198,7 +208,7 @@ public class CreerEquipe {
 		}
 	}
 	
-	public void setJoueur(Joueur newJ, String nbJ, JPanelBackground panelPlayerInner) {
+	public void setJoueur(Joueur newJ, String nbJ) {
 		switch (nbJ) {
 		case "1" :
 			J1 = newJ;
@@ -213,7 +223,7 @@ public class CreerEquipe {
 			J4 = newJ;
 			break;
 		}
-		this.setJoueurWindow(newJ, nbJ, panelPlayerInner);
+		this.setJoueurWindow(newJ, nbJ, panelPlayerInners[Integer.valueOf(nbJ)]);
 		buttonValidation.setEnabled(isFilled());
 	}
 	
@@ -236,6 +246,8 @@ public class CreerEquipe {
 			
 			
 			JButtonDark buttonChangePlayer = new JButtonDark("Changer");
+			buttonChangePlayer.setName("b"+nbJ);
+			buttonChangePlayer.addActionListener(ControleurEcurie.getInstance());
 			buttonChangePlayer.setFont(new Font("Tahoma", Font.PLAIN, 10));
 			panelPlayerInner.add(buttonChangePlayer);
 			frame.revalidate();
@@ -246,6 +258,8 @@ public class CreerEquipe {
 			labelPlayer.setForeground(Colors.lightText);
 			panelPlayerInner.add(labelPlayer);
 			buttonAddPlayer = new JButtonDark("Nouveau Joueur");
+			buttonAddPlayer.setName("b"+nbJ);
+			buttonAddPlayer.addActionListener(ControleurEcurie.getInstance());
 			panelPlayerInner.add(buttonAddPlayer);
 		}
 	}
@@ -268,6 +282,22 @@ public class CreerEquipe {
 	
 	public String getGameID() {
 		return comboGame.getSelectedItem().toString();
+	}
+	
+	public Joueur getJ1() {
+		return J1;
+	}
+	
+	public Joueur getJ2() {
+		return J2;
+	}
+	
+	public Joueur getJ3() {
+		return J3;
+	}
+	
+	public Joueur getJ4() {
+		return J4;
 	}
 
 }

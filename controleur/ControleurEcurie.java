@@ -1,25 +1,36 @@
 package controleur;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.Date;
 import java.util.Calendar;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
+import modele.Ecurie;
 import modele.Equipe;
 import modele.ErreurBD;
 import modele.Jeu;
 import modele.Joueur;
 import modele.Tournoi;
+import vue.Colors;
 import vue.ErrorMessage;
+import vue.Header;
+import vue.JPanelDarkest;
+import vue.PanelPresentationTournoi;
 import vueEcurie.AccueilEcurie;
 import vueEcurie.AjouterJoueur;
 import vueEcurie.CreerEquipe;
 import vueEcurie.PopUp_ConfirmDeleteTeam;
 import vueEcurie.PopUp_ConfirmInscription;
 
-public class ControleurEcurie implements ActionListener {
+public class ControleurEcurie implements ActionListener, MouseListener {
 
 	private enum Etats {ACCUEIL, CREATION_EQUIPE, AJOUT_JOUEUR, SUPRESSION_EQUIPE, EQUIPE_SELEC, TOURNOI_SELEC, INSCRIPTION_TOURNOI};
 
@@ -29,57 +40,68 @@ public class ControleurEcurie implements ActionListener {
 	private AjouterJoueur addPlayerWindow;
 	private PopUp_ConfirmInscription confirmInscriptionPopUp;
 	private PopUp_ConfirmDeleteTeam confirmDeleteTeamPopUp;
-	private Joueur J1;
-	private Joueur J2;
-	private Joueur J3;
-	private Joueur J4;
-	private Joueur J;
-	private Equipe equipe;
-	private int ecurie;
-	private Tournoi tournoi;
+	public static ControleurEcurie instance;
+	private String nbJ;
 
+	public static synchronized ControleurEcurie getInstance() {
+		if (instance == null) {
+			instance = new ControleurEcurie();
+		}
+		return instance;
+	}
+	
+	public void setMainWindow(AccueilEcurie w) {
+		getInstance().mainWindow = w;
+	}
+	
 	public ControleurEcurie() {
 		this.etat = Etats.ACCUEIL;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		switch(this.etat) {
+		switch(getInstance().etat) {
 		case ACCUEIL:
 			if (e.getSource() instanceof JButton) {
 				JButton b = (JButton) e.getSource();
 				switch (b.getText()) {
 				case "rafraîchir" :
 					mainWindow.setListEquipes();
-					break;
+				break;
 				case "Nouvelle Equipe" :
-					new CreerEquipe();
-					this.etat = Etats.CREATION_EQUIPE;
-					break;
-				}
+					teamFormWindow = new CreerEquipe();
+					getInstance().etat = Etats.CREATION_EQUIPE;
+				break;
+				case "Supprimer" :
+					System.out.println("out");
+					confirmDeleteTeamPopUp = new PopUp_ConfirmDeleteTeam(b.getName());
+					getInstance().etat = Etats.SUPRESSION_EQUIPE;
+				break;
+				} 
 			}
+		break;
 		case CREATION_EQUIPE:
 			if (e.getSource() instanceof JButton) {
 				JButton b = (JButton) e.getSource();
 				switch (b.getText()) {
 				case "Annuler" :
 					teamFormWindow.dispose();
-					this.etat = Etats.ACCUEIL; //Or Equipe_selec or Tournois_selec ?
-					break;
+					getInstance().etat = Etats.ACCUEIL; //Or Equipe_selec or Tournois_selec ?
+				break;
 				case "Créer" :
 					if (teamFormWindow.getEnabled()) {
 						Equipe equipe;
 						try {
 							equipe = new Equipe(teamFormWindow.getInputTeamName(), 0, Jeu.getID(new Jeu(teamFormWindow.getGameID())));
-							equipe.addJoueur(J1);
-							equipe.addJoueur(J2);
-							equipe.addJoueur(J3);
-							equipe.addJoueur(J4);
-							equipe.insert(ecurie);
-							J1.insert(equipe.getID());
-							J2.insert(equipe.getID());
-							J3.insert(equipe.getID());
-							J4.insert(equipe.getID());
+							equipe.addJoueur(teamFormWindow.getJ1());
+							equipe.addJoueur(teamFormWindow.getJ2());
+							equipe.addJoueur(teamFormWindow.getJ3());
+							equipe.addJoueur(teamFormWindow.getJ4());
+							equipe.insert(Ecurie.getID(new Ecurie(Header.header)));
+							teamFormWindow.getJ1().insert(equipe.getID());
+							teamFormWindow.getJ2().insert(equipe.getID());
+							teamFormWindow.getJ3().insert(equipe.getID());
+							teamFormWindow.getJ4().insert(equipe.getID());
 							mainWindow.setListEquipes();
 							teamFormWindow.dispose();
 						} catch (IllegalArgumentException e2) {
@@ -89,91 +111,161 @@ public class ControleurEcurie implements ActionListener {
 							// TODO Auto-generated catch block
 							ErrorMessage.ErrorMessage(e2.getMessage());
 						}
-						
-						
 					}
-					this.etat = Etats.ACCUEIL;
-					break;
+					getInstance().etat = Etats.ACCUEIL;
+				break;
 				case "Changer" :
+					Joueur J = null;
+					nbJ = b.getName().substring(1);
+					switch (nbJ) {
+					case "1":
+						J = teamFormWindow.getJ1();
+					break;
+					case "2":
+						J = teamFormWindow.getJ2();
+					break;
+					case "3":
+						J = teamFormWindow.getJ3();
+					break;
+					case "4":
+						J = teamFormWindow.getJ4();
+					break;
+					} 
 					try {
-						new AjouterJoueur(J.getNom(), J.getPrenom(), J.getDateNaissance(), J.getSexe(), J.getTel(), J.getEmail());
+						addPlayerWindow = new AjouterJoueur(J.getNom(), J.getPrenom(), J.getDateNaissance(), J.getSexe(), J.getTel(), J.getEmail());
 					} catch (ErreurBD e1) {
 						// TODO Auto-generated catch block
-						ErrorMessage.ErrorMessage(e1.getMessage());
+						e1.printStackTrace();
 					}
-					this.etat = Etats.AJOUT_JOUEUR;
-					break;
+					getInstance().etat = Etats.AJOUT_JOUEUR;
+				break;
 				case "Nouveau Joueur" :
-					new AjouterJoueur(null, null, null, ' ', null, null);
-					this.etat = Etats.AJOUT_JOUEUR;
-					break;
+					nbJ = b.getName().substring(1);
+					addPlayerWindow = new AjouterJoueur(null, null, null, ' ', null, null);
+					getInstance().etat = Etats.AJOUT_JOUEUR;
+				break;
 				}
 			}
-			break;
+		break;
 		case AJOUT_JOUEUR:
 			if (e.getSource() instanceof JButton) {
 				JButton b = (JButton) e.getSource();
 				switch (b.getText()) {
 				case "Annuler" :
 					submitAnnulerAjoutJoueur();
-					this.etat = Etats.CREATION_EQUIPE;
-					break;
+					getInstance().etat = Etats.CREATION_EQUIPE;
+				break;
 				case "Ajouter" :
 					submitValiderAjoutJoueur();
-					this.etat = Etats.CREATION_EQUIPE;
+					getInstance().etat = Etats.CREATION_EQUIPE;
+				break;
 				}
 			}
-			break;
+		break;
 		case SUPRESSION_EQUIPE:
 			if (e.getSource() instanceof JButton) {
 				JButton b = (JButton) e.getSource();
 				switch (b.getText()) {
 				case "Non" :
+					System.out.println("Nop");
 					submitNonDelete();
-					this.etat = Etats.EQUIPE_SELEC;
-					break;
-				case "oui" :
-					submitOuiDelete(equipe);
-					this.etat = Etats.ACCUEIL;
-					break;
+					getInstance().etat = Etats.ACCUEIL;
+				break;
+				case "Oui" :
+					submitOuiDelete(new Equipe(confirmDeleteTeamPopUp.getEquipeName()));
+					getInstance().etat = Etats.ACCUEIL;
+				break;
 				}
 			}
+		break;
 		case EQUIPE_SELEC:
 			if (e.getSource() instanceof JButton) {
 				JButton b = (JButton) e.getSource();
 				switch (b.getText()) {
-					case "Supprimer" :
-						new PopUp_ConfirmDeleteTeam(equipe);
-						break;
+				case "Supprimer" :
+					confirmDeleteTeamPopUp = new PopUp_ConfirmDeleteTeam(b.getName());
+					getInstance().etat = Etats.SUPRESSION_EQUIPE;
+				break;
+				case "rafraîchir" :
+					mainWindow.setListEquipes();
+				break;
+				case "Nouvelle Equipe" :
+					teamFormWindow = new CreerEquipe();
+					getInstance().etat = Etats.CREATION_EQUIPE;
+				break;
 				}
-			}
-			break;
+			} 
+		break;
 		case TOURNOI_SELEC:
 			if (e.getSource() instanceof JButton) {
 				JButton b = (JButton) e.getSource();
 				switch (b.getText()) {
 				case "Inscrire" :
-					new PopUp_ConfirmInscription(equipe, tournoi);
-					this.etat = Etats.INSCRIPTION_TOURNOI;
-					break;
+					confirmInscriptionPopUp = new PopUp_ConfirmInscription(mainWindow.getEquipe(), mainWindow.getTournoi());
+					getInstance().etat = Etats.INSCRIPTION_TOURNOI;
+				break;
+				case "rafraîchir" :
+					mainWindow.setListEquipes();
+				break;
+				case "Nouvelle Equipe" :
+					teamFormWindow = new CreerEquipe();
+					getInstance().etat = Etats.CREATION_EQUIPE;
+				break;
+				case "Supprimer" :
+					confirmDeleteTeamPopUp = new PopUp_ConfirmDeleteTeam(b.getName());
+					getInstance().etat = Etats.SUPRESSION_EQUIPE;
+				break;
 				}
 			}
-			break;
+		break;
 		case INSCRIPTION_TOURNOI:
 			if (e.getSource() instanceof JButton) {
 				JButton b = (JButton) e.getSource();
 				switch (b.getText()) {
 				case "Non" :
 					submitNonInscription();
-					this.etat = Etats.TOURNOI_SELEC;
-					break;
+					getInstance().etat = Etats.TOURNOI_SELEC;
+				break;
 				case "Oui" :
-					submitOuiInscription(tournoi,equipe);
-					this.etat = Etats.ACCUEIL;
-					break;
+					submitOuiInscription(mainWindow.getTournoi(),mainWindow.getEquipe());
+					getInstance().etat = Etats.ACCUEIL;
+				break;
 				}
 			}
-			break;
+		break;
+		}
+	}
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		switch(getInstance().etat) {
+		case ACCUEIL:
+			mainWindow.setPresentEquipeByName(((JPanel)e.getSource()).getName());
+			mainWindow.showTeamChoosen();
+			getInstance().etat = Etats.EQUIPE_SELEC;
+		break;
+		case EQUIPE_SELEC:
+			if (((JPanel)e.getSource()).getName().startsWith("pT")) {
+				mainWindow.setPresentTournoiByName(((JPanel)e.getSource()).getName());
+				mainWindow.showTurnamentChoosen();
+				getInstance().etat = Etats.TOURNOI_SELEC;
+			} else if ((((JPanel)e.getSource()).getName().startsWith("pE"))) {
+				mainWindow.setPresentEquipeByName(((JPanel)e.getSource()).getName());
+				mainWindow.showTeamChoosen();
+				getInstance().etat = Etats.EQUIPE_SELEC;
+			}	
+		break;
+		case AJOUT_JOUEUR:
+		break;
+		case CREATION_EQUIPE:
+		break;
+		case INSCRIPTION_TOURNOI:
+		break;
+		case SUPRESSION_EQUIPE:
+		break;
+		case TOURNOI_SELEC:
+		break;
+		default:
+		break;
 		}
 	}
 	
@@ -189,15 +281,16 @@ public class ControleurEcurie implements ActionListener {
 			cal.set( Calendar.MONTH, addPlayerWindow.getMonth());
 			cal.set( Calendar.YEAR, addPlayerWindow.getYear());
 			//Create and return player from inputs
+			Joueur j = new Joueur(
+							addPlayerWindow.getLastName(), 
+						 	addPlayerWindow.getFirstName(), 
+						 	new Date(cal.getTimeInMillis()), 
+						 	addPlayerWindow.getSexe(),
+						 	addPlayerWindow.getPhoneNumber(), 
+				 			addPlayerWindow.getEMail()
+						);
 			if(addPlayerWindow.isFormatGood()) {
-				equipe.addJoueur(new Joueur(
-					addPlayerWindow.getLastName(), 
-				 	addPlayerWindow.getFirstName(), 
-				 	new Date(cal.getTimeInMillis()), 
-				 	addPlayerWindow.getSexe(),
-				 	addPlayerWindow.getPhoneNumber(), 
-				 	addPlayerWindow.getEMail()
-				));
+				teamFormWindow.setJoueur(j, nbJ);
 				addPlayerWindow.dispose();
 			}
 		}
@@ -208,6 +301,7 @@ public class ControleurEcurie implements ActionListener {
 		confirmDeleteTeamPopUp.dispose();
 	}
 	private void submitOuiDelete(Equipe equipe) {
+		System.out.println("deleted "+equipe.getNom());
 		try {
 			equipe.delete();
 		} catch (ErreurBD e) {
@@ -231,5 +325,29 @@ public class ControleurEcurie implements ActionListener {
 		}
 		mainWindow.setListEquipes();
 		confirmInscriptionPopUp.dispose();
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

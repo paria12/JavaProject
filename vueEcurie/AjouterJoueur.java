@@ -35,6 +35,9 @@ import java.time.Month;
 import java.util.Calendar;
 import java.util.Enumeration;
 import javax.swing.event.ChangeListener;
+
+import controleur.ControleurEcurie;
+
 import javax.swing.event.ChangeEvent;
 
 public class AjouterJoueur {
@@ -476,9 +479,11 @@ public class AjouterJoueur {
 		panelFormButtons.add(panelFormButtonsInner);
 		
 		JButtonDark buttonCancel = new JButtonDark("Annuler");
+		buttonCancel.addActionListener(ControleurEcurie.getInstance());
 		panelFormButtonsInner.add(buttonCancel);
 		
 		buttonValidation = new JButtonYellow("Ajouter");
+		buttonValidation.addActionListener(ControleurEcurie.getInstance());
 		buttonValidation.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		if (isFormFilled()) { 
 			buttonValidation.setEnabled(true);

@@ -146,8 +146,10 @@ public class PanelPresentationEquipe extends JPanel {
 		panelEquipe.add(panelOperationsOnPlayer, BorderLayout.EAST);
 		
 		buttonDelete = new JButtonDark("Supprimer");
+		buttonDelete.setName(e.getNom());
 		buttonDelete.addActionListener(new ControleurEcurie());
 		buttonDelete.setBackground(Colors.backBlue);
+		buttonDelete.addActionListener(ControleurEcurie.getInstance());
 		panelOperationsOnPlayer.add(buttonDelete);
 		
 	}
