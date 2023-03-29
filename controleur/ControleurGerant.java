@@ -73,7 +73,15 @@ public class ControleurGerant implements ActionListener, MouseListener, WindowLi
 			switch (b.getText()) {
 				case "Déconnexion"://deconexion
 					accueilGerant.fermerAccueilGerant();
+<<<<<<< Updated upstream
 					Main.main(null);
+=======
+<<<<<<< HEAD
+					ConnexionWindow.main(null);
+=======
+					Main.main(null);
+>>>>>>> a4ca4076742bd7edf4b0f572a99e85a3ee24a8e0
+>>>>>>> Stashed changes
 					break;
 				case "Nouveau Tournoi"://nouveau tournoi
 					accueilGerant.submitNouveauTournoi();
