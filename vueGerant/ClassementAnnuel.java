@@ -28,7 +28,7 @@ import java.awt.Color;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
-import controleur.ControleurArbitre;
+
 import controleur.ControleurGerant;
 
 import java.awt.GridLayout;
@@ -84,6 +84,8 @@ public class ClassementAnnuel {
 		frmClassementAnnuel.getContentPane().add(panelTitle, BorderLayout.NORTH);
 		panelTitle.setLayout(new GridLayout(0, 1, 0, 0));
 		
+		
+		
 		JPanelBackground panelSpacing_TopTitle = new JPanelBackground();
 		panelTitle.add(panelSpacing_TopTitle);
 		
@@ -119,7 +121,7 @@ public class ClassementAnnuel {
 		panelComboGame.add(comboGame);
 		
 		JButtonDark buttonChooseGame = new JButtonDark("Choisir");
-		buttonChooseGame.addActionListener(ControleurArbitre.getInstance());
+		buttonChooseGame.addActionListener(ControleurGerant.getInstance());
 		buttonChooseGame.setFont(new Font("Tahoma", Font.BOLD, 11));
 		panelComboGame.add(buttonChooseGame);
 		
@@ -160,6 +162,8 @@ public class ClassementAnnuel {
 		flowLayout_1.setHgap(20);
 		panelFormAndClassement.add(panelSpacing_BottomTitle_1_2, BorderLayout.EAST);
 		panelScrollClassement.setVisible(false);
+		
+		frmClassementAnnuel.addWindowListener(ControleurGerant.getInstance());
 	}
 	
 	public void setClassement() {

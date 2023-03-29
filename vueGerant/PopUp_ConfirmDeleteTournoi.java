@@ -13,6 +13,9 @@ import vue.JButtonYellow;
 import vue.JPanelBackground;
 
 import javax.swing.JLabel;
+
+import controleur.ControleurGerant;
+
 import java.awt.GridLayout;
 import javax.swing.JButton;
 import java.awt.FlowLayout;

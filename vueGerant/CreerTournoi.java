@@ -610,6 +610,8 @@ public class CreerTournoi {
 		FlowLayout flowLayout_5 = (FlowLayout) panelSpacing_Left_1.getLayout();
 		flowLayout_5.setHgap(10);
 		frmCrerTournois.getContentPane().add(panelSpacing_Left_1, BorderLayout.EAST);
+		
+		frmCrerTournois.addWindowListener(ControleurGerant.getInstance());
 	}
 	public Boolean isFormatGood() {
         if((inputPostalCode.getText().matches("[0-9]+")==true)&&(inputPostalCode.getText().length() == 5)) {

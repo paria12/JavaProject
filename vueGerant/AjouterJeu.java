@@ -221,6 +221,8 @@ public class AjouterJeu {
 		buttonValidation.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		buttonValidation.setEnabled(false);
 		panelFormButtonsInner.add(buttonValidation);
+		
+		frmAjouterUnJeu.addWindowListener(ControleurGerant.getInstance());
 	}
 	public void submitAnnuler() {
 		frmAjouterUnJeu.dispose();

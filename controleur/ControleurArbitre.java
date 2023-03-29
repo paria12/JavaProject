@@ -2,13 +2,17 @@ package controleur;
 
 import java.awt.event.ActionEvent;
 
+
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JRadioButton;
 import javax.swing.event.ListSelectionEvent;
@@ -19,7 +23,7 @@ import vue.ConnexionWindow;
 import vueArbitre.AccueilArbitre;
 import vueArbitre.SaisirScore;
 
-public class ControleurArbitre implements ActionListener, ListSelectionListener {
+public class ControleurArbitre implements ActionListener, ListSelectionListener,WindowListener {
 
 	private enum Etats {ACCUEIL,MATCH_SELEC,CHOIX_EQUIPE,EQUIPE_CHOISIE};
 
@@ -52,7 +56,7 @@ public class ControleurArbitre implements ActionListener, ListSelectionListener 
 		case ACCUEIL:
 			JButton jbu = (JButton) e.getSource();
 			if(jbu.getText().equals("Déconnexion")) {
-				accueilArbitre.dispose();
+				accueilArbitre.fermerAccueilArbitre();
 				ConnexionWindow.main(null);
 			}
 			break;
@@ -65,7 +69,7 @@ public class ControleurArbitre implements ActionListener, ListSelectionListener 
 					break;
 					
 				case "Déconnexion":
-					accueilArbitre.dispose();
+					accueilArbitre.fermerAccueilArbitre();
 					ConnexionWindow.main(null);
 					break;
 			}
@@ -121,6 +125,45 @@ public class ControleurArbitre implements ActionListener, ListSelectionListener 
 			etat=Etats.MATCH_SELEC;
 			break;
 		}
+	}
+	
+	@Override
+	public void windowClosing(WindowEvent e) {
+		((JFrame) e.getSource()).dispose();
+		if((etat == Etats.CHOIX_EQUIPE)||(etat == Etats.EQUIPE_CHOISIE)) {
+			etat = Etats.MATCH_SELEC;
+		}
+		
+	}
+	@Override
+	public void windowClosed(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowIconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowActivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowOpened(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 

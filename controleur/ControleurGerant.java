@@ -1,15 +1,22 @@
 package controleur;
 
 import java.awt.event.ActionEvent;
-
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 
 import vue.ConnexionWindow;
+import vue.PanelPresentationTournoi;
 import vueArbitre.AccueilArbitre;
 import vueArbitre.SaisirScore;
 import vueGerant.AccueilGerant;
@@ -18,7 +25,7 @@ import vueGerant.ClassementAnnuel;
 import vueGerant.CreerTournoi;
 import vueGerant.PopUp_ConfirmDeleteTournoi;
 
-public class ControleurGerant implements ActionListener {
+public class ControleurGerant implements ActionListener, MouseListener, WindowListener {
 
 	private enum Etats {ACCUEIL,CREATION_TOURNOI,CREATION_JEU,DETAILS_TOURNOI,CHOIX_JEU_CLASSEMENT,AFFICHAGE_CLASSEMENT};
 
@@ -29,6 +36,7 @@ public class ControleurGerant implements ActionListener {
 	private ClassementAnnuel classementAnnuel;
 	private CreerTournoi creerTournoi;
 	private PopUp_ConfirmDeleteTournoi confirmDelete;
+	
 	private int RevenirVersAccueilOuCreerTournoi;
 	
 	public void setFenetreAccueil(AccueilGerant accueil) {
@@ -62,12 +70,9 @@ public class ControleurGerant implements ActionListener {
 		JButton b = (JButton) e.getSource();
 		switch(this.etat) {
 		case ACCUEIL:
-			if () {//clic tournoi
-				
-			} else {
-				switch (b.getText()) {
+			switch (b.getText()) {
 				case "Déconnexion"://deconexion
-					accueilGerant.dispose();
+					accueilGerant.fermerAccueilGerant();;
 					ConnexionWindow.main(null);
 					break;
 				case "Nouveau Tournoi"://nouveau tournoi
@@ -88,7 +93,6 @@ public class ControleurGerant implements ActionListener {
 					etat=Etats.ACCUEIL;
 					break;
 				}
-			}
 			break;
 		case CREATION_TOURNOI:
 			//doit-on gérer tous les inputs car ils servent tous à setEnabled le bouton en True ?
@@ -130,52 +134,91 @@ public class ControleurGerant implements ActionListener {
 				break;
 			}
 			break;
-		case DETAILS_TOURNOI://je crois que c'est la même chose que acceuil mais faut juste afficher les info du tournoi avent
-
-			break;
 		case CHOIX_JEU_CLASSEMENT://Affichage du classement annuel
 			switch(b.getText()) {
 			case "Choisir":
-				classementAnnuel.setVisibleClassementAnnuel();
+				etat=Etats.AFFICHAGE_CLASSEMENT;
 				break;
 			}
 			break;
 		case AFFICHAGE_CLASSEMENT:// Version si jeux choisie
-
+			classementAnnuel.setVisibleClassementAnnuel();
+			break;
+		}	
+	}
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		switch(this.etat) {
+		case ACCUEIL:
+			accueilGerant.setPresentTournoiByName(((JPanel)e.getSource()).getName());
+			accueilGerant.selectionTournoi();
+			etat = Etats.ACCUEIL;
 			break;
 		}
-
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+	}
+	
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 	@Override
-	public void valueChanged(ListSelectionEvent e) {
-		switch(this.etat) {
-		case ACCUEIL:
-			
-			
-			break;
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowOpened(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowClosing(WindowEvent e) {
+		((JFrame) e.getSource()).dispose();
+		if((etat == Etats.AFFICHAGE_CLASSEMENT)||(etat == Etats.CHOIX_JEU_CLASSEMENT)) {
+			etat = Etats.ACCUEIL;
+		}else if(etat == Etats.CREATION_TOURNOI) {
+			etat = Etats.ACCUEIL;
+		}else if((RevenirVersAccueilOuCreerTournoi == 0)&&(etat == Etats.CREATION_JEU)){
+			etat = Etats.CREATION_TOURNOI;
+		}else if((RevenirVersAccueilOuCreerTournoi == 1)&&(etat == Etats.CREATION_JEU)) {
+			etat = Etats.ACCUEIL;
 		}
 	}
-
+	@Override
+	public void windowClosed(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowIconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowActivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }

@@ -154,6 +154,8 @@ public class AccueilArbitre {
 		
 		JPanelBackground panelSpacing_ButtonRight = new JPanelBackground();
 		panelButtonInsertScore.add(panelSpacing_ButtonRight);
+		
+		frame.addWindowListener(ControleurArbitre.getInstance());
 	}
 	public void setListMatch() {
 		this.listTournoi = new JList<String>();
@@ -214,7 +216,7 @@ public class AccueilArbitre {
 			buttonInsertScore.setEnabled(false);
 		}
 	}
-	public void dispose() {
+	public void fermerAccueilArbitre() {
 		frame.dispose();
 	}
 }

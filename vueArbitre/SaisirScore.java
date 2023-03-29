@@ -199,6 +199,8 @@ public class SaisirScore {
 		buttonValidation.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		panelFormButtonsInner.add(buttonValidation);
 		buttonValidation.setEnabled(false);
+		
+		frame.addWindowListener(ControleurArbitre.getInstance());
 	}
 
 	public void submitAnnuler() {
