@@ -83,7 +83,7 @@ public class ControleurEcurie implements ActionListener, MouseListener, WindowLi
 				break;
 				case "Déconnexion":
 					mainWindow.dispose();
-					ConnexionWindow.main(null);
+					Main.main(null);
 				break;
 				} 
 			}
@@ -203,7 +203,7 @@ public class ControleurEcurie implements ActionListener, MouseListener, WindowLi
 				break;
 				case "Déconnexion":
 					mainWindow.dispose();
-					ConnexionWindow.main(null);
+					Main.main(null);
 					getInstance().etat = Etats.ACCUEIL;
 				break;
 				}
@@ -230,7 +230,7 @@ public class ControleurEcurie implements ActionListener, MouseListener, WindowLi
 				break;
 				case "Déconnexion":
 					mainWindow.dispose();
-					ConnexionWindow.main(null);
+					Main.main(null);
 					getInstance().etat = Etats.ACCUEIL;
 				break;
 				}

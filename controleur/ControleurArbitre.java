@@ -57,7 +57,7 @@ public class ControleurArbitre implements ActionListener, ListSelectionListener,
 			JButton jbu = (JButton) e.getSource();
 			if(jbu.getText().equals("Déconnexion")) {
 				accueilArbitre.fermerAccueilArbitre();
-				ConnexionWindow.main(null);
+				Main.main(null);
 			}
 			break;
 		case MATCH_SELEC:
@@ -70,7 +70,7 @@ public class ControleurArbitre implements ActionListener, ListSelectionListener,
 					
 				case "Déconnexion":
 					accueilArbitre.fermerAccueilArbitre();
-					ConnexionWindow.main(null);
+					Main.main(null);
 					break;
 			}
 			

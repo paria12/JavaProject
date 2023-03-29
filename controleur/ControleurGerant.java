@@ -73,7 +73,7 @@ public class ControleurGerant implements ActionListener, MouseListener, WindowLi
 			switch (b.getText()) {
 				case "Déconnexion"://deconexion
 					accueilGerant.fermerAccueilGerant();;
-					ConnexionWindow.main(null);
+					Main.main(null);
 					break;
 				case "Nouveau Tournoi"://nouveau tournoi
 					accueilGerant.submitNouveauTournoi();
@@ -85,7 +85,7 @@ public class ControleurGerant implements ActionListener, MouseListener, WindowLi
 					etat=Etats.CREATION_JEU;
 					break;
 				case "Classement Annuel"://cassement annuel
-					ClassementAnnuel.main(null);
+					Main.main(null);
 					etat=Etats.CHOIX_JEU_CLASSEMENT;
 					break;
 				case "rafraîchir":

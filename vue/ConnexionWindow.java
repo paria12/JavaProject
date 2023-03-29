@@ -39,35 +39,6 @@ public class ConnexionWindow{
 	private JPasswordField inputPassword;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ConnexionWindow window = new ConnexionWindow(null);
-					window.frmConnexion.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-	
-	public static void mainWithValues(String login) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ConnexionWindow window = new ConnexionWindow(login);
-					window.frmConnexion.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the application.
 	 */
 	public ConnexionWindow(String login) {
@@ -296,6 +267,10 @@ public class ConnexionWindow{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public JFrame getFrame() {
+		return frmConnexion;
 	}
  
 }
