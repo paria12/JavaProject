@@ -9,6 +9,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -16,9 +17,11 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.border.LineBorder;
 
+import controleur.ControleurEcurie;
 import modele.Ecurie;
 import modele.Equipe;
 import modele.ErreurBD;
+import modele.Joueur;
 import modele.Tournoi;
 import vue.Colors;
 import vue.ErrorMessage;
@@ -45,6 +48,10 @@ public class AccueilEcurie {
 	private JScrollPane scrollEquipe;
 	private AccueilEcurie thisInstance;
 	private JPanelBackground panelMenu;
+	private PanelPresentationTournoi presentTournoi;
+	private PanelPresentationTournoi[] panelsPresentationTournoi;
+	private PanelPresentationEquipe[] panelsPresentationEquipe;
+	private PanelPresentationEquipe presentEquipe;
 	
 	/**
 	 * Create the application.
@@ -52,6 +59,7 @@ public class AccueilEcurie {
 	 */
 	public AccueilEcurie() throws ErreurBD {
 		initialize();
+		frame.setVisible(true);
 	}
 
 	/**
@@ -60,6 +68,7 @@ public class AccueilEcurie {
 	 */
 	private void initialize() throws ErreurBD {
 		thisInstance = this;
+		ControleurEcurie.getInstance().setMainWindow(thisInstance);
 		frame = new JFrame();
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -101,9 +110,11 @@ public class AccueilEcurie {
 		panelMenuLeftHeader.add(panelButtonAddEquipe);
 		
 		JButtonDark buttonRefreshEquipes = new JButtonDark("rafraîchir");
+		buttonRefreshEquipes.addActionListener(ControleurEcurie.getInstance());
 		panelButtonAddEquipe.add(buttonRefreshEquipes);
 		
 		JButtonYellow buttonAddEquipe = new JButtonYellow("Nouvelle Equipe");
+		buttonAddEquipe.addActionListener(ControleurEcurie.getInstance());
 		panelButtonAddEquipe.add(buttonAddEquipe);
 		
 		JPanelBackground panelScrollEquipe = new JPanelBackground();
@@ -138,6 +149,9 @@ public class AccueilEcurie {
 		setListTournois();
 		panelMenu.add(panelRight);
 		
+
+		frame.addWindowListener(ControleurEcurie.getInstance());
+		
 	}
 	
 	public void setListEquipes() {
@@ -153,12 +167,14 @@ public class AccueilEcurie {
         int sizeEcurie;
 		try {
 			sizeEcurie = new Ecurie(Header.header).getEquipe().size();
-		PanelPresentationEquipe[] panelsPresentationEquipe = new PanelPresentationEquipe[sizeEcurie];
+		panelsPresentationEquipe = new PanelPresentationEquipe[sizeEcurie];
         for (int i = 0; i < sizeEcurie; i++) {
         	eq = new Ecurie(Header.header).getEquipe().get(i);
             JLabel labelEquipe = new JLabel();
             labelEquipe.setText(eq.getNom());
-            PanelPresentationEquipe presentEquipe = new PanelPresentationEquipe(eq);
+            presentEquipe = new PanelPresentationEquipe(eq);
+            presentEquipe.getPanel().setName("pE"+i);
+            presentEquipe.getPanel().addMouseListener(ControleurEcurie.getInstance());
             panelsPresentationEquipe[i] = presentEquipe;
             panelListEquipe.add(presentEquipe.getPanel());
         }
@@ -210,6 +226,7 @@ public class AccueilEcurie {
 			
 			buttonInscriptionTournois = new JButtonYellow("Inscrire");
 			buttonInscriptionTournois.setEnabled(false);
+			buttonInscriptionTournois.addActionListener(ControleurEcurie.getInstance());
 			panelButtonInscriptionTournois.add(buttonInscriptionTournois);
 			
 			JPanelBackground panelScrollTournois = new JPanelBackground();
@@ -240,24 +257,16 @@ public class AccueilEcurie {
 			panelListTournoi = new JPanelBackground();
 	        panelListTournoi.setLayout(new GridLayout(0, 1, 0, 0));
 			try {
+				System.out.println("resetContent");
 				sizeTournoi = Tournoi.getAvailableEquipe(eq).length;
-				PanelPresentationTournoi[] panelsPresentationTournoi = new PanelPresentationTournoi[sizeTournoi];
+				panelsPresentationTournoi = new PanelPresentationTournoi[sizeTournoi];
 		        for (int i = 0; i < sizeTournoi; i++) {
 		        	t = Tournoi.getAvailableEquipe(eq)[i];
 		            JLabel labelTournoi = new JLabel();
 		            labelTournoi.setText(t.getNom());
-		            PanelPresentationTournoi presentTournoi = new PanelPresentationTournoi(t, false, new AccueilGerant());
-		            presentTournoi.getPanel().addMouseListener(new MouseAdapter() {
-		                @Override
-		                public void mouseClicked(MouseEvent e) {
-		                	 t = presentTournoi.getTournoi();
-		                	 for (PanelPresentationTournoi pe : panelsPresentationTournoi) {
-		                		 pe.changeBorderColor(Color.black, 1);
-		                	 }
-		                	 presentTournoi.changeBorderColor(Colors.lightText, 2);
-		                	 buttonInscriptionTournois.setEnabled(true);
-		                }
-		            });
+		            presentTournoi = new PanelPresentationTournoi(t, false, new AccueilGerant());
+		            presentTournoi.getPanel().setName("pT"+i);
+		            presentTournoi.getPanel().addMouseListener(ControleurEcurie.getInstance());
 		            panelsPresentationTournoi[i] = presentTournoi;
 		            panelListTournoi.add(presentTournoi.getPanel());
 		        }
@@ -272,6 +281,57 @@ public class AccueilEcurie {
         	panelRight.setVisible(true);
 	        scrollTournois.setViewportView(panelListTournoi);
 		}
+	}
+	
+	public void showTurnamentChoosen() {
+		t = presentTournoi.getTournoi();
+        for (PanelPresentationTournoi pe : panelsPresentationTournoi) {
+           	pe.changeBorderColor(Color.black, 1);
+        }
+        presentTournoi.changeBorderColor(Colors.lightText, 2);
+        buttonInscriptionTournois.setEnabled(true);
+	}
+	
+	public void showTeamChoosen() {
+		eq = presentEquipe.getEquipe();
+    	setListTournois();
+    	for (PanelPresentationEquipe pe : panelsPresentationEquipe) {
+    		pe.changeBorderColor(Color.black, 1);
+    	}
+    	presentEquipe.changeBorderColor(Colors.lightText, 2);
+    	panelRight.setVisible(true);
+	}
+	
+	public Equipe getEquipe() {
+		return eq;
+	}
+	
+	public Tournoi getTournoi() {
+		return t;
+	}
+	
+	public void setPresentEquipeByName(String name) {
+		presentEquipe = null;
+		for (PanelPresentationEquipe pe : panelsPresentationEquipe) {
+			if (pe.getPanel().getName() == name) {
+				presentEquipe = pe;
+				return;
+			}
+		}
+	}
+	
+	public void setPresentTournoiByName(String name) {
+		presentTournoi = null;
+		for (PanelPresentationTournoi pt : panelsPresentationTournoi) {
+			if (pt.getPanel().getName() == name) {
+				presentTournoi = pt;
+				return;
+			}
+		}
+	}
+
+	public void dispose() {
+		frame.dispose();
 	}
 	
 }

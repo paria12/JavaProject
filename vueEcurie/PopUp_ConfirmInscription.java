@@ -11,6 +11,9 @@ import vue.JButtonYellow;
 import vue.JPanelBackground;
 
 import javax.swing.JLabel;
+
+import controleur.ControleurEcurie;
+
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -88,6 +91,7 @@ public class PopUp_ConfirmInscription {
 		panelMenu.add(panelButtonNo);
 		
 		JButtonYellow buttonNo = new JButtonYellow("Non");
+		buttonNo.addActionListener(ControleurEcurie.getInstance());
 		panelButtonNo.add(buttonNo);
 		
 		JPanelBackground panelButtonYes = new JPanelBackground();
@@ -96,7 +100,11 @@ public class PopUp_ConfirmInscription {
 		panelMenu.add(panelButtonYes);
 		
 		JButtonYellow buttonYes = new JButtonYellow("Oui");
+		buttonYes.addActionListener(ControleurEcurie.getInstance());
 		panelButtonYes.add(buttonYes);
+		
+
+		frame.addWindowListener(ControleurEcurie.getInstance());
 	}
 	
 	public void dispose() {

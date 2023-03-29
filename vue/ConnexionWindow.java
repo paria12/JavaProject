@@ -24,6 +24,7 @@ import java.sql.SQLException;
 
 import modele.Connexion;
 import modele.Ecurie;
+import modele.ErreurBD;
 import vueArbitre.AccueilArbitre;
 import vueEcurie.AccueilEcurie;
 import vueGerant.AccueilGerant;
@@ -97,18 +98,21 @@ public class ConnexionWindow{
 								break;
 							case 1 : //Ecurie
 								Header.header = inputUserName.getText();
-								//AccueilEcurie.main(null);
+								new AccueilEcurie();
 								frmConnexion.dispose();
 								break;
 							case 2 : //Arbitre
 								Header.header = inputUserName.getText();
-								AccueilArbitre.main(null);
+								new AccueilArbitre();
 								frmConnexion.dispose();
 								break;
 							case -1 : //Wrong Password;
 								System.out.println("Erreur : L'identifiant ou le Mot de passe est Ã©ronnÃ©, rÃ©essayez." + inputUserName.getText() + String.valueOf(inputPassword.getPassword()));
 						}
 					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (ErreurBD e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
@@ -273,7 +277,7 @@ public class ConnexionWindow{
 					break;
 				case 1 : //Ecurie
 					Header.header = inputUserName.getText();
-					//AccueilEcurie.main(null);
+					new AccueilEcurie();
 					frmConnexion.dispose();
 					break;
 				case 2 : //Arbitre
@@ -288,6 +292,9 @@ public class ConnexionWindow{
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+		} catch (ErreurBD e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
  
