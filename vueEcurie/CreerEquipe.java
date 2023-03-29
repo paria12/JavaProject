@@ -198,6 +198,9 @@ public class CreerEquipe {
 		buttonValidation.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		panelFormButtonsInner.add(buttonValidation);
 		teamWindow = this;
+		
+
+		frame.addWindowListener(ControleurEcurie.getInstance());
 	}
 	
 	public boolean isFilled() {

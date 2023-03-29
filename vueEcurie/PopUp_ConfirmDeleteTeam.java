@@ -83,6 +83,9 @@ public class PopUp_ConfirmDeleteTeam {
 		JButtonYellow buttonYes = new JButtonYellow("Oui");
 		buttonYes.addActionListener(ControleurEcurie.getInstance());
 		panelButtonYes.add(buttonYes);
+
+		
+		frame.addWindowListener(ControleurEcurie.getInstance());
 	}
 	
 	public void dispose() {

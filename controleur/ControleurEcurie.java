@@ -6,10 +6,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.sql.Date;
 import java.util.Calendar;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -20,6 +23,7 @@ import modele.Jeu;
 import modele.Joueur;
 import modele.Tournoi;
 import vue.Colors;
+import vue.ConnexionWindow;
 import vue.ErrorMessage;
 import vue.Header;
 import vue.JPanelDarkest;
@@ -30,7 +34,7 @@ import vueEcurie.CreerEquipe;
 import vueEcurie.PopUp_ConfirmDeleteTeam;
 import vueEcurie.PopUp_ConfirmInscription;
 
-public class ControleurEcurie implements ActionListener, MouseListener {
+public class ControleurEcurie implements ActionListener, MouseListener, WindowListener {
 
 	private enum Etats {ACCUEIL, CREATION_EQUIPE, AJOUT_JOUEUR, SUPRESSION_EQUIPE, EQUIPE_SELEC, TOURNOI_SELEC, INSCRIPTION_TOURNOI};
 
@@ -76,6 +80,10 @@ public class ControleurEcurie implements ActionListener, MouseListener {
 					System.out.println("out");
 					confirmDeleteTeamPopUp = new PopUp_ConfirmDeleteTeam(b.getName());
 					getInstance().etat = Etats.SUPRESSION_EQUIPE;
+				break;
+				case "Déconnexion":
+					mainWindow.dispose();
+					ConnexionWindow.main(null);
 				break;
 				} 
 			}
@@ -193,6 +201,11 @@ public class ControleurEcurie implements ActionListener, MouseListener {
 					teamFormWindow = new CreerEquipe();
 					getInstance().etat = Etats.CREATION_EQUIPE;
 				break;
+				case "Déconnexion":
+					mainWindow.dispose();
+					ConnexionWindow.main(null);
+					getInstance().etat = Etats.ACCUEIL;
+				break;
 				}
 			} 
 		break;
@@ -214,6 +227,11 @@ public class ControleurEcurie implements ActionListener, MouseListener {
 				case "Supprimer" :
 					confirmDeleteTeamPopUp = new PopUp_ConfirmDeleteTeam(b.getName());
 					getInstance().etat = Etats.SUPRESSION_EQUIPE;
+				break;
+				case "Déconnexion":
+					mainWindow.dispose();
+					ConnexionWindow.main(null);
+					getInstance().etat = Etats.ACCUEIL;
 				break;
 				}
 			}
@@ -347,6 +365,72 @@ public class ControleurEcurie implements ActionListener, MouseListener {
 
 	@Override
 	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+    public void windowClosing(WindowEvent e) {
+        ((JFrame) e.getSource()).dispose();
+        switch(etat) {
+        case ACCUEIL:
+		break;
+		case EQUIPE_SELEC:
+			getInstance().etat = Etats.ACCUEIL;
+		break;
+		case AJOUT_JOUEUR:
+			getInstance().etat = Etats.CREATION_EQUIPE;
+		break;
+		case CREATION_EQUIPE:
+			getInstance().etat = Etats.ACCUEIL;
+		break;
+		case INSCRIPTION_TOURNOI:
+			getInstance().etat = Etats.TOURNOI_SELEC;
+		break;
+		case SUPRESSION_EQUIPE:
+			getInstance().etat = Etats.EQUIPE_SELEC;
+		break;
+		case TOURNOI_SELEC:
+			getInstance().etat = Etats.ACCUEIL;
+		break;
+		default:
+		break;
+        }
+
+    }
+
+	@Override
+	public void windowOpened(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowClosed(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowActivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
 		// TODO Auto-generated method stub
 		
 	}

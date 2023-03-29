@@ -83,8 +83,8 @@ public class Header {
 		
 		JButtonYellow DisconnectButton = new JButtonYellow("Déconnexion");
 		DisconnectButton.addActionListener(ControleurArbitre.getInstance());
-		DisconnectButton.addActionListener(ControleurGerant.getInstance());
-		//DisconnectButton.addActionListener(ControleurEcurie.getInstance());
+		//DisconnectButton.addActionListener(ControleurGerant.getInstance());
+		DisconnectButton.addActionListener(ControleurEcurie.getInstance());
 		
 		DisconnectButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		panelButton.add(DisconnectButton);

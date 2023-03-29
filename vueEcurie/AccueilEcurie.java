@@ -149,6 +149,9 @@ public class AccueilEcurie {
 		setListTournois();
 		panelMenu.add(panelRight);
 		
+
+		frame.addWindowListener(ControleurEcurie.getInstance());
+		
 	}
 	
 	public void setListEquipes() {
@@ -325,6 +328,10 @@ public class AccueilEcurie {
 				return;
 			}
 		}
+	}
+
+	public void dispose() {
+		frame.dispose();
 	}
 	
 }

@@ -491,6 +491,9 @@ public class AjouterJoueur {
 			buttonValidation.setEnabled(false);
 		}
 		panelFormButtonsInner.add(buttonValidation);
+		
+
+		frame.addWindowListener(ControleurEcurie.getInstance());
 	}
 	
 	public char getSelectedButtonText(ButtonGroup buttonGroup) {
