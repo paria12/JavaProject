@@ -34,27 +34,7 @@ public class Header {
 
 	private static JFrame frame;
 	public static String header;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					frame = new JFrame();
-					frame.setBounds(100, 100, 643, 408);
-					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-					frame.getContentPane().setLayout(new BorderLayout(0, 0));
-					
-					Header window = new Header(frame);
-					Header.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	public static String userType;
 
 	/**
 	 * Create the application.
@@ -82,10 +62,18 @@ public class Header {
 		flowLayout.setHgap(10);
 		
 		JButtonYellow DisconnectButton = new JButtonYellow("Déconnexion");
-		DisconnectButton.addActionListener(ControleurArbitre.getInstance());
-		//DisconnectButton.addActionListener(ControleurGerant.getInstance());
-		DisconnectButton.addActionListener(ControleurEcurie.getInstance());
 		
+		switch (userType) {
+		case "Gerant" :
+			DisconnectButton.addActionListener(ControleurGerant.getInstance());
+		break;
+		case "Ecurie" :
+			DisconnectButton.addActionListener(ControleurEcurie.getInstance());
+			break;
+		case "Arbitre" :
+			DisconnectButton.addActionListener(ControleurArbitre.getInstance());
+		break;
+		}
 		DisconnectButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		panelButton.add(DisconnectButton);
 		GroupLayout gl_panelHeaderTop = new GroupLayout(panelHeaderTop);

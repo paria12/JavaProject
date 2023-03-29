@@ -72,7 +72,7 @@ public class ControleurGerant implements ActionListener, MouseListener, WindowLi
 		case ACCUEIL:
 			switch (b.getText()) {
 				case "Déconnexion"://deconexion
-					accueilGerant.fermerAccueilGerant();;
+					accueilGerant.fermerAccueilGerant();
 					Main.main(null);
 					break;
 				case "Nouveau Tournoi"://nouveau tournoi

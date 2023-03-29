@@ -243,16 +243,19 @@ public class ConnexionWindow{
 			switch (Connexion.connexion(inputUserName.getText(), String.valueOf(inputPassword.getPassword()))) {
 				case 0 : //Owner
 					Header.header = "M. le Owner";
+					Header.userType = "Gerant";
 					AccueilGerant.main(null);
 					frmConnexion.dispose();
 					break;
 				case 1 : //Ecurie
 					Header.header = inputUserName.getText();
+					Header.userType = "Ecurie";
 					new AccueilEcurie();
 					frmConnexion.dispose();
 					break;
 				case 2 : //Arbitre
 					Header.header = inputUserName.getText();
+					Header.userType = "Arbitre";
 					AccueilArbitre.main(null);
 					frmConnexion.dispose();
 					break;

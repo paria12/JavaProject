@@ -284,7 +284,7 @@ public class Inscription{
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					frmInscription.dispose();
-					ConnexionWindow.mainWithValues(inputUserName.getText());
+					new ConnexionWindow(inputUserName.getText());
 				}
 			}
 		});
@@ -292,7 +292,7 @@ public class Inscription{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frmInscription.dispose();
-				ConnexionWindow.mainWithValues(inputUserName.getText());
+				new ConnexionWindow(inputUserName.getText());
 			}
 		});
 		panelButton.add(buttonConnexion);
@@ -349,7 +349,7 @@ public class Inscription{
 					break;
 			}
 			frmInscription.dispose();
-			ConnexionWindow.mainWithValues(inputUserName.getText());
+			new ConnexionWindow(inputUserName.getText());
 		}
 	}
  

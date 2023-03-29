@@ -87,7 +87,7 @@ public class ControleurArbitre implements ActionListener, ListSelectionListener,
 				JButton j= (JButton) e.getSource();
 				if(j.getText().equals("Annuler")) {
 					saisirScore.submitAnnuler();
-					etat=Etats.ACCUEIL;
+					etat=Etats.MATCH_SELEC;
 				}
 			}
 			
@@ -103,12 +103,12 @@ public class ControleurArbitre implements ActionListener, ListSelectionListener,
 					switch(jb.getText()) {
 						case "Valider":
 							saisirScore.submitValider();
-							etat=Etats.ACCUEIL;
+							etat=Etats.MATCH_SELEC;
 							break;
 							
 						case"Annuler":
 							saisirScore.submitAnnuler();
-							etat=Etats.ACCUEIL;
+							etat=Etats.MATCH_SELEC;
 							break;
 					}
 				}
