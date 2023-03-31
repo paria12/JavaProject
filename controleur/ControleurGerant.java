@@ -85,7 +85,7 @@ public class ControleurGerant implements ActionListener, MouseListener, WindowLi
 					etat=Etats.CREATION_JEU;
 					break;
 				case "Classement Annuel"://cassement annuel
-					Main.main(null);
+					classementAnnuel = new ClassementAnnuel();
 					etat=Etats.CHOIX_JEU_CLASSEMENT;
 					break;
 				case "rafraîchir":

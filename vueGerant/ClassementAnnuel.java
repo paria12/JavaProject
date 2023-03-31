@@ -47,26 +47,11 @@ public class ClassementAnnuel {
 	public ControleurGerant controleur = new ControleurGerant();
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ClassementAnnuel window = new ClassementAnnuel();
-					window.frmClassementAnnuel.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the application.
 	 */
 	public ClassementAnnuel() {
 		initialize();
+		frmClassementAnnuel.setVisible(true);
 	}
 
 	/**

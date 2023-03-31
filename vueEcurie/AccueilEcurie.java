@@ -192,14 +192,12 @@ public class AccueilEcurie {
 	private void setListTournois() {
 		//If no equipe selected
 		if (eq == null) {
-			if (panelRight != null) {
-				//setVisibility to false
-				panelRight.setVisible(false);
-			} else {
+			if (panelRight == null) {
 				//remove content from panelRight
 				panelRight = new JPanelBackground();
-				panelRight.setVisible(false);
 			}
+			//setVisibility to false
+			panelRight.setVisible(false);
 			panelRight.setLayout(new BorderLayout(0, 0));
 			JPanelBackground panelRightHeader = new JPanelBackground();
 			panelRightHeader.setAlignmentY(0.0f);

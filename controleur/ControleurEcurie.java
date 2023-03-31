@@ -281,6 +281,15 @@ public class ControleurEcurie implements ActionListener, MouseListener, WindowLi
 		case SUPRESSION_EQUIPE:
 		break;
 		case TOURNOI_SELEC:
+			if (((JPanel)e.getSource()).getName().startsWith("pT")) {
+				mainWindow.setPresentTournoiByName(((JPanel)e.getSource()).getName());
+				mainWindow.showTurnamentChoosen();
+				getInstance().etat = Etats.TOURNOI_SELEC;
+			} else if ((((JPanel)e.getSource()).getName().startsWith("pE"))) {
+				mainWindow.setPresentEquipeByName(((JPanel)e.getSource()).getName());
+				mainWindow.showTeamChoosen();
+				getInstance().etat = Etats.EQUIPE_SELEC;
+			}
 		break;
 		default:
 		break;
