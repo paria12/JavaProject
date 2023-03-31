@@ -255,7 +255,6 @@ public class AccueilEcurie {
 			panelListTournoi = new JPanelBackground();
 	        panelListTournoi.setLayout(new GridLayout(0, 1, 0, 0));
 			try {
-				System.out.println("resetContent");
 				sizeTournoi = Tournoi.getAvailableEquipe(eq).length;
 				panelsPresentationTournoi = new PanelPresentationTournoi[sizeTournoi];
 		        for (int i = 0; i < sizeTournoi; i++) {
